@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+jspm_packages/
+
+# Environment Variables
+.env*
+
+# Build & Runtime
+dist/
+build/
+out/
+.next/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS & IDEs
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.sublime-workspace
+
+# Database & Cache
+.cache/
+coverage/ # If you write tests later
+dist/
+temp/
