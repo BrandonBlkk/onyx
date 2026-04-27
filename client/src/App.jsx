@@ -1,13 +1,16 @@
 import React from 'react'
+import { Route, Routes } from 'react-router-dom'
+import Landing from './pages/Landing'
+import { Move } from 'lucide-react'
 
 const App = () => {
-    return (
-      <div>
-        <h1 className="text-3xl text-fuchsia-500 font-bold underline">
-          Hello world!
-        </h1>
-      </div>
-    )
+  return (
+    <div>
+      <Routes>
+        <Route path="/" element={<Landing />} />
+      </Routes>
+    </div>
+  )
 }
 
 export default App
