@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import Hero from '../components/landing/Hero'
 import HowItWorks from '../components/landing/HowItWorks'
@@ -6,9 +6,11 @@ import FeatureGrid from '../components/landing/FeatureGrid'
 import LivePreview from '../components/landing/LivePreview'
 import Footer from '../components/landing/Footer'
 import MoveUpButton from '../components/MoveUpButton'
+import { useTheme } from '../context/ThemeContext'
 
 const Landing = () => {
   const [isAtBottom, setIsAtBottom] = useState(false)
+  const { isDark } = useTheme()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,26 +23,46 @@ const Landing = () => {
   }, [])
 
   return (
-    <div className="min-h-screen bg-zinc-950">
+    <div className={`min-h-screen transition-colors duration-500 ${isDark ? 'bg-zinc-950' : 'bg-[#f5f7fb]'}`}>
       <Navbar />
       <main>
-        {/* Top Gradient Overlay */}
-        <div className="pointer-events-none fixed top-14 left-0 right-0 h-32 bg-linear-to-b from-zinc-950 to-transparent z-40" />
-        
-        <Hero />
-        <HowItWorks />
-        <FeatureGrid />
-        <LivePreview />
-        <MoveUpButton />
-        
-        {/* Bottom Gradient Overlay with Transition */}
-        <div 
-          className={`pointer-events-none fixed bottom-0 left-0 right-0 h-32 bg-linear-to-t from-zinc-950 to-transparent z-40 transition-opacity duration-300 ${
+        <div className="pointer-events-none fixed top-14 left-0 right-0 z-40 h-32">
+          <div
+            className={`absolute inset-0 bg-linear-to-b from-zinc-950 to-transparent transition-opacity duration-500 ${
+              isDark ? 'opacity-100' : 'opacity-0'
+            }`}
+          />
+          <div
+            className={`absolute inset-0 bg-linear-to-b from-[#f5f7fb] to-transparent transition-opacity duration-500 ${
+              isDark ? 'opacity-0' : 'opacity-100'
+            }`}
+          />
+        </div>
+
+        <Hero isDark={isDark} />
+        <HowItWorks isDark={isDark} />
+        <FeatureGrid isDark={isDark} />
+        <LivePreview isDark={isDark} />
+        <MoveUpButton isDark={isDark} />
+
+        <div
+          className={`pointer-events-none fixed bottom-0 left-0 right-0 z-40 h-32 transition-opacity duration-500 ${
             isAtBottom ? 'opacity-0' : 'opacity-100'
-          }`} 
-        />
+          }`}
+        >
+          <div
+            className={`absolute inset-0 bg-linear-to-t from-zinc-950 to-transparent transition-opacity duration-500 ${
+              isDark ? 'opacity-100' : 'opacity-0'
+            }`}
+          />
+          <div
+            className={`absolute inset-0 bg-linear-to-t from-[#f5f7fb] to-transparent transition-opacity duration-500 ${
+              isDark ? 'opacity-0' : 'opacity-100'
+            }`}
+          />
+        </div>
       </main>
-      <Footer />
+      <Footer isDark={isDark} />
     </div>
   )
 }
