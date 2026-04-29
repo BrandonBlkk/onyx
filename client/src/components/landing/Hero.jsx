@@ -59,7 +59,7 @@ const Hero = ({ isDark = true }) => {
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent-400 opacity-60" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-green-600" />
           </span>
-          <span className={`text-xs font-medium tracking-wide ${isDark ? 'text-zinc-400' : 'text-slate-600'}`}>
+          <span className={`text-xs font-medium tracking-wide select-none ${isDark ? 'text-zinc-400' : 'text-slate-600'}`}>
             Now in Public Beta
           </span>
         </motion.div>
@@ -70,7 +70,7 @@ const Hero = ({ isDark = true }) => {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="mb-6 text-4xl font-bold tracking-tight leading-[1.1] sm:text-5xl md:text-6xl lg:text-7xl"
         >
-          <span className={isDark ? 'text-zinc-100' : 'text-slate-900'}>Craft a Resume</span>
+          <span className={isDark ? 'text-zinc-100' : 'text-slate-900'}>Elevate Your Resume</span>
           <br />
           <span className={headingGradientClass}>that really Stands Out.</span>
         </motion.h1>

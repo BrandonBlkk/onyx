@@ -48,7 +48,7 @@ const HowItWorks = ({ isDark = true }) => {
     : 'bg-[linear-gradient(135deg,#0f172a_0%,#334155_50%,#64748b_100%)] bg-clip-text text-transparent'
 
   return (
-    <section className="relative py-24 sm:py-32" id="how-it-works">
+    <section className="relative py-24 sm:py-32 overflow-hidden" id="how-it-works">
       <div className="absolute inset-0 pointer-events-none">
         <div className={`absolute top-1/3 left-1/2 h-100 w-150 -translate-x-1/2 -translate-y-1/2 rounded-full blur-[140px] ${
           isDark ? 'bg-accent-500/3' : 'bg-accent-500/8'
@@ -63,7 +63,7 @@ const HowItWorks = ({ isDark = true }) => {
           transition={{ duration: 0.5 }}
           className="text-center mb-20"
         >
-          <span className="inline-flex items-center rounded-full bg-accent-500/10 px-3 py-1 text-xs font-medium text-teal-600 ring-1 ring-accent-500/20 mb-4">
+          <span className="inline-flex items-center rounded-full bg-accent-500/10 px-3 py-1 text-xs font-medium text-teal-600 ring-1 ring-accent-500/20 mb-4 select-none">
             How It Works
           </span>
           <h2 className={`text-3xl sm:text-4xl font-bold tracking-tight mb-4 ${isDark ? 'text-zinc-100' : 'text-slate-900'}`}>
