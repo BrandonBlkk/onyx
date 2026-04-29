@@ -5,12 +5,6 @@ import logo from '../assets/images/logo.png'
 import logo2 from '../assets/images/logo2.png'
 import { useTheme } from '../context/ThemeContext'
 
-const navLinks = [
-  { label: 'How it works', href: '#how-it-works' },
-  { label: 'Features', href: '#features' },
-  { label: 'Preview', href: '#preview' },
-]
-
 const Navbar = () => {
   const { isDark, toggleTheme } = useTheme()
   const [scrolled, setScrolled] = useState(false)
@@ -20,6 +14,17 @@ const Navbar = () => {
     const handleScroll = () => setScrolled(window.scrollY > 20)
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setMobileOpen(false)
+      }
+    }
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
   }, [])
 
   const headerClass = isDark
@@ -42,7 +47,7 @@ const Navbar = () => {
       animate={{ y: 0, opacity: 1 }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${headerClass}`}
     >
-      <nav className={`mx-auto flex h-16 items-center justify-between p-6 transition-all duration-500 ease-in-out ${scrolled ? 'max-w-6xl' : 'max-w-full'}`}>
+      <nav className={`mx-auto flex h-16 w-full items-center justify-between px-4 sm:px-6 lg:px-8 transition-all duration-500 ease-in-out ${scrolled ? 'max-w-6xl' : 'max-w-full'}`}>
         <a href="/" className="flex items-center gap-2 group" id="nav-logo">
           <div className="flex w-9 items-center justify-center overflow-hidden rounded-sm">
             <img
@@ -53,7 +58,7 @@ const Navbar = () => {
           </div>
         </a>
 
-        <div className="hidden md:flex items-center gap-6 select-none">
+        <div className="hidden items-center gap-4 select-none md:flex lg:gap-6">
           <Languages className={`w-4 cursor-pointer transition-colors ${iconClass} ${isDark ? '' : 'text-zinc-900'}`} />
 
           <button
@@ -124,24 +129,22 @@ const Navbar = () => {
                 : 'border-slate-200 bg-white/95'
             }`}
           >
-            <div className="px-6 py-6 space-y-4">
-              {navLinks.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  onClick={() => setMobileOpen(false)}
-                  className={`block text-sm transition-colors ${navClass}`}
-                >
-                  {link.label}
-                </a>
-              ))}
+            <div className="mx-auto w-full max-w-6xl space-y-4 px-4 py-6 sm:px-6">
               <button
                 type="button"
                 onClick={toggleTheme}
-                className={`flex items-center gap-2 text-sm transition-colors ${navClass}`}
+                className={`flex w-full items-center gap-2 text-sm transition-colors ${navClass}`}
+              >
+              <Languages className={`w-4 cursor-pointer transition-colors ${navClass}`} />
+                Language
+              </button>
+              <button
+                type="button"
+                onClick={toggleTheme}
+                className={`flex w-full items-center gap-2 text-sm transition-colors ${navClass}`}
               >
                 {isDark ? <Sun className="w-4" /> : <Moon className="w-4" />}
-                Toggle theme
+                Theme
               </button>
               <div className={`pt-4 border-t space-y-3 ${isDark ? 'border-zinc-800/60' : 'border-slate-200'}`}>
                 <a href="#" className={`block text-sm transition-colors ${navClass}`}>
@@ -149,13 +152,16 @@ const Navbar = () => {
                 </a>
                 <a
                   href="#"
-                  className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium ${
+                  className={`inline-flex w-full items-center justify-center gap-2 px-4 py-2 text-sm font-medium ${
                     isDark
-                      ? 'bg-emerald-600 text-white'
+                      ? 'bg-white text-zinc-900'
                       : 'bg-slate-900 text-white'
                   }`}
                 >
                   Get Started
+                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                  </svg>
                 </a>
               </div>
             </div>

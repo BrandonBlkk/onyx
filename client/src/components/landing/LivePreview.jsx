@@ -12,7 +12,7 @@ const LivePreview = ({ isDark = true }) => {
           transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
-          <span className="inline-flex items-center rounded-full bg-accent-500/10 px-3 py-1 text-xs font-medium text-teal-600 ring-1 ring-accent-500/20 mb-4">
+          <span className="inline-flex items-center rounded-full bg-accent-500/10 px-3 py-1 text-xs font-medium text-teal-600 ring-1 ring-accent-500/20 mb-4 select-none">
             Preview
           </span>
           <h2 className={`text-3xl sm:text-4xl font-bold tracking-tight mb-4 ${isDark ? 'text-zinc-100' : 'text-slate-900'}`}>
@@ -28,7 +28,7 @@ const LivePreview = ({ isDark = true }) => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.7, ease: 'easeOut' }}
-          className="relative mx-auto max-w-3xl"
+          className="relative mx-auto max-w-3xl select-none"
         >
           <div className={`absolute -inset-4 rounded-3xl blur-2xl pointer-events-none ${
             isDark ? 'bg-accent-500/6' : 'bg-accent-500/12'
@@ -114,7 +114,7 @@ const LivePreview = ({ isDark = true }) => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className={`absolute -right-4 top-1/4 hidden rounded-xl border p-4 shadow-2xl backdrop-blur-md md:block sm:-right-12 ${
+            className={`absolute -right-4 top-1/4 hidden rounded-xl border p-4 shadow-2xl backdrop-blur-md md:block md:-right-12 ${
               isDark
                 ? 'border-zinc-700/50 bg-zinc-800/60'
                 : 'border-slate-200 bg-white/90'
@@ -138,7 +138,7 @@ const LivePreview = ({ isDark = true }) => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.5 }}
-            className={`absolute -left-4 bottom-1/4 hidden rounded-xl border p-4 shadow-2xl backdrop-blur-md md:block sm:-left-12 ${
+            className={`absolute -left-4 bottom-1/4 hidden rounded-xl border p-4 shadow-2xl backdrop-blur-md md:block md:-left-12 ${
               isDark
                 ? 'border-zinc-700/50 bg-zinc-800/60'
                 : 'border-slate-200 bg-white/90'

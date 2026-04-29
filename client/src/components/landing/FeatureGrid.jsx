@@ -45,7 +45,7 @@ const FeatureGrid = ({ isDark = true }) => {
     : 'bg-[linear-gradient(135deg,#0f172a_0%,#334155_50%,#64748b_100%)] bg-clip-text text-transparent'
 
   return (
-    <section className="relative py-28 sm:py-36" id="features">
+    <section className="relative py-28 sm:py-36 overflow-hidden" id="features">
       <div className="mx-auto max-w-6xl px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -54,7 +54,7 @@ const FeatureGrid = ({ isDark = true }) => {
           transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
-          <span className="inline-flex items-center rounded-full bg-accent-500/10 px-3 py-1 text-xs font-medium text-teal-600 ring-1 ring-accent-500/20 mb-4">
+          <span className="inline-flex items-center rounded-full bg-accent-500/10 px-3 py-1 text-xs font-medium text-teal-600 ring-1 ring-accent-500/20 mb-4 select-none">
             Features
           </span>
           <h2 className={`text-3xl sm:text-4xl font-bold tracking-tight mb-4 ${isDark ? 'text-zinc-100' : 'text-slate-900'}`}>
