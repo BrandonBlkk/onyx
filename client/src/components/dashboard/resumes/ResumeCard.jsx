@@ -1,0 +1,100 @@
+import ResumePreview from './ResumePreview'
+import {
+  getInteractivePanelClass,
+  getMutedTextClass,
+  getStatusBadgeClass,
+  getSubtleTextClass,
+} from './resumeStyles'
+
+const ResumeCard = ({ item, isDark, viewMode }) => {
+  if (viewMode === 'list') {
+    return (
+      <article
+        className={`group relative grid overflow-hidden rounded-md border backdrop-blur-xl sm:grid-cols-2 ${getInteractivePanelClass(isDark)}`}
+      >
+        <div
+          className={`absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 ${
+            isDark ? 'bg-accent-500/3' : 'bg-accent-500/5'
+          }`}
+        />
+
+        <div
+          className={`relative flex items-center justify-center border-b p-3 sm:border-r sm:border-b-0 ${
+            isDark ? 'border-zinc-800/70 bg-zinc-950/60' : 'border-slate-200 bg-slate-50/80'
+          }`}
+        >
+          <div className="h-45 w-full max-w-37.5">
+            <ResumePreview candidate={item.candidate} role={item.role} />
+          </div>
+        </div>
+
+        <div className="relative flex flex-col justify-center p-4 sm:p-5">
+          <div className="flex flex-wrap items-center gap-2">
+            <h3 className="text-sm font-semibold tracking-tight sm:text-[15px]">{item.title}</h3>
+            <span
+              className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${getStatusBadgeClass(item.tone, isDark)}`}
+            >
+              {item.tone}
+            </span>
+          </div>
+          <p className={`mt-2 text-xs ${getMutedTextClass(isDark)}`}>{item.updated}</p>
+
+          <div className={`mt-3 flex flex-wrap gap-2 text-[10px] ${getSubtleTextClass(isDark)}`}>
+            <span
+              className={`rounded-full px-2.5 py-1 ${
+                isDark ? 'bg-zinc-950/90 text-zinc-400' : 'bg-slate-100 text-slate-500'
+              }`}
+            >
+              {item.candidate}
+            </span>
+            <span
+              className={`rounded-full px-2.5 py-1 ${
+                isDark ? 'bg-zinc-950/90 text-zinc-400' : 'bg-slate-100 text-slate-500'
+              }`}
+            >
+              {item.role}
+            </span>
+          </div>
+        </div>
+      </article>
+    )
+  }
+
+  return (
+    <article
+      className={`group relative overflow-hidden rounded-md border backdrop-blur-xl ${getInteractivePanelClass(isDark)}`}
+    >
+      <div
+        className={`absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 ${
+          isDark ? 'bg-accent-500/3' : 'bg-accent-500/5'
+        }`}
+      />
+
+      <div
+        className={`relative flex h-67.5 items-start justify-center p-4 ${
+          isDark ? 'bg-zinc-950/60' : 'bg-slate-50/80'
+        }`}
+      >
+        <ResumePreview candidate={item.candidate} role={item.role} />
+      </div>
+
+      <div
+        className={`relative space-y-1 border-t p-5 ${
+          isDark ? 'border-zinc-800/80 bg-zinc-950/35' : 'border-slate-200 bg-white/60'
+        }`}
+      >
+        <div className="flex items-center justify-between gap-3">
+          <h3 className="text-sm font-semibold tracking-tight sm:text-[15px]">{item.title}</h3>
+          <span
+            className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${getStatusBadgeClass(item.tone, isDark)}`}
+          >
+            {item.tone}
+          </span>
+        </div>
+        <p className={`text-xs ${getMutedTextClass(isDark)}`}>{item.updated}</p>
+      </div>
+    </article>
+  )
+}
+
+export default ResumeCard

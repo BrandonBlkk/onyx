@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
 
 const Hero = ({ isDark = true }) => {
   const headingGradientClass = isDark
@@ -94,8 +95,7 @@ const Hero = ({ isDark = true }) => {
           transition={{ duration: 0.6, delay: 0.5 }}
           className="flex flex-col sm:flex-row items-center justify-center gap-4 select-none"
         >
-          <a
-            href="#"
+          <Link to={'dashboard/resumes'}
             className={`group relative inline-flex items-center gap-2.5 px-7 py-3.5 text-sm font-semibold transition-all duration-300 active:scale-[0.97] ${
               isDark
                 ? `bg-white text-zinc-900 hover:bg-zinc-200 ${primaryButtonGlowClass}`
@@ -113,7 +113,7 @@ const Hero = ({ isDark = true }) => {
             >
               <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
             </svg>
-          </a>
+          </Link>
           <a
             href="#preview"
             className={`inline-flex items-center gap-2 border px-7 py-3.5 text-sm font-medium transition-all duration-200 ${

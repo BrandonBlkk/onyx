@@ -148,7 +148,7 @@ const NotFound = () => {
             onClick={() => navigate('/')}
             className={`group relative inline-flex items-center gap-2.5 px-7 py-3.5 text-sm font-semibold transition-all duration-300 active:scale-[0.97] ${
               isDark
-                ? 'bg-white text-zinc-900 hover:bg-zinc-200 hover:shadow-[0_0_30px_oklch(0.68_0.174_252_/_0.4),0_0_80px_oklch(0.68_0.174_252_/_0.15)]'
+                ? 'bg-white text-zinc-900 hover:bg-zinc-200 hover:shadow-[0_0_30px_oklch(0.68_0.174_252/0.4),0_0_80px_oklch(0.68_0.174_252/0.15)]'
                 : 'bg-slate-900 text-white hover:bg-slate-800 hover:shadow-[0_18px_40px_rgba(59,130,246,0.18)]'
             }`}
             id="notfound-home-btn"
