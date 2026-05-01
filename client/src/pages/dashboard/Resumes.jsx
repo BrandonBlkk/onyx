@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import Sidebar from '../../components/dashboard/Sidebar'
+import Sidebar from '../../components/dashboard/sidebar/Sidebar'
 import ActionCard from '../../components/dashboard/resumes/ActionCard'
 import ResumeCard from '../../components/dashboard/resumes/ResumeCard'
 import ResumesToolbar from '../../components/dashboard/resumes/ResumesToolbar'
