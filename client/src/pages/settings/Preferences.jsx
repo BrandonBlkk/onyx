@@ -1,13 +1,10 @@
-import { UserRound } from 'lucide-react'
+import { SlidersHorizontal } from 'lucide-react'
 import Sidebar from '../../components/dashboard/sidebar/Sidebar'
-import ProfileForm from '../../components/settings/profile/ProfileForm'
+import PreferencesForm from '../../components/settings/preferences/PreferencesForm'
 import { useTheme } from '../../context/ThemeContext'
 
-const Profile = () => {
-  const { isDark } = useTheme()
-  const panelClass = isDark
-    ? 'border-zinc-800 bg-zinc-950/70'
-    : 'border-slate-200 bg-white'
+const Preferences = () => {
+  const { isDark, theme, setTheme } = useTheme()
 
   return (
     <div
@@ -27,20 +24,20 @@ const Profile = () => {
                     isDark ? 'border-zinc-700 text-zinc-100' : 'border-slate-300 text-slate-900'
                   }`}
                 >
-                  <UserRound className="h-3.5 w-3.5" />
+                  <SlidersHorizontal className="h-3.5 w-3.5" />
                 </div>
-                <h1 className="text-xl font-semibold tracking-tight">Profile</h1>
+                <h1 className="text-xl font-semibold tracking-tight">Preferences</h1>
               </div>
 
               <p className={isDark ? 'text-xs text-zinc-500' : 'text-xs text-slate-500'}>
-                Keep only the basics needed for your resume workspace.
+                Adjust the workspace defaults you want each time you build a resume.
               </p>
             </div>
 
             <div className={isDark ? 'border-t border-zinc-800' : 'border-t border-slate-200'} />
 
-            <section className={`rounded-md border p-4 sm:p-5 ${panelClass}`}>
-              <ProfileForm isDark={isDark} />
+            <section>
+              <PreferencesForm isDark={isDark} theme={theme} setTheme={setTheme} />
             </section>
           </div>
         </main>
@@ -49,4 +46,4 @@ const Profile = () => {
   )
 }
 
-export default Profile
+export default Preferences

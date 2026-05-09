@@ -25,7 +25,7 @@ export const settingsLinks = [
     label: 'Preferences',
     href: '/settings/preferences',
     icon: SlidersHorizontal,
-    available: false,
+    available: true,
   },
   {
     label: 'Authentication',
