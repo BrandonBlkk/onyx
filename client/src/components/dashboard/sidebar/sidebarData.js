@@ -2,6 +2,7 @@ import {
   FileText,
   ShieldCheck,
   SlidersHorizontal,
+  AlertTriangle,
   UserRound,
 } from 'lucide-react'
 
@@ -17,20 +18,26 @@ export const appLinks = [
 export const settingsLinks = [
   {
     label: 'Profile',
-    href: '/dashboard/profile',
+    href: '/settings/profile',
     icon: UserRound,
-    available: false,
+    available: true,
   },
   {
     label: 'Preferences',
-    href: '/dashboard/preferences',
+    href: '/settings/preferences',
     icon: SlidersHorizontal,
-    available: false,
+    available: true,
   },
   {
     label: 'Authentication',
-    href: '/dashboard/authentication',
+    href: '/settings/authentication',
     icon: ShieldCheck,
-    available: false,
+    available: true,
+  },
+  {
+    label: 'Danger Zone',
+    href: '/settings/danger-zone',
+    icon: AlertTriangle,
+    available: true,
   },
 ]

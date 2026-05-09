@@ -10,7 +10,7 @@ const SidebarSection = ({ title, items, isDark }) => (
       {title}
     </p>
 
-    <div className="mt-3 space-y-1.5">
+    <div className="mt-3 space-y-1.5 select-none">
       {items.map((item) => (
         <SidebarLink key={item.label} item={item} isDark={isDark} />
       ))}

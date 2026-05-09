@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom'
-import logo from '../../assets/images/logo.png'
-import logo2 from '../../assets/images/logo2.png'
-import SidebarFooter from './sidebar/SidebarFooter'
-import SidebarSection from './sidebar/SidebarSection'
-import { appLinks, settingsLinks } from './sidebar/sidebarData'
+import logo from '../../../assets/images/logo.png'
+import logo2 from '../../../assets/images/logo2.png'
+import SidebarFooter from './SidebarFooter'
+import SidebarSection from './SidebarSection'
+import { appLinks, settingsLinks } from './sidebarData'
 
 const Sidebar = ({ isDark }) => {
   return (

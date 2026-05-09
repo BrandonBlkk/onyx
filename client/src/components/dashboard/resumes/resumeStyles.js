@@ -6,7 +6,7 @@ export const getPanelClass = (isDark) =>
     : 'border-slate-200 bg-white/78 shadow-[0_22px_50px_rgba(148,163,184,0.18)]'
 
 export const getInteractivePanelClass = (isDark) =>
-  `${getPanelClass(isDark)} transition-all duration-300 hover:-translate-y-0.5 ${
+  `${getPanelClass(isDark)} transition-all duration-300 ${
     isDark
       ? 'hover:border-zinc-700/80 hover:bg-zinc-900/78'
       : 'hover:border-slate-300 hover:bg-white'

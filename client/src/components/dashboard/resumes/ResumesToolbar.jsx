@@ -16,7 +16,7 @@ const ResumesToolbar = ({
           className={`flex w-full max-w-md items-center gap-3 rounded-md border px-3.5 py-2.5 ${
             isDark
               ? 'border-zinc-800 bg-zinc-950/80'
-              : 'border-slate-200 bg-white/85 shadow-sm'
+              : 'border-slate-200 bg-white/85'
           }`}
         >
           <Search className={`h-4 w-4 ${getSubtleTextClass(isDark)}`} />
@@ -38,10 +38,10 @@ const ResumesToolbar = ({
             <select
               value={sortBy}
               onChange={(event) => onSortChange(event.target.value)}
-              className={`appearance-none rounded-md border px-3.5 py-2.5 pr-9 text-[13px] outline-none transition-colors ${
+              className={`appearance-none rounded-md border px-3.5 py-2.5 pr-9 text-[13px] outline-none transition-colors select-none ${
                 isDark
                   ? 'border-zinc-800 bg-zinc-950/80 text-white'
-                  : 'border-slate-200 bg-white/85 text-slate-950 shadow-sm'
+                  : 'border-slate-200 bg-white/85 text-slate-950'
               }`}
             >
               {sortOptions.map((option) => (
@@ -58,10 +58,10 @@ const ResumesToolbar = ({
       </div>
 
       <div
-        className={`inline-flex w-fit rounded-md border p-1 ${
+        className={`inline-flex w-fit rounded-md border p-1 select-none ${
           isDark
             ? 'border-zinc-800 bg-zinc-950/70'
-            : 'border-slate-200 bg-white/80 shadow-sm'
+            : 'border-slate-200 bg-white/80'
         }`}
       >
         <button
