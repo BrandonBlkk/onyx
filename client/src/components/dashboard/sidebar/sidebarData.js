@@ -17,19 +17,19 @@ export const appLinks = [
 export const settingsLinks = [
   {
     label: 'Profile',
-    href: '/dashboard/profile',
+    href: '/settings/profile',
     icon: UserRound,
-    available: false,
+    available: true,
   },
   {
     label: 'Preferences',
-    href: '/dashboard/preferences',
+    href: '/settings/preferences',
     icon: SlidersHorizontal,
     available: false,
   },
   {
     label: 'Authentication',
-    href: '/dashboard/authentication',
+    href: '/settings/authentication',
     icon: ShieldCheck,
     available: false,
   },
