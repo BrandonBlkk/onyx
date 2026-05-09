@@ -31,6 +31,6 @@ export const settingsLinks = [
     label: 'Authentication',
     href: '/settings/authentication',
     icon: ShieldCheck,
-    available: false,
+    available: true,
   },
 ]
