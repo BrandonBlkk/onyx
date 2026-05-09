@@ -10,23 +10,13 @@ const ResumeCard = ({ item, isDark, viewMode }) => {
   if (viewMode === 'list') {
     return (
       <article
-        className={`group relative grid overflow-hidden rounded-md border backdrop-blur-xl sm:grid-cols-2 ${getInteractivePanelClass(isDark)}`}
+        className={`group relative grid overflow-hidden rounded-md border backdrop-blur-xl sm:grid-cols-2 cursor-pointer ${getInteractivePanelClass(isDark)}`}
       >
         <div
           className={`absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 ${
             isDark ? 'bg-accent-500/3' : 'bg-accent-500/5'
           }`}
         />
-
-        <div
-          className={`relative flex items-center justify-center border-b p-3 sm:border-r sm:border-b-0 ${
-            isDark ? 'border-zinc-800/70 bg-zinc-950/60' : 'border-slate-200 bg-slate-50/80'
-          }`}
-        >
-          <div className="h-45 w-full max-w-37.5">
-            <ResumePreview candidate={item.candidate} role={item.role} />
-          </div>
-        </div>
 
         <div className="relative flex flex-col justify-center p-4 sm:p-5">
           <div className="flex flex-wrap items-center gap-2">
@@ -62,7 +52,7 @@ const ResumeCard = ({ item, isDark, viewMode }) => {
 
   return (
     <article
-      className={`group relative overflow-hidden rounded-md border backdrop-blur-xl ${getInteractivePanelClass(isDark)}`}
+      className={`group relative overflow-hidden rounded-md border backdrop-blur-xl hover:-translate-y-0.5 cursor-pointer ${getInteractivePanelClass(isDark)}`}
     >
       <div
         className={`absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 ${

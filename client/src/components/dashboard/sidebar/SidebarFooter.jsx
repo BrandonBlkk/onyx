@@ -1,6 +1,6 @@
 const SidebarFooter = ({ isDark }) => (
   <div
-    className={`border-t py-5 ${
+    className={`border-t pt-5 pb-2 ${
       isDark ? 'border-zinc-800/80' : 'border-slate-200/80'
     }`}
   >
@@ -12,7 +12,7 @@ const SidebarFooter = ({ isDark }) => (
       }`}
     >
       <div className="flex items-center gap-3">
-        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-linear-to-br from-cyan-400 to-blue-500 text-[13px] font-semibold text-slate-950">
+        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-linear-to-br from-cyan-400 to-blue-500 text-[13px] font-semibold text-slate-950 select-none">
           BT
         </div>
 
@@ -29,8 +29,29 @@ const SidebarFooter = ({ isDark }) => (
           isDark ? 'text-zinc-500' : 'text-slate-500'
         }`}
       >
-        <p>Landing-inspired workspace polish is now reflected here too.</p>
-        <p>More dashboard areas can plug into this same visual system as they are added.</p>
+        <p>Licensed under 
+          <a
+            href="https://github.com/BrandonBlkk/Onyx/blob/main/LICENSE"
+            target="_blank"
+            rel="noreferrer"
+            className={`transition-colors ${isDark ? 'hover:text-zinc-300' : 'hover:text-slate-900'}`}
+          >
+            {' '}MIT.
+          </a>  
+        </p>
+        <p>Crafted for job seekers, by developers.</p>
+        <p className={`mt-1 ${isDark ? 'text-zinc-600' : 'text-slate-500'}`}>
+            Project by{' '}
+            <a
+              href="https://github.com/BrandonBlkk"
+              target="_blank"
+              rel="noreferrer"
+              className={`transition-colors ${isDark ? 'hover:text-zinc-300' : 'hover:text-slate-900'}`}
+            >
+              Brandon.
+            </a>
+          </p>
+        <p className="mt-5">Onyx is a work in progress.</p>
       </div>
     </div>
   </div>
