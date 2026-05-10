@@ -1,6 +1,9 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
+/* eslint-disable react-refresh/only-export-components */
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 
 const STORAGE_KEY = 'app-theme'
+const THEME_TRANSITION_CLASS = 'theme-transitioning'
+const THEME_TRANSITION_DURATION = 180
 const ThemeContext = createContext(null)
 
 const applyDocumentTheme = (theme) => {
@@ -21,13 +24,51 @@ const getInitialTheme = () => {
 }
 
 export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState(getInitialTheme)
+  const [theme, setThemeState] = useState(getInitialTheme)
   const isDark = theme === 'dark'
+  const transitionTimeoutRef = useRef(null)
+
+  const setTheme = useCallback((nextTheme) => {
+    setThemeState((prevTheme) => {
+      const resolvedTheme =
+        typeof nextTheme === 'function' ? nextTheme(prevTheme) : nextTheme
+
+      if (resolvedTheme === prevTheme) return prevTheme
+
+      if (typeof document !== 'undefined') {
+        document.documentElement.classList.add(THEME_TRANSITION_CLASS)
+
+        if (transitionTimeoutRef.current) {
+          window.clearTimeout(transitionTimeoutRef.current)
+        }
+
+        transitionTimeoutRef.current = window.setTimeout(() => {
+          document.documentElement.classList.remove(THEME_TRANSITION_CLASS)
+          transitionTimeoutRef.current = null
+        }, THEME_TRANSITION_DURATION)
+      }
+
+      return resolvedTheme
+    })
+  }, [])
 
   useEffect(() => {
     window.localStorage.setItem(STORAGE_KEY, theme)
     applyDocumentTheme(theme)
   }, [theme])
+
+  useEffect(
+    () => () => {
+      if (transitionTimeoutRef.current) {
+        window.clearTimeout(transitionTimeoutRef.current)
+      }
+
+      if (typeof document !== 'undefined') {
+        document.documentElement.classList.remove(THEME_TRANSITION_CLASS)
+      }
+    },
+    [],
+  )
 
   const value = useMemo(
     () => ({
@@ -36,7 +77,7 @@ export const ThemeProvider = ({ children }) => {
       setTheme,
       toggleTheme: () => setTheme((prev) => (prev === 'dark' ? 'light' : 'dark')),
     }),
-    [theme, isDark],
+    [theme, isDark, setTheme],
   )
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>

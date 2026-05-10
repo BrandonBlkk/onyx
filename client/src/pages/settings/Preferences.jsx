@@ -1,5 +1,6 @@
 import { SlidersHorizontal } from 'lucide-react'
 import Sidebar from '../../components/dashboard/sidebar/Sidebar'
+import PageContentTransition from '../../components/PageContentTransition'
 import PreferencesForm from '../../components/settings/preferences/PreferencesForm'
 import { useTheme } from '../../context/ThemeContext'
 
@@ -15,7 +16,7 @@ const Preferences = () => {
       <div className="min-h-screen">
         <Sidebar isDark={isDark} />
 
-        <main className="lg:ml-65 p-3">
+        <PageContentTransition className="lg:ml-65 p-3">
           <div className="space-y-3">
             <div className="space-y-3">
               <div className="flex items-center gap-3">
@@ -40,7 +41,7 @@ const Preferences = () => {
               <PreferencesForm isDark={isDark} theme={theme} setTheme={setTheme} />
             </section>
           </div>
-        </main>
+        </PageContentTransition>
       </div>
     </div>
   )

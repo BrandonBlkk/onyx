@@ -21,7 +21,7 @@ const ProfileField = ({
       <span className={labelClass}>{label}</span>
       <input name={name} type={type} defaultValue={defaultValue} className={inputClass} />
       {helperText && (
-        <p className={`mt-2 inline-flex items-center rounded-full px-2 py-1 text-[11px] font-medium ${
+        <p className={`mt-2 inline-flex items-center rounded-full px-2 py-1 text-[11px] font-medium select-none ${
           isDark ? 'bg-emerald-500/10 text-emerald-400' : 'bg-emerald-50 text-emerald-600'
         }`}>
           {helperText}

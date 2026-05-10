@@ -3,7 +3,7 @@ import { Trash2 } from 'lucide-react'
 import { deleteAccountConfig } from './dangerZoneData'
 import DangerZonePanel from './DangerZonePanel'
 
-const DeleteAccountCard = ({ isDark }) => {
+const  DeleteAccountCard = ({ isDark }) => {
   const [confirmation, setConfirmation] = useState('')
   const [acknowledged, setAcknowledged] = useState(false)
 
@@ -56,10 +56,10 @@ const DeleteAccountCard = ({ isDark }) => {
         </span>
       </label>
 
-      <div className="mt-4 flex flex-wrap gap-2">
+      <div className="mt-4 flex flex-wrap gap-2 select-none">
         <button
           type="button"
-          className={`inline-flex items-center justify-center rounded-lg border px-3 py-2 text-[13px] font-medium transition-colors ${
+          className={`inline-flex items-center justify-center rounded-lg border px-3 py-2 text-[13px] font-medium transition-colors cursor-pointer ${
             isDark
               ? 'border-zinc-800 bg-transparent text-zinc-300 hover:border-zinc-700'
               : 'border-slate-200 bg-transparent text-slate-700 hover:border-slate-300'
@@ -71,7 +71,7 @@ const DeleteAccountCard = ({ isDark }) => {
         <button
           type="button"
           disabled={!isReady}
-          className={`inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-[13px] font-medium transition-colors ${
+          className={`inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-[13px] font-medium transition-colors cursor-pointer ${
             isReady
               ? 'border-red-700 bg-red-600 text-white hover:bg-red-500'
               : isDark
@@ -85,7 +85,7 @@ const DeleteAccountCard = ({ isDark }) => {
       </div>
 
       <p className={isDark ? 'mt-3 text-[11px] text-zinc-600' : 'mt-3 text-[11px] text-slate-500'}>
-        This button is UI-only right now and is not connected to backend deletion yet.
+        This button will appear red if you type the correct phrase and acknowledge the warning.
       </p>
     </DangerZonePanel>
   )

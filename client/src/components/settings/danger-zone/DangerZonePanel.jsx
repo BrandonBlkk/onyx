@@ -2,7 +2,7 @@ const DangerZonePanel = ({ title, description, children, isDark, tone = 'default
   const toneClass =
     tone === 'danger'
       ? isDark
-        ? 'border-red-950/60 bg-red-950/20'
+        ? 'border-red-950 bg-red-950/10'
         : 'border-red-200 bg-red-50/70'
       : isDark
         ? 'border-zinc-800 bg-zinc-950/70'
