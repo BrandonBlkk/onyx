@@ -16,7 +16,7 @@ const PreferencesSelectField = ({ label, description, name, value, options, onCh
         name={name}
         value={value}
         onChange={(event) => onChange(name, event.target.value)}
-        className={`w-full rounded-lg border px-3 py-2 text-[13px] outline-none transition-colors sm:w-52 cursor-pointer ${
+        className={`w-full rounded-lg border px-3 py-2 text-[13px] outline-none transition-colors sm:w-52 select-none cursor-pointer ${
           isDark
             ? 'border-zinc-800 bg-[#0d0d0e] text-zinc-100 focus:border-zinc-600'
             : 'border-slate-300 bg-[#fcfcfc] text-slate-950 focus:border-slate-400'

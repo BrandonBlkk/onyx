@@ -1,12 +1,19 @@
 import { useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import Sidebar from '../../components/dashboard/sidebar/Sidebar'
 import ActionCard from '../../components/dashboard/resumes/ActionCard'
 import ResumeCard from '../../components/dashboard/resumes/ResumeCard'
 import ResumesToolbar from '../../components/dashboard/resumes/ResumesToolbar'
 import SectionHeader from '../../components/dashboard/resumes/SectionHeader'
+import PageContentTransition from '../../components/PageContentTransition'
 import { actionCards, resumes, sortOptions } from '../../components/dashboard/resumes/resumeData'
 import { pageNoiseClass } from '../../components/dashboard/resumes/resumeStyles'
 import { useTheme } from '../../context/ThemeContext'
+
+const layoutSwitchTransition = {
+  duration: 0.2,
+  ease: 'easeOut',
+}
 
 const Resumes = () => {
   const { isDark } = useTheme()
@@ -38,7 +45,7 @@ const Resumes = () => {
       <div className="relative z-10 min-h-screen">
         <Sidebar isDark={isDark} />
 
-        <main className="lg:ml-65 p-3">
+        <PageContentTransition className="lg:ml-65 p-3">
           <div className="mx-auto max-w-420=">
             <ResumesToolbar
               isDark={isDark}
@@ -56,23 +63,30 @@ const Resumes = () => {
                 title="Choose how you want to begin your next resume."
               />
 
-              <div
-                className={`gap-3 ${
-                  viewMode === 'grid' ? 'grid md:grid-cols-2' : 'flex flex-col'
-                }`}
-              >
-                {actionCards.map((card) => (
-                  <ActionCard
-                    key={card.title}
-                    title={card.title}
-                    description={card.description}
-                    icon={card.icon}
-                    badge={card.badge}
-                    isDark={isDark}
-                    viewMode={viewMode}
-                  />
-                ))}
-              </div>
+              <AnimatePresence initial={false} mode="wait">
+                <motion.div
+                  key={`quick-start-${viewMode}`}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={layoutSwitchTransition}
+                  className={`gap-3 ${
+                    viewMode === 'grid' ? 'grid md:grid-cols-2' : 'flex flex-col'
+                  }`}
+                >
+                  {actionCards.map((card) => (
+                    <ActionCard
+                      key={card.title}
+                      title={card.title}
+                      description={card.description}
+                      icon={card.icon}
+                      badge={card.badge}
+                      isDark={isDark}
+                      viewMode={viewMode}
+                    />
+                  ))}
+                </motion.div>
+              </AnimatePresence>
             </section>
 
             <section className="mt-5 pb-6">
@@ -82,25 +96,32 @@ const Resumes = () => {
                 title="Continue editing the versions already in your library."
               />
 
-              <div
-                className={`gap-3 ${
-                  viewMode === 'grid'
-                    ? 'grid grid-cols-5'
-                    : 'flex flex-col'
-                }`}
-              >
-                {resumes.map((resume) => (
-                  <ResumeCard
-                    key={resume.title}
-                    item={resume}
-                    isDark={isDark}
-                    viewMode={viewMode}
-                  />
-                ))}
-              </div>
+              <AnimatePresence initial={false} mode="wait">
+                <motion.div
+                  key={`saved-resumes-${viewMode}`}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={layoutSwitchTransition}
+                  className={`gap-3 ${
+                    viewMode === 'grid'
+                      ? 'grid grid-cols-5'
+                      : 'flex flex-col'
+                  }`}
+                >
+                  {resumes.map((resume) => (
+                    <ResumeCard
+                      key={resume.title}
+                      item={resume}
+                      isDark={isDark}
+                      viewMode={viewMode}
+                    />
+                  ))}
+                </motion.div>
+              </AnimatePresence>
             </section>
           </div>
-        </main>
+        </PageContentTransition>
       </div>
     </div>
   )

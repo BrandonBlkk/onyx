@@ -1,5 +1,6 @@
 import { ShieldCheck } from 'lucide-react'
 import Sidebar from '../../components/dashboard/sidebar/Sidebar'
+import PageContentTransition from '../../components/PageContentTransition'
 import AuthenticationConnections from '../../components/settings/authentication/AuthenticationConnections'
 import AuthenticationSummary from '../../components/settings/authentication/AuthenticationSummary'
 import { useTheme } from '../../context/ThemeContext'
@@ -16,7 +17,7 @@ const Authentication = () => {
       <div className="min-h-screen">
         <Sidebar isDark={isDark} />
 
-        <main className="lg:ml-65 p-3">
+        <PageContentTransition className="lg:ml-65 p-3">
           <div className="space-y-3">
             <div className="space-y-3">
               <div className="flex items-center gap-3">
@@ -42,7 +43,7 @@ const Authentication = () => {
               <AuthenticationSummary isDark={isDark} />
             </section>
           </div>
-        </main>
+        </PageContentTransition>
       </div>
     </div>
   )

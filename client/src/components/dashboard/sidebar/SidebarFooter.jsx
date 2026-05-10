@@ -29,17 +29,17 @@ const SidebarFooter = ({ isDark }) => (
           isDark ? 'text-zinc-500' : 'text-slate-500'
         }`}
       >
-        <p>Licensed under 
+        <p className={`${isDark ? 'text-zinc-600' : 'text-slate-500'}`}>Licensed under 
           <a
             href="https://github.com/BrandonBlkk/Onyx/blob/main/LICENSE"
             target="_blank"
             rel="noreferrer"
             className={`transition-colors ${isDark ? 'hover:text-zinc-300' : 'hover:text-slate-900'}`}
           >
-            {' '}MIT.
+            {' '} <span className="font-semibold text-zinc-500">MIT.</span>
           </a>  
         </p>
-        <p>Crafted for job seekers, by developers.</p>
+        <p className={`${isDark ? 'text-zinc-600' : 'text-slate-500'}`}>Crafted for job seekers, by developers.</p>
         <p className={`mt-1 ${isDark ? 'text-zinc-600' : 'text-slate-500'}`}>
             Project by{' '}
             <a
@@ -48,7 +48,7 @@ const SidebarFooter = ({ isDark }) => (
               rel="noreferrer"
               className={`transition-colors ${isDark ? 'hover:text-zinc-300' : 'hover:text-slate-900'}`}
             >
-              Brandon.
+              <span className="font-semibold text-zinc-500">Brandon.</span>
             </a>
           </p>
         <p className="mt-5">Onyx is a work in progress.</p>

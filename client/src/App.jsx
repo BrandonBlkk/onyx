@@ -1,5 +1,5 @@
-import React from 'react'
 import { Route, Routes } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import Landing from './pages/Landing'
 import NotFound from './pages/NotFound'
 import Resumes from './pages/dashboard/Resumes'
@@ -8,17 +8,27 @@ import Preferences from './pages/settings/Preferences'
 import Authentication from './pages/settings/Authentication'
 import DangerZone from './pages/settings/DangerZone'
 
+const PageTransition = ({ children }) => (
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.2, ease: 'easeOut' }}
+  >
+    {children}
+  </motion.div>
+)
+
 const App = () => {
   return (
     <div>
       <Routes>
-        <Route path="/" element={<Landing />} />
+        <Route path="/" element={<PageTransition><Landing /></PageTransition>} />
         <Route path="/dashboard/resumes" element={<Resumes />} />
-        <Route path="/settings/profile" element={< Profile />} />
-        <Route path="/settings/preferences" element={< Preferences />} />
-        <Route path="/settings/authentication" element={< Authentication />} />
-        <Route path="/settings/danger-zone" element={< DangerZone />} />
-        <Route path="*" element={<NotFound />} />
+        <Route path="/settings/profile" element={<Profile />} />
+        <Route path="/settings/preferences" element={<Preferences />} />
+        <Route path="/settings/authentication" element={<Authentication />} />
+        <Route path="/settings/danger-zone" element={<DangerZone />} />
+        <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
       </Routes>
     </div>
   )

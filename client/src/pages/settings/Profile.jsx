@@ -1,5 +1,6 @@
 import { UserRound } from 'lucide-react'
 import Sidebar from '../../components/dashboard/sidebar/Sidebar'
+import PageContentTransition from '../../components/PageContentTransition'
 import ProfileForm from '../../components/settings/profile/ProfileForm'
 import { useTheme } from '../../context/ThemeContext'
 
@@ -18,7 +19,7 @@ const Profile = () => {
       <div className="min-h-screen">
         <Sidebar isDark={isDark} />
 
-        <main className="lg:ml-65 p-3">
+        <PageContentTransition className="lg:ml-65 p-3">
           <div className="space-y-3">
             <div className="space-y-3">
               <div className="flex items-center gap-3">
@@ -43,7 +44,7 @@ const Profile = () => {
               <ProfileForm isDark={isDark} />
             </section>
           </div>
-        </main>
+        </PageContentTransition>
       </div>
     </div>
   )
