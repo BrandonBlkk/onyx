@@ -16,7 +16,7 @@ const Preferences = () => {
         <Sidebar isDark={isDark} />
 
         <main className="lg:ml-65 p-3">
-          <div className="space-y-6">
+          <div className="space-y-3">
             <div className="space-y-3">
               <div className="flex items-center gap-3">
                 <div
