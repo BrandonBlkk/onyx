@@ -9,7 +9,7 @@ const DangerZonePanel = ({ title, description, children, isDark, tone = 'default
         : 'border-slate-200 bg-white'
 
   return (
-    <section className={`rounded-2xl border p-4 sm:p-5 ${toneClass}`}>
+    <section className={`rounded-md border p-4 sm:p-5 ${toneClass}`}>
       {(title || description) && (
         <div className="mb-4">
           {title && <h2 className="text-sm font-semibold tracking-tight">{title}</h2>}

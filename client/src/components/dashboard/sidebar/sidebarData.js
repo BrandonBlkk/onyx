@@ -21,23 +21,27 @@ export const settingsLinks = [
     href: '/settings/profile',
     icon: UserRound,
     available: true,
+    danger: false,
   },
   {
     label: 'Preferences',
     href: '/settings/preferences',
     icon: SlidersHorizontal,
     available: true,
+    danger: false,
   },
   {
     label: 'Authentication',
     href: '/settings/authentication',
     icon: ShieldCheck,
     available: true,
+    danger: false,
   },
   {
     label: 'Danger Zone',
     href: '/settings/danger-zone',
     icon: AlertTriangle,
     available: true,
+    danger: true,
   },
 ]
