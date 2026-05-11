@@ -1,7 +1,9 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
+import { useLanguage } from '../../context/LanguageContext'
 
 const Hero = ({ isDark = true }) => {
+  const { t } = useLanguage()
   const headingGradientClass = isDark
     ? 'bg-[linear-gradient(135deg,#e4e4e7_0%,#a1a1aa_50%,#71717a_100%)] bg-clip-text text-transparent'
     : 'bg-[linear-gradient(135deg,#0f172a_0%,#334155_50%,#64748b_100%)] bg-clip-text text-transparent'
@@ -61,7 +63,7 @@ const Hero = ({ isDark = true }) => {
             <span className="relative inline-flex h-2 w-2 rounded-full bg-green-600" />
           </span>
           <span className={`text-xs font-medium tracking-wide select-none ${isDark ? 'text-zinc-400' : 'text-slate-600'}`}>
-            Now in Public Beta
+            {t('Now in Public Beta')}
           </span>
         </motion.div>
 
@@ -71,9 +73,9 @@ const Hero = ({ isDark = true }) => {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="mb-6 text-4xl font-bold tracking-tight leading-[1.1] sm:text-5xl md:text-6xl lg:text-7xl"
         >
-          <span className={isDark ? 'text-zinc-100' : 'text-slate-900'}>Elevate Your Resume</span>
+          <span className={isDark ? 'text-zinc-100' : 'text-slate-900'}>{t('Elevate Your Resume')}</span>
           <br />
-          <span className={headingGradientClass}>that really Stands Out.</span>
+          <span className={headingGradientClass}>{t('that really Stands Out.')}</span>
         </motion.h1>
 
         <motion.p
@@ -84,9 +86,9 @@ const Hero = ({ isDark = true }) => {
             isDark ? 'text-zinc-400' : 'text-slate-600'
           }`}
         >
-          Built for everyone. Clean, ATS-friendly, and professional.
+          {t('Built for everyone. Clean, ATS-friendly, and professional.')}
           <br className="hidden sm:block" />
-          Stand out to recruiters with a resume that speaks your language.
+          {t('Stand out to recruiters with a resume that speaks your language.')}
         </motion.p>
 
         <motion.div
@@ -103,7 +105,7 @@ const Hero = ({ isDark = true }) => {
             }`}
             id="hero-cta"
           >
-            Build Your Resume
+            {t('Build Your Resume')}
             <svg
               className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5"
               fill="none"
@@ -127,7 +129,7 @@ const Hero = ({ isDark = true }) => {
               <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
             </svg>
-            See Preview
+            {t('See Preview')}
           </a>
         </motion.div>
 
@@ -143,21 +145,21 @@ const Hero = ({ isDark = true }) => {
             <svg className="w-3.5 h-3.5 text-teal-600" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M16.403 12.652a3 3 0 0 0 0-5.304 3 3 0 0 0-3.75-3.751 3 3 0 0 0-5.305 0 3 3 0 0 0-3.751 3.75 3 3 0 0 0 0 5.305 3 3 0 0 0 3.75 3.751 3 3 0 0 0 5.305 0 3 3 0 0 0 3.751-3.75Zm-2.546-4.46a.75.75 0 0 0-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 1 0-1.06 1.061l2.5 2.5a.75.75 0 0 0 1.137-.089l4-5.5Z" clipRule="evenodd" />
             </svg>
-            ATS Verified
+            {t('ATS Verified')}
           </span>
           <span className={`hidden sm:inline ${isDark ? 'text-zinc-700' : 'text-slate-300'}`}>|</span>
           <span className="flex items-center gap-1.5">
             <svg className="w-3.5 h-3.5 text-teal-600" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M10 1a4.5 4.5 0 0 0-4.5 4.5V9H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-.5V5.5A4.5 4.5 0 0 0 10 1Zm3 8V5.5a3 3 0 1 0-6 0V9h6Z" clipRule="evenodd" />
             </svg>
-            Privacy First
+            {t('Privacy First')}
           </span>
           <span className={`hidden sm:inline ${isDark ? 'text-zinc-700' : 'text-slate-300'}`}>|</span>
           <span className="flex items-center gap-1.5">
             <svg className="w-3.5 h-3.5 text-teal-600" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clipRule="evenodd" />
             </svg>
-            4.9/5 Rating
+            {t('4.9/5 Rating')}
           </span>
         </motion.div>
       </div>

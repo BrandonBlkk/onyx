@@ -4,9 +4,11 @@ import PageContentTransition from '../../components/PageContentTransition'
 import AuthenticationConnections from '../../components/settings/authentication/AuthenticationConnections'
 import AuthenticationSummary from '../../components/settings/authentication/AuthenticationSummary'
 import { useTheme } from '../../context/ThemeContext'
+import { useLanguage } from '../../context/LanguageContext'
 
 const Authentication = () => {
   const { isDark } = useTheme()
+  const { t } = useLanguage()
 
   return (
     <div
@@ -28,11 +30,11 @@ const Authentication = () => {
                 >
                   <ShieldCheck className="h-3.5 w-3.5" />
                 </div>
-                <h1 className="text-xl font-semibold tracking-tight">Authentication</h1>
+                <h1 className="text-xl font-semibold tracking-tight">{t('Authentication')}</h1>
               </div>
 
               <p className={isDark ? 'text-xs text-zinc-500' : 'text-xs text-slate-500'}>
-                Connect Google or GitHub to give you faster sign up and sign in options.
+                {t('Connect Google or GitHub to give you faster sign up and sign in options.')}
               </p>
             </div>
 

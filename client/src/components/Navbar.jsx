@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Languages, Moon, Sun } from 'lucide-react'
 import logo from '../assets/images/logo.png'
 import logo2 from '../assets/images/logo2.png'
 import { useTheme } from '../context/ThemeContext'
+import { useLanguage } from '../context/LanguageContext'
 import { Link } from 'react-router-dom'
 
 const Navbar = () => {
   const { isDark, toggleTheme } = useTheme()
+  const { language, toggleLanguage, t } = useLanguage()
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
 
@@ -53,20 +55,28 @@ const Navbar = () => {
           <div className="flex w-9 items-center justify-center overflow-hidden rounded-sm">
             <img
               src={isDark ? logo : logo2}
-              alt="Onyx Logo"
+              alt={t('Onyx Logo')}
               className="h-full w-full select-none object-cover"
             />
           </div>
         </a>
 
         <div className="hidden items-center gap-4 select-none md:flex lg:gap-6">
-          <Languages className={`w-4 cursor-pointer transition-colors ${iconClass} ${isDark ? '' : 'text-zinc-900'}`} />
+          <button
+            type="button"
+            onClick={toggleLanguage}
+            className={`transition-colors ${iconClass} ${isDark ? '' : 'text-zinc-900'}`}
+            aria-label={t('Toggle language')}
+            title={t('Toggle language')}
+          >
+            <Languages className="w-4 cursor-pointer" />
+          </button>
 
           <button
             type="button"
             onClick={toggleTheme}
             className={`p-1 transition-colors ${iconClass}`}
-            aria-label="Toggle theme"
+            aria-label={t('Toggle theme')}
           >
             {isDark ? (
               <Sun className="w-4 cursor-pointer" />
@@ -80,7 +90,7 @@ const Navbar = () => {
             className={`text-sm transition-colors ${navClass}`}
             id="nav-signin"
           >
-            Sign in
+            {t('Sign in')}
           </a>
           <Link to={'dashboard/resumes'}
             className={`inline-flex items-center gap-2 px-4 py-2 text-sm font-medium transition-all duration-200 active:scale-[0.97] ${
@@ -90,7 +100,7 @@ const Navbar = () => {
             }`}
             id="nav-cta"
           >
-            Get Started
+            {t('Get Started')}
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
             </svg>
@@ -101,7 +111,7 @@ const Navbar = () => {
           type="button"
           onClick={() => setMobileOpen(!mobileOpen)}
           className={`md:hidden p-2 transition-colors ${navClass}`}
-          aria-label="Toggle menu"
+          aria-label={t('Toggle menu')}
           id="nav-mobile-toggle"
         >
           {mobileOpen ? (
@@ -132,11 +142,11 @@ const Navbar = () => {
             <div className="mx-auto w-full max-w-6xl space-y-4 px-4 py-6 sm:px-6">
               <button
                 type="button"
-                onClick={toggleTheme}
+                onClick={toggleLanguage}
                 className={`flex w-full items-center gap-2 text-sm transition-colors ${navClass}`}
               >
-              <Languages className={`w-4 cursor-pointer transition-colors ${navClass}`} />
-                Language
+                <Languages className={`w-4 cursor-pointer transition-colors ${navClass}`} />
+                {`${t('Language')}: ${t(language === 'english' ? 'English' : 'Burmese')}`}
               </button>
               <button
                 type="button"
@@ -144,11 +154,11 @@ const Navbar = () => {
                 className={`flex w-full items-center gap-2 text-sm transition-colors ${navClass}`}
               >
                 {isDark ? <Sun className="w-4" /> : <Moon className="w-4" />}
-                Theme
+                {t('Theme')}
               </button>
               <div className={`pt-4 border-t space-y-3 ${isDark ? 'border-zinc-800/60' : 'border-slate-200'}`}>
                 <a href="#" className={`block text-sm transition-colors ${navClass}`}>
-                  Sign in
+                  {t('Sign in')}
                 </a>
                 <Link to={'dashboard/resumes'}
                   className={`inline-flex w-full items-center justify-center gap-2 px-4 py-2 text-sm font-medium ${
@@ -157,7 +167,7 @@ const Navbar = () => {
                       : 'bg-slate-900 text-white'
                   }`}
                 >
-                  Get Started
+                  {t('Get Started')}
                   <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
                   </svg>

@@ -4,9 +4,11 @@ import PageContentTransition from '../../components/PageContentTransition'
 import DangerZoneChecklist from '../../components/settings/danger-zone/DangerZoneChecklist'
 import DeleteAccountCard from '../../components/settings/danger-zone/DeleteAccountCard'
 import { useTheme } from '../../context/ThemeContext'
+import { useLanguage } from '../../context/LanguageContext'
 
 const DangerZone = () => {
   const { isDark } = useTheme()
+  const { t } = useLanguage()
 
   return (
     <div
@@ -28,11 +30,11 @@ const DangerZone = () => {
                 >
                   <AlertTriangle className="h-3.5 w-3.5" />
                 </div>
-                <h1 className="text-xl font-semibold tracking-tight">Danger Zone</h1>
+                <h1 className="text-xl font-semibold tracking-tight">{t('Danger Zone')}</h1>
               </div>
 
               <p className={isDark ? 'text-xs text-zinc-500' : 'text-xs text-slate-500'}>
-                Permanent account actions live here. Please review everything carefully before continuing.
+                {t('Permanent account actions live here. Please review everything carefully before continuing.')}
               </p>
             </div>
 

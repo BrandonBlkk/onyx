@@ -1,4 +1,8 @@
+import { useLanguage } from '../../../context/LanguageContext'
+
 const PreferencesSelectField = ({ label, description, name, value, options, onChange, isDark }) => {
+  const { t } = useLanguage()
+
   return (
     <label
       className={`flex flex-col gap-3 rounded-xl border px-4 py-3 sm:flex-row sm:items-center sm:justify-between ${
@@ -6,9 +10,9 @@ const PreferencesSelectField = ({ label, description, name, value, options, onCh
       }`}
     >
       <div className="min-w-0">
-        <p className="text-[13px] font-medium">{label}</p>
+        <p className="text-[13px] font-medium">{t(label)}</p>
         <p className={`mt-1 text-xs ${isDark ? 'text-zinc-500' : 'text-slate-500'}`}>
-          {description}
+          {t(description)}
         </p>
       </div>
 
@@ -24,7 +28,7 @@ const PreferencesSelectField = ({ label, description, name, value, options, onCh
       >
         {options.map((option) => (
           <option key={option.value} value={option.value}>
-            {option.label}
+            {t(option.label)}
           </option>
         ))}
       </select>

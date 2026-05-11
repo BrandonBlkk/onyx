@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { useTheme } from '../context/ThemeContext'
 import { useNavigate } from 'react-router-dom'
+import { useLanguage } from '../context/LanguageContext'
 
 const NotFound = () => {
   const { isDark } = useTheme()
+  const { t } = useLanguage()
   const navigate = useNavigate()
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
 
@@ -107,7 +109,7 @@ const NotFound = () => {
               isDark ? 'text-zinc-400' : 'text-slate-600'
             }`}
           >
-            Page Not Found
+            {t('Page Not Found')}
           </span>
         </motion.div>
 
@@ -120,7 +122,7 @@ const NotFound = () => {
             isDark ? 'text-zinc-100' : 'text-slate-900'
           }`}
         >
-          You have wandered off the path.
+          {t('You have wandered off the path.')}
         </motion.h1>
 
         {/* Description */}
@@ -132,9 +134,9 @@ const NotFound = () => {
             isDark ? 'text-zinc-400' : 'text-slate-600'
           }`}
         >
-          The page you are looking for does not exist or has been moved.
+          {t('The page you are looking for does not exist or has been moved.')}
           <br className="hidden sm:block" />
-          Let us get you back on track.
+          {t('Let us get you back on track.')}
         </motion.p>
 
         {/* Action buttons */}
@@ -162,7 +164,7 @@ const NotFound = () => {
             >
               <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
             </svg>
-            Back to Home
+            {t('Back to Home')}
           </button>
 
           <button
@@ -177,7 +179,7 @@ const NotFound = () => {
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
             </svg>
-            Go Back
+            {t('Go Back')}
           </button>
         </motion.div>
 

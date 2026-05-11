@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { MoveUp } from 'lucide-react'
+import { useLanguage } from '../context/LanguageContext'
 
 const MoveUpButton = ({ isDark = true }) => {
   const [isVisible, setIsVisible] = useState(false)
+  const { t } = useLanguage()
 
   useEffect(() => {
     const handleScroll = () => setIsVisible(window.scrollY > 320)
@@ -23,7 +25,7 @@ const MoveUpButton = ({ isDark = true }) => {
       {isVisible && (
         <motion.button
           type="button"
-          aria-label="Scroll to top"
+          aria-label={t('Scroll to top')}
           onClick={scrollToTop}
           initial={{ opacity: 0, y: 16, scale: 0.92 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}

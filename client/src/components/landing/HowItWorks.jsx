@@ -1,5 +1,5 @@
-import React from 'react'
 import { motion } from 'framer-motion'
+import { useLanguage } from '../../context/LanguageContext'
 
 const steps = [
   {
@@ -43,6 +43,7 @@ const stepVariants = {
 }
 
 const HowItWorks = ({ isDark = true }) => {
+  const { t } = useLanguage()
   const headingGradientClass = isDark
     ? 'bg-[linear-gradient(135deg,#e4e4e7_0%,#a1a1aa_50%,#71717a_100%)] bg-clip-text text-transparent'
     : 'bg-[linear-gradient(135deg,#0f172a_0%,#334155_50%,#64748b_100%)] bg-clip-text text-transparent'
@@ -64,15 +65,15 @@ const HowItWorks = ({ isDark = true }) => {
           className="text-center mb-20"
         >
           <span className="inline-flex items-center rounded-full bg-accent-500/10 px-3 py-1 text-xs font-medium text-teal-600 ring-1 ring-accent-500/20 mb-4 select-none">
-            How It Works
+            {t('How It Works')}
           </span>
           <h2 className={`text-3xl sm:text-4xl font-bold tracking-tight mb-4 ${isDark ? 'text-zinc-100' : 'text-slate-900'}`}>
-            Three steps to your
+            {t('Three steps to your')}
             <br />
-            <span className={headingGradientClass}>perfect resume.</span>
+            <span className={headingGradientClass}>{t('perfect resume.')}</span>
           </h2>
           <p className={`mx-auto max-w-md text-sm sm:text-base ${isDark ? 'text-zinc-400' : 'text-slate-600'}`}>
-            No sign-ups, no friction. Go from blank page to polished resume in minutes.
+            {t('No sign-ups, no friction. Go from blank page to polished resume in minutes.')}
           </p>
         </motion.div>
 
@@ -114,10 +115,10 @@ const HowItWorks = ({ isDark = true }) => {
               </div>
 
               <h3 className={`text-lg font-semibold mb-2 tracking-tight ${isDark ? 'text-zinc-100' : 'text-slate-900'}`}>
-                {step.title}
+                {t(step.title)}
               </h3>
               <p className={`max-w-xs text-sm leading-relaxed ${isDark ? 'text-zinc-400' : 'text-slate-600'}`}>
-                {step.description}
+                {t(step.description)}
               </p>
             </motion.div>
           ))}

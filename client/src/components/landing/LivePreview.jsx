@@ -1,7 +1,8 @@
-import React from 'react'
 import { motion } from 'framer-motion'
+import { useLanguage } from '../../context/LanguageContext'
 
 const LivePreview = ({ isDark = true }) => {
+  const { t } = useLanguage()
   return (
     <section className="relative py-28 sm:py-36 overflow-hidden" id="preview">
       <div className="mx-auto max-w-6xl px-6">
@@ -13,13 +14,13 @@ const LivePreview = ({ isDark = true }) => {
           className="text-center mb-16"
         >
           <span className="inline-flex items-center rounded-full bg-accent-500/10 px-3 py-1 text-xs font-medium text-teal-600 ring-1 ring-accent-500/20 mb-4 select-none">
-            Preview
+            {t('Preview')}
           </span>
           <h2 className={`text-3xl sm:text-4xl font-bold tracking-tight mb-4 ${isDark ? 'text-zinc-100' : 'text-slate-900'}`}>
-            See what you will build.
+            {t('See what you will build.')}
           </h2>
           <p className={`mx-auto max-w-lg text-sm sm:text-base ${isDark ? 'text-zinc-400' : 'text-slate-600'}`}>
-            A pixel-perfect resume that is clean, professional, and ready for any ATS.
+            {t('A pixel-perfect resume that is clean, professional, and ready for any ATS.')}
           </p>
         </motion.div>
 
@@ -62,7 +63,7 @@ const LivePreview = ({ isDark = true }) => {
             <div className="bg-white rounded-b-xl p-8 sm:p-12">
               <div className="mb-8 border-b border-zinc-200 pb-6">
                 <h3 className="text-2xl font-bold text-zinc-900 tracking-tight">Sarah Chen</h3>
-                <p className="mt-1 text-sm text-zinc-500">Senior Software Engineer</p>
+                <p className="mt-1 text-sm text-zinc-500">{t('Senior Software Engineer')}</p>
                 <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-xs text-zinc-400">
                   <span>san.francisco@email.com</span>
                   <span>github.com/schen</span>
@@ -71,33 +72,33 @@ const LivePreview = ({ isDark = true }) => {
               </div>
 
               <div className="mb-6">
-                <h4 className="mb-4 text-xs font-semibold uppercase tracking-widest text-zinc-400">Experience</h4>
+                <h4 className="mb-4 text-xs font-semibold uppercase tracking-widest text-zinc-400">{t('Experience')}</h4>
                 <div className="space-y-5">
                   <div>
                     <div className="flex items-baseline justify-between">
-                      <h5 className="text-sm font-semibold text-zinc-800">Senior Engineer - Stripe</h5>
-                      <span className="ml-4 shrink-0 text-xs text-zinc-400">2022 - Present</span>
+                      <h5 className="text-sm font-semibold text-zinc-800">{t('Senior Engineer - Stripe')}</h5>
+                      <span className="ml-4 shrink-0 text-xs text-zinc-400">{t('2022 - Present')}</span>
                     </div>
                     <ul className="mt-2 space-y-1 text-xs leading-relaxed text-zinc-500">
-                      <li>Led payments infra migration serving 50M+ daily transactions.</li>
-                      <li>Reduced p99 latency by 40% through query optimization.</li>
+                      <li>{t('Led payments infra migration serving 50M+ daily transactions.')}</li>
+                      <li>{t('Reduced p99 latency by 40% through query optimization.')}</li>
                     </ul>
                   </div>
                   <div>
                     <div className="flex items-baseline justify-between">
-                      <h5 className="text-sm font-semibold text-zinc-800">Software Engineer - Vercel</h5>
-                      <span className="ml-4 shrink-0 text-xs text-zinc-400">2020 - 2022</span>
+                      <h5 className="text-sm font-semibold text-zinc-800">{t('Software Engineer - Vercel')}</h5>
+                      <span className="ml-4 shrink-0 text-xs text-zinc-400">{t('2020 - 2022')}</span>
                     </div>
                     <ul className="mt-2 space-y-1 text-xs leading-relaxed text-zinc-500">
-                      <li>Built edge middleware used by 100K+ deployments.</li>
-                      <li>Core contributor to Next.js build pipeline.</li>
+                      <li>{t('Built edge middleware used by 100K+ deployments.')}</li>
+                      <li>{t('Core contributor to Next.js build pipeline.')}</li>
                     </ul>
                   </div>
                 </div>
               </div>
 
               <div>
-                <h4 className="mb-3 text-xs font-semibold uppercase tracking-widest text-zinc-400">Skills</h4>
+                <h4 className="mb-3 text-xs font-semibold uppercase tracking-widest text-zinc-400">{t('Skills')}</h4>
                 <div className="flex flex-wrap gap-1.5">
                   {['TypeScript', 'React', 'Node.js', 'Go', 'PostgreSQL', 'AWS', 'Docker', 'GraphQL'].map((s) => (
                     <span key={s} className="rounded-md border border-zinc-200 bg-zinc-100 px-2.5 py-1 text-[11px] font-medium text-zinc-600">
@@ -127,7 +128,7 @@ const LivePreview = ({ isDark = true }) => {
                 </svg>
               </div>
               <div>
-                <p className={`text-xs font-semibold ${isDark ? 'text-zinc-200' : 'text-slate-700'}`}>ATS Score</p>
+                <p className={`text-xs font-semibold ${isDark ? 'text-zinc-200' : 'text-slate-700'}`}>{t('ATS Score')}</p>
                 <p className="text-lg font-bold text-green-500">98/100</p>
               </div>
             </div>
@@ -151,7 +152,7 @@ const LivePreview = ({ isDark = true }) => {
                 </svg>
               </div>
               <div>
-                <p className={`text-xs font-semibold ${isDark ? 'text-zinc-200' : 'text-slate-700'}`}>Export Speed</p>
+                <p className={`text-xs font-semibold ${isDark ? 'text-zinc-200' : 'text-slate-700'}`}>{t('Export Speed')}</p>
                 <p className="text-lg font-bold text-teal-600">1.2s</p>
               </div>
             </div>

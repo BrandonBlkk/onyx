@@ -1,3 +1,5 @@
+import { useLanguage } from '../../../context/LanguageContext'
+
 const ProfileField = ({
   label,
   name,
@@ -6,6 +8,7 @@ const ProfileField = ({
   helperText,
   isDark,
 }) => {
+  const { t } = useLanguage()
   const labelClass = `text-[11px] font-semibold uppercase tracking-[0.18em] ${
     isDark ? 'text-zinc-400' : 'text-slate-500'
   }`
@@ -18,13 +21,13 @@ const ProfileField = ({
 
   return (
     <label className="block">
-      <span className={labelClass}>{label}</span>
+      <span className={labelClass}>{t(label)}</span>
       <input name={name} type={type} defaultValue={defaultValue} className={inputClass} />
       {helperText && (
         <p className={`mt-2 inline-flex items-center rounded-full px-2 py-1 text-[11px] font-medium select-none ${
           isDark ? 'bg-emerald-500/10 text-emerald-400' : 'bg-emerald-50 text-emerald-600'
         }`}>
-          {helperText}
+          {t(helperText)}
         </p>
       )}
     </label>

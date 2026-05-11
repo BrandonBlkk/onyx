@@ -4,8 +4,11 @@ import logo2 from '../../../assets/images/logo2.png'
 import SidebarFooter from './SidebarFooter'
 import SidebarSection from './SidebarSection'
 import { appLinks, settingsLinks } from './sidebarData'
+import { useLanguage } from '../../../context/LanguageContext'
 
 const Sidebar = ({ isDark }) => {
+  const { t } = useLanguage()
+
   return (
     <aside
       className={`relative flex w-full flex-col overflow-hidden border-b backdrop-blur-xl lg:fixed lg:inset-y-0 lg:left-0 lg:z-30 lg:w-65 lg:border-r lg:border-b-0 ${
@@ -30,7 +33,7 @@ const Sidebar = ({ isDark }) => {
             <div className="flex w-9 items-center justify-center overflow-hidden rounded-md">
               <img
                 src={isDark ? logo : logo2}
-                alt="Onyx Logo"
+                alt={t('Onyx Logo')}
                 className="h-full w-full select-none object-cover"
               />
             </div>
@@ -38,7 +41,7 @@ const Sidebar = ({ isDark }) => {
             <div>
               <p className="text-base font-semibold tracking-tight">Onyx</p>
               <p className={`text-[11px] ${isDark ? 'text-zinc-500' : 'text-slate-400'}`}>
-                Resume workspace
+                {t('Resume workspace')}
               </p>
             </div>
           </Link>

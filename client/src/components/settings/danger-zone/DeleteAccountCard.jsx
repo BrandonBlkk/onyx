@@ -2,8 +2,10 @@ import { useState } from 'react'
 import { Trash2 } from 'lucide-react'
 import { deleteAccountConfig } from './dangerZoneData'
 import DangerZonePanel from './DangerZonePanel'
+import { useLanguage } from '../../../context/LanguageContext'
 
 const  DeleteAccountCard = ({ isDark }) => {
+  const { t } = useLanguage()
   const [confirmation, setConfirmation] = useState('')
   const [acknowledged, setAcknowledged] = useState(false)
 
@@ -23,9 +25,9 @@ const  DeleteAccountCard = ({ isDark }) => {
           isDark ? 'border-red-950/60 bg-[#12090a]' : 'border-red-200 bg-white'
         }`}
       >
-        <p className="text-[13px] font-medium">Type confirmation</p>
+        <p className="text-[13px] font-medium">{t('Type confirmation')}</p>
         <p className={`mt-1 text-xs ${isDark ? 'text-zinc-500' : 'text-slate-500'}`}>
-          To continue, type <span className="font-semibold">{deleteAccountConfig.confirmationPhrase}</span> below.
+          {t('To continue, type {phrase} below.', { phrase: deleteAccountConfig.confirmationPhrase })}
         </p>
 
         <input
@@ -48,11 +50,11 @@ const  DeleteAccountCard = ({ isDark }) => {
         <input
           type="checkbox"
           checked={acknowledged}
-          onChange={(event) => setAcknowledged(!acknowledged)}
+          onChange={() => setAcknowledged(!acknowledged)}
           className="mt-0.5 h-4 w-4 rounded border-slate-300"
         />
         <span className={isDark ? 'text-xs text-zinc-400' : 'text-xs text-slate-600'}>
-          I understand that deleting this account is permanent and cannot be undone.
+          {t('I understand that deleting this account is permanent and cannot be undone.')}
         </span>
       </label>
 
@@ -65,7 +67,7 @@ const  DeleteAccountCard = ({ isDark }) => {
               : 'border-slate-200 bg-transparent text-slate-700 hover:border-slate-300'
           }`}
         >
-          Cancel
+          {t('Cancel')}
         </button>
 
         <button
@@ -80,12 +82,12 @@ const  DeleteAccountCard = ({ isDark }) => {
           }`}
         >
           <Trash2 className="h-3.5 w-3.5" />
-          Delete account
+          {t('Delete account')}
         </button>
       </div>
 
       <p className={isDark ? 'mt-3 text-[11px] text-zinc-600' : 'mt-3 text-[11px] text-slate-500'}>
-        This button will appear red if you type the correct phrase and acknowledge the warning.
+        {t('This button will appear red if you type the correct phrase and acknowledge the warning.')}
       </p>
     </DangerZonePanel>
   )

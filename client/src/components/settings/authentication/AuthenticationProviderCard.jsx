@@ -1,8 +1,10 @@
 import { Check, Link2 } from 'lucide-react'
 import GitHubMark from './GitHubMark'
 import GoogleMark from './GoogleMark'
+import { useLanguage } from '../../../context/LanguageContext'
 
 const AuthenticationProviderCard = ({ provider, isDark }) => {
+  const { t } = useLanguage()
   const badgeClass = provider.connected
     ? isDark
       ? 'bg-emerald-500/12 text-emerald-300'
@@ -36,28 +38,28 @@ const AuthenticationProviderCard = ({ provider, isDark }) => {
           <div>
             <p className="text-[13px] font-medium">{provider.name}</p>
             <p className={`mt-1 text-xs ${isDark ? 'text-zinc-500' : 'text-slate-500'}`}>
-              {provider.description}
+              {t(provider.description)}
             </p>
           </div>
         </div>
 
         <span className={`rounded-full px-2.5 py-1 text-[11px] font-medium select-none ${badgeClass}`}>
-          {provider.connected ? 'Connected' : 'Available'}
+          {t(provider.connected ? 'Connected' : 'Available')}
         </span>
       </div>
 
       <div className="mt-4 rounded-lg border border-dashed px-3 py-2.5">
         <p className={`text-[11px] uppercase tracking-[0.18em] ${isDark ? 'text-zinc-500' : 'text-slate-500'}`}>
-          Account
+          {t('Account')}
         </p>
-        <p className="mt-1 text-[13px]">{provider.connectedAs}</p>
+        <p className="mt-1 text-[13px]">{t(provider.connectedAs)}</p>
       </div>
 
       <div className="mt-4 space-y-2">
         {provider.highlights.map((item) => (
           <div key={item} className="flex items-center gap-2 text-xs">
             <Check className={`h-3.5 w-3.5 ${isDark ? 'text-zinc-500' : 'text-slate-500'}`} />
-            <span className={isDark ? 'text-zinc-400' : 'text-slate-600'}>{item}</span>
+            <span className={isDark ? 'text-zinc-400' : 'text-slate-600'}>{t(item)}</span>
           </div>
         ))}
       </div>
@@ -67,7 +69,7 @@ const AuthenticationProviderCard = ({ provider, isDark }) => {
           type="button"
           className={`inline-flex items-center justify-center rounded-lg border px-3 py-2 text-[13px] font-medium transition-colors cursor-pointer ${actionClass}`}
         >
-          {provider.primaryAction}
+          {t(provider.primaryAction)}
         </button>
 
         <button
@@ -79,7 +81,7 @@ const AuthenticationProviderCard = ({ provider, isDark }) => {
           }`}
         >
           <Link2 className="h-3.5 w-3.5" />
-          {provider.secondaryAction}
+          {t(provider.secondaryAction)}
         </button>
       </div>
     </article>

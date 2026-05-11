@@ -3,9 +3,11 @@ import Sidebar from '../../components/dashboard/sidebar/Sidebar'
 import PageContentTransition from '../../components/PageContentTransition'
 import PreferencesForm from '../../components/settings/preferences/PreferencesForm'
 import { useTheme } from '../../context/ThemeContext'
+import { useLanguage } from '../../context/LanguageContext'
 
 const Preferences = () => {
   const { isDark, theme, setTheme } = useTheme()
+  const { t } = useLanguage()
 
   return (
     <div
@@ -27,11 +29,11 @@ const Preferences = () => {
                 >
                   <SlidersHorizontal className="h-3.5 w-3.5" />
                 </div>
-                <h1 className="text-xl font-semibold tracking-tight">Preferences</h1>
+                <h1 className="text-xl font-semibold tracking-tight">{t('Preferences')}</h1>
               </div>
 
               <p className={isDark ? 'text-xs text-zinc-500' : 'text-xs text-slate-500'}>
-                Adjust the workspace defaults you want each time you build a resume.
+                {t('Adjust the workspace defaults you want each time you build a resume.')}
               </p>
             </div>
 

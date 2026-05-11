@@ -1,7 +1,9 @@
 import { Link, NavLink } from 'react-router-dom'
+import { useLanguage } from '../../../context/LanguageContext'
 
 const SidebarLink = ({ item, isDark }) => {
   const Icon = item.icon
+  const { t } = useLanguage()
   const baseClass = `flex items-center gap-3 rounded-md px-3.5 py-2.5 text-[13px] font-medium tracking-tight transition-all duration-200`
 
   if (item.available) {
@@ -13,7 +15,7 @@ const SidebarLink = ({ item, isDark }) => {
         }
       >
         <Icon className="h-4 w-4 shrink-0" />
-        <span>{item.label}</span>
+        <span>{t(item.label)}</span>
       </NavLink>
     )
   }
@@ -26,7 +28,7 @@ const SidebarLink = ({ item, isDark }) => {
       aria-disabled="true"
     >
       <Icon className="h-4 w-4 shrink-0" />
-      <span>{item.label}</span>
+      <span>{t(item.label)}</span>
     </Link>
   )
 }

@@ -1,4 +1,7 @@
+import { useLanguage } from '../../../context/LanguageContext'
+
 const DangerZonePanel = ({ title, description, children, isDark, tone = 'default' }) => {
+  const { t } = useLanguage()
   const toneClass =
     tone === 'danger'
       ? isDark
@@ -12,10 +15,10 @@ const DangerZonePanel = ({ title, description, children, isDark, tone = 'default
     <section className={`rounded-md border p-4 sm:p-5 ${toneClass}`}>
       {(title || description) && (
         <div className="mb-4">
-          {title && <h2 className="text-sm font-semibold tracking-tight">{title}</h2>}
+          {title && <h2 className="text-sm font-semibold tracking-tight">{t(title)}</h2>}
           {description && (
             <p className={`mt-1 text-xs ${isDark ? 'text-zinc-500' : 'text-slate-500'}`}>
-              {description}
+              {t(description)}
             </p>
           )}
         </div>
