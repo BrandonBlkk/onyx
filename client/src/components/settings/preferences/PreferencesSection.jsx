@@ -1,4 +1,8 @@
+import { useLanguage } from '../../../context/LanguageContext'
+
 const PreferencesSection = ({ title, description, children, isDark }) => {
+  const { t } = useLanguage()
+
   return (
     <section
       className={`rounded-md border p-4 sm:p-5 ${
@@ -6,9 +10,9 @@ const PreferencesSection = ({ title, description, children, isDark }) => {
       }`}
     >
       <div className="mb-4">
-        <h2 className="text-sm font-semibold tracking-tight">{title}</h2>
+        <h2 className="text-sm font-semibold tracking-tight">{t(title)}</h2>
         <p className={`mt-1 text-xs ${isDark ? 'text-zinc-500' : 'text-slate-500'}`}>
-          {description}
+          {t(description)}
         </p>
       </div>
 

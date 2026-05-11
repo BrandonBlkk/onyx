@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import {
   preferenceSelectFields,
   preferenceToggleFields,
@@ -6,6 +6,7 @@ import {
 import PreferencesSection from './PreferencesSection'
 import PreferencesSelectField from './PreferencesSelectField'
 import PreferencesToggleField from './PreferencesToggleField'
+import { useLanguage } from '../../../context/LanguageContext'
 
 const STORAGE_KEY = 'app-preferences'
 
@@ -22,6 +23,7 @@ const buildDefaultPreferences = (theme) => ({
 })
 
 const PreferencesForm = ({ isDark, theme, setTheme }) => {
+  const { language, setLanguage, t } = useLanguage()
   const [preferences, setPreferences] = useState(() => {
     const defaults = buildDefaultPreferences(theme)
 
@@ -40,20 +42,28 @@ const PreferencesForm = ({ isDark, theme, setTheme }) => {
       return defaults
     }
   })
+  const resolvedPreferences = useMemo(
+    () => ({
+      ...preferences,
+      theme,
+      language,
+    }),
+    [preferences, theme, language],
+  )
 
   useEffect(() => {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(preferences))
-  }, [preferences])
-
-  useEffect(() => {
-    setPreferences((prev) => (prev.theme === theme ? prev : { ...prev, theme }))
-  }, [theme])
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(resolvedPreferences))
+  }, [resolvedPreferences])
 
   const handleSelectChange = (name, value) => {
     setPreferences((prev) => ({ ...prev, [name]: value }))
 
     if (name === 'theme') {
       setTheme(value)
+    }
+
+    if (name === 'language') {
+      setLanguage(value)
     }
   }
 
@@ -73,7 +83,7 @@ const PreferencesForm = ({ isDark, theme, setTheme }) => {
             <PreferencesSelectField
               key={field.name}
               {...field}
-              value={preferences[field.name]}
+              value={resolvedPreferences[field.name]}
               onChange={handleSelectChange}
               isDark={isDark}
             />
@@ -100,7 +110,7 @@ const PreferencesForm = ({ isDark, theme, setTheme }) => {
       </PreferencesSection>
 
       <p className={isDark ? 'text-[11px] text-zinc-500' : 'text-[11px] text-slate-500'}>
-        Preferences are saved on this device and theme changes apply immediately.
+        {t('Preferences are saved on this device and theme changes apply immediately.')}
       </p>
     </div>
   )

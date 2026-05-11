@@ -1,5 +1,5 @@
-import React from 'react'
 import { motion } from 'framer-motion'
+import { useLanguage } from '../../context/LanguageContext'
 
 const features = [
   {
@@ -40,6 +40,7 @@ const itemVariants = {
 }
 
 const FeatureGrid = ({ isDark = true }) => {
+  const { t } = useLanguage()
   const headingGradientClass = isDark
     ? 'bg-[linear-gradient(135deg,#e4e4e7_0%,#a1a1aa_50%,#71717a_100%)] bg-clip-text text-transparent'
     : 'bg-[linear-gradient(135deg,#0f172a_0%,#334155_50%,#64748b_100%)] bg-clip-text text-transparent'
@@ -55,14 +56,14 @@ const FeatureGrid = ({ isDark = true }) => {
           className="text-center mb-16"
         >
           <span className="inline-flex items-center rounded-full bg-accent-500/10 px-3 py-1 text-xs font-medium text-teal-600 ring-1 ring-accent-500/20 mb-4 select-none">
-            Features
+            {t('Features')}
           </span>
           <h2 className={`text-3xl sm:text-4xl font-bold tracking-tight mb-4 ${isDark ? 'text-zinc-100' : 'text-slate-900'}`}>
-            Everything you need,<br />
-            <span className={headingGradientClass}>nothing you do not.</span>
+            {t('Everything you need,')}<br />
+            <span className={headingGradientClass}>{t('nothing you do not.')}</span>
           </h2>
           <p className={`mx-auto max-w-lg text-sm sm:text-base ${isDark ? 'text-zinc-400' : 'text-slate-600'}`}>
-            Built with developer workflows in mind. Every feature exists for a reason.
+            {t('Built with developer workflows in mind. Every feature exists for a reason.')}
           </p>
         </motion.div>
 
@@ -101,14 +102,14 @@ const FeatureGrid = ({ isDark = true }) => {
                       ? 'bg-zinc-800/60 text-zinc-500'
                       : 'bg-slate-100 text-slate-500'
                   }`}>
-                    {feature.tag}
+                    {t(feature.tag)}
                   </span>
                 </div>
                 <h3 className={`text-lg font-semibold mb-2 tracking-tight ${isDark ? 'text-zinc-100' : 'text-slate-900'}`}>
-                  {feature.title}
+                  {t(feature.title)}
                 </h3>
                 <p className={`text-sm leading-relaxed ${isDark ? 'text-zinc-400' : 'text-slate-600'}`}>
-                  {feature.description}
+                  {t(feature.description)}
                 </p>
               </div>
             </motion.div>

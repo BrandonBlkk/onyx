@@ -1,6 +1,6 @@
-import React from 'react'
 import logo from '../../assets/images/logo.png'
 import logo2 from '../../assets/images/logo2.png'
+import { useLanguage } from '../../context/LanguageContext'
 
 const footerLinks = [
   { label: 'Features', href: '#features' },
@@ -11,6 +11,7 @@ const footerLinks = [
 ]
 
 const Footer = ({ isDark = true }) => {
+  const { t } = useLanguage()
   const primaryButtonGlowClass = isDark
     ? 'hover:shadow-[0_0_20px_oklch(0.68_0.174_252_/_0.3),0_0_60px_oklch(0.68_0.174_252_/_0.1)]'
     : 'hover:shadow-[0_18px_40px_rgba(59,130,246,0.18)]'
@@ -32,12 +33,12 @@ const Footer = ({ isDark = true }) => {
             <h3 className={`mb-3 text-2xl font-bold tracking-tight sm:text-3xl ${
               isDark ? 'text-zinc-100' : 'text-slate-900'
             }`}>
-              Ready to build your resume?
+              {t('Ready to build your resume?')}
             </h3>
             <p className={`mx-auto mb-6 max-w-md text-sm sm:text-base ${
               isDark ? 'text-zinc-400' : 'text-slate-600'
             }`}>
-              Join thousands of employees who have landed their dream roles with Onyx.
+              {t('Join thousands of employees who have landed their dream roles with Onyx.')}
             </p>
             <a
               href="#"
@@ -48,7 +49,7 @@ const Footer = ({ isDark = true }) => {
               }`}
               id="footer-cta"
             >
-              Start Building - It is Free
+              {t('Start Building - It is Free')}
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
               </svg>
@@ -61,7 +62,7 @@ const Footer = ({ isDark = true }) => {
             <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-sm shrink-0">
               <img
                 src={isDark ? logo : logo2}
-                alt="Onyx Logo"
+                alt={t('Onyx Logo')}
                 className="h-full w-full select-none object-cover"
               />
             </div>
@@ -74,7 +75,7 @@ const Footer = ({ isDark = true }) => {
                 href={link.href}
                 className={`text-xs transition-colors ${isDark ? 'text-zinc-500 hover:text-zinc-300' : 'text-slate-500 hover:text-slate-900'}`}
               >
-                {link.label}
+                {t(link.label)}
               </a>
             ))}
           </nav>
@@ -99,10 +100,10 @@ const Footer = ({ isDark = true }) => {
           isDark ? 'border-zinc-800/40' : 'border-slate-200'
         }`}>
           <p className={`text-xs ${isDark ? 'text-zinc-600' : 'text-slate-500'}`}>
-            &copy; {new Date().getFullYear()} Onyx. Crafted for job seekers, by developers.
+            &copy; {new Date().getFullYear()} Onyx. {t('Crafted for job seekers, by developers.')}
           </p>
           <p className={`mt-1 text-xs ${isDark ? 'text-zinc-600' : 'text-slate-500'}`}>
-            Project by{' '}
+            {t('Project by')}{' '}
             <a
               href="https://github.com/BrandonBlkk"
               target="_blank"

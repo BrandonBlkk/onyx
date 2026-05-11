@@ -1,4 +1,7 @@
+import { useLanguage } from '../../../context/LanguageContext'
+
 const PreferencesToggleField = ({ label, description, name, checked, onChange, isDark }) => {
+  const { t } = useLanguage()
   const trackClass = checked
     ? 'bg-teal-500'
     : isDark
@@ -12,9 +15,9 @@ const PreferencesToggleField = ({ label, description, name, checked, onChange, i
       }`}
     >
       <div className="min-w-0">
-        <p className="text-[13px] font-medium">{label}</p>
+        <p className="text-[13px] font-medium">{t(label)}</p>
         <p className={`mt-1 text-xs ${isDark ? 'text-zinc-500' : 'text-slate-500'}`}>
-          {description}
+          {t(description)}
         </p>
       </div>
 
@@ -22,7 +25,7 @@ const PreferencesToggleField = ({ label, description, name, checked, onChange, i
         type="button"
         role="switch"
         aria-checked={checked}
-        aria-label={label}
+        aria-label={t(label)}
         onClick={() => onChange(name, !checked)}
         className={`relative mt-1 inline-flex h-4.5 w-8 shrink-0 rounded-full transition-colors cursor-pointer ${trackClass}`}
       >

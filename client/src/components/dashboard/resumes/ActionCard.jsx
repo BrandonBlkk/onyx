@@ -1,6 +1,9 @@
 import { getInteractivePanelClass, getMutedTextClass } from './resumeStyles'
+import { useLanguage } from '../../../context/LanguageContext'
 
 const ActionCard = ({ title, description, icon: Icon, badge, isDark, viewMode }) => {
+  const { t } = useLanguage()
+
   if (viewMode === 'list') {
     return (
       <article
@@ -34,11 +37,11 @@ const ActionCard = ({ title, description, icon: Icon, badge, isDark, viewMode })
                 : 'border-slate-200 bg-white/80 text-slate-500'
             }`}
           >
-            {badge}
+            {t(badge)}
           </span>
-          <h3 className="mt-3 text-sm font-semibold tracking-tight sm:text-[15px]">{title}</h3>
+          <h3 className="mt-3 text-sm font-semibold tracking-tight sm:text-[15px]">{t(title)}</h3>
           <p className={`mt-1.5 text-xs leading-relaxed ${getMutedTextClass(isDark)}`}>
-            {description}
+            {t(description)}
           </p>
         </div>
       </article>
@@ -64,11 +67,11 @@ const ActionCard = ({ title, description, icon: Icon, badge, isDark, viewMode })
                 : 'border-slate-200 bg-white/85 text-slate-500'
             }`}
           >
-            {badge}
+            {t(badge)}
           </span>
-          <h3 className="mt-4 text-sm font-semibold tracking-tight sm:text-[15px]">{title}</h3>
+          <h3 className="mt-4 text-sm font-semibold tracking-tight sm:text-[15px]">{t(title)}</h3>
           <p className={`mt-1.5 max-w-56 text-xs leading-relaxed ${getMutedTextClass(isDark)}`}>
-            {description}
+            {t(description)}
           </p>
         </div>
 

@@ -3,9 +3,11 @@ import Sidebar from '../../components/dashboard/sidebar/Sidebar'
 import PageContentTransition from '../../components/PageContentTransition'
 import ProfileForm from '../../components/settings/profile/ProfileForm'
 import { useTheme } from '../../context/ThemeContext'
+import { useLanguage } from '../../context/LanguageContext'
 
 const Profile = () => {
   const { isDark } = useTheme()
+  const { t } = useLanguage()
   const panelClass = isDark
     ? 'border-zinc-800 bg-zinc-950/70'
     : 'border-slate-200 bg-white'
@@ -30,11 +32,11 @@ const Profile = () => {
                 >
                   <UserRound className="h-3.5 w-3.5" />
                 </div>
-                <h1 className="text-xl font-semibold tracking-tight">Profile</h1>
+                <h1 className="text-xl font-semibold tracking-tight">{t('Profile')}</h1>
               </div>
 
               <p className={isDark ? 'text-xs text-zinc-500' : 'text-xs text-slate-500'}>
-                Keep only the basics needed for your resume workspace.
+                {t('Keep only the basics needed for your resume workspace.')}
               </p>
             </div>
 

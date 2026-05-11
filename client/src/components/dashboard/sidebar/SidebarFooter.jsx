@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { ChevronUp, Languages, LogOut, Moon, Sun } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { useTheme } from '../../../context/ThemeContext'
+import { useLanguage } from '../../../context/LanguageContext'
 
 const PREFERENCES_STORAGE_KEY = 'app-preferences'
 
@@ -14,11 +15,6 @@ const getStoredPreferences = () => {
   } catch {
     return {}
   }
-}
-
-const getStoredLanguage = () => {
-  const stored = getStoredPreferences()
-  return stored.language === 'burmese' ? 'burmese' : 'english'
 }
 
 const persistPreference = (name, value) => {
@@ -37,8 +33,8 @@ const persistPreference = (name, value) => {
 const SidebarFooter = ({ isDark }) => {
   const navigate = useNavigate()
   const { theme, setTheme } = useTheme()
+  const { language, setLanguage, t } = useLanguage()
   const [menuOpen, setMenuOpen] = useState(false)
-  const [language, setLanguage] = useState(getStoredLanguage)
   const containerRef = useRef(null)
 
   useEffect(() => {
@@ -71,7 +67,6 @@ const SidebarFooter = ({ isDark }) => {
   const handleLanguageChange = (event) => {
     const value = event.target.value
     setLanguage(value)
-    persistPreference('language', value)
   }
 
   const handleLogout = () => {
@@ -80,10 +75,6 @@ const SidebarFooter = ({ isDark }) => {
   }
 
   const handleMenuToggle = () => {
-    if (!menuOpen) {
-      setLanguage(getStoredLanguage())
-    }
-
     setMenuOpen((prev) => !prev)
   }
 
@@ -119,7 +110,7 @@ const SidebarFooter = ({ isDark }) => {
                     <div className="flex items-center justify-between gap-3">
                       <span className="inline-flex items-center gap-2 text-xs font-medium">
                         {theme === 'dark' ? <Moon className="h-3.5 w-3.5" /> : <Sun className="h-3.5 w-3.5" />}
-                        Theme
+                        {t('Theme')}
                       </span>
 
                       <div
@@ -142,7 +133,7 @@ const SidebarFooter = ({ isDark }) => {
                                   : 'text-slate-500 hover:text-slate-900'
                             }`}
                           >
-                            {option}
+                            {t(option === 'dark' ? 'Dark' : 'Light')}
                           </button>
                         ))}
                       </div>
@@ -151,7 +142,7 @@ const SidebarFooter = ({ isDark }) => {
                     <label className="flex items-center justify-between gap-3">
                       <span className="inline-flex items-center gap-2 text-xs font-medium">
                         <Languages className="h-3.5 w-3.5" />
-                        Language
+                        {t('Language')}
                       </span>
 
                       <select
@@ -163,8 +154,8 @@ const SidebarFooter = ({ isDark }) => {
                             : 'border-slate-200 bg-slate-50 text-slate-900'
                         }`}
                       >
-                        <option value="english">English</option>
-                        <option value="burmese">Burmese</option>
+                        <option value="english">{t('English')}</option>
+                        <option value="burmese">{t('Burmese')}</option>
                       </select>
                     </label>
                   </div>
@@ -179,7 +170,7 @@ const SidebarFooter = ({ isDark }) => {
                     }`}
                   >
                     <LogOut className="h-3.5 w-3.5" />
-                    Log out
+                    {t('Log out')}
                   </button>
                 </div>
               </motion.div>
@@ -190,7 +181,7 @@ const SidebarFooter = ({ isDark }) => {
             type="button"
             onClick={handleMenuToggle}
             aria-expanded={menuOpen}
-            aria-label="Open account menu"
+            aria-label={t('Open account menu')}
             className={`flex w-full items-center gap-3 rounded-lg transition-colors p-2 ${
               isDark ? 'hover:bg-zinc-900/70' : 'hover:bg-slate-100/80'
             }`}
@@ -219,7 +210,7 @@ const SidebarFooter = ({ isDark }) => {
             isDark ? 'text-zinc-500' : 'text-slate-500'
           }`}
         >
-          <p className={`${isDark ? 'text-zinc-600' : 'text-slate-500'}`}>Licensed under 
+          <p className={`${isDark ? 'text-zinc-600' : 'text-slate-500'}`}>{t('Licensed under')}
             <a
               href="https://github.com/BrandonBlkk/Onyx/blob/main/LICENSE"
               target="_blank"
@@ -229,9 +220,9 @@ const SidebarFooter = ({ isDark }) => {
               {' '} <span className="font-semibold text-zinc-500">MIT.</span>
             </a>  
           </p>
-          <p className={`${isDark ? 'text-zinc-600' : 'text-slate-500'}`}>Crafted for job seekers, by developers.</p>
+          <p className={`${isDark ? 'text-zinc-600' : 'text-slate-500'}`}>{t('Crafted for job seekers, by developers.')}</p>
           <p className={`mt-1 ${isDark ? 'text-zinc-600' : 'text-slate-500'}`}>
-              Project by{' '}
+              {t('Project by')}{' '}
               <a
                 href="https://github.com/BrandonBlkk"
                 target="_blank"
@@ -241,7 +232,7 @@ const SidebarFooter = ({ isDark }) => {
                 <span className="font-semibold text-zinc-500">Brandon.</span>
               </a>
             </p>
-          <p className="mt-5">Onyx is a work in progress.</p>
+          <p className="mt-5">{t('Onyx is a work in progress.')}</p>
         </div>
       </div>
     </div>

@@ -5,8 +5,11 @@ import {
   getStatusBadgeClass,
   getSubtleTextClass,
 } from './resumeStyles'
+import { useLanguage } from '../../../context/LanguageContext'
 
 const ResumeCard = ({ item, isDark, viewMode }) => {
+  const { t } = useLanguage()
+
   if (viewMode === 'list') {
     return (
       <article
@@ -20,14 +23,14 @@ const ResumeCard = ({ item, isDark, viewMode }) => {
 
         <div className="relative flex flex-col justify-center p-4 sm:p-5">
           <div className="flex flex-wrap items-center gap-2">
-            <h3 className="text-sm font-semibold tracking-tight sm:text-[15px]">{item.title}</h3>
+            <h3 className="text-sm font-semibold tracking-tight sm:text-[15px]">{t(item.title)}</h3>
             <span
               className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${getStatusBadgeClass(item.tone, isDark)}`}
             >
-              {item.tone}
+              {t(item.tone)}
             </span>
           </div>
-          <p className={`mt-2 text-xs ${getMutedTextClass(isDark)}`}>{item.updated}</p>
+          <p className={`mt-2 text-xs ${getMutedTextClass(isDark)}`}>{t(item.updated)}</p>
 
           <div className={`mt-3 flex flex-wrap gap-2 text-[10px] ${getSubtleTextClass(isDark)}`}>
             <span
@@ -42,7 +45,7 @@ const ResumeCard = ({ item, isDark, viewMode }) => {
                 isDark ? 'bg-zinc-950/90 text-zinc-400' : 'bg-slate-100 text-slate-500'
               }`}
             >
-              {item.role}
+              {t(item.role)}
             </span>
           </div>
         </div>
@@ -74,14 +77,14 @@ const ResumeCard = ({ item, isDark, viewMode }) => {
         }`}
       >
         <div className="flex items-center justify-between gap-3">
-          <h3 className="text-sm font-semibold tracking-tight sm:text-[15px]">{item.title}</h3>
+          <h3 className="text-sm font-semibold tracking-tight sm:text-[15px]">{t(item.title)}</h3>
           <span
             className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${getStatusBadgeClass(item.tone, isDark)}`}
           >
-            {item.tone}
+            {t(item.tone)}
           </span>
         </div>
-        <p className={`text-xs ${getMutedTextClass(isDark)}`}>{item.updated}</p>
+        <p className={`text-xs ${getMutedTextClass(isDark)}`}>{t(item.updated)}</p>
       </div>
     </article>
   )

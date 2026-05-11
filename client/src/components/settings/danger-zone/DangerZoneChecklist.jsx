@@ -5,8 +5,11 @@ import {
   deleteAccountConfig,
 } from './dangerZoneData'
 import DangerZonePanel from './DangerZonePanel'
+import { useLanguage } from '../../../context/LanguageContext'
 
 const DangerZoneChecklist = ({ isDark }) => {
+  const { t } = useLanguage()
+
   return (
     <div className="space-y-3">
       <DangerZonePanel
@@ -37,9 +40,9 @@ const DangerZoneChecklist = ({ isDark }) => {
                   </div>
 
                   <div>
-                    <p className="text-[13px] font-medium">{item.title}</p>
+                    <p className="text-[13px] font-medium">{t(item.title)}</p>
                     <p className={`mt-1 text-xs ${isDark ? 'text-zinc-500' : 'text-slate-500'}`}>
-                      {item.description}
+                      {t(item.description)}
                     </p>
                   </div>
                 </div>
@@ -51,14 +54,14 @@ const DangerZoneChecklist = ({ isDark }) => {
 
       <DangerZonePanel
         title="What gets removed"
-        description={`This action applies to ${deleteAccountConfig.email}.`}
+        description={t('This action applies to {email}.', { email: deleteAccountConfig.email })}
         isDark={isDark}
       >
         <div className="space-y-2">
           {deleteConsequences.map((item) => (
             <div key={item} className="flex items-start gap-2 text-xs">
               <ShieldCheck className={`mt-0.5 h-3.5 w-3.5 ${isDark ? 'text-zinc-500' : 'text-slate-500'}`} />
-              <span className={isDark ? 'text-zinc-400' : 'text-slate-600'}>{item}</span>
+              <span className={isDark ? 'text-zinc-400' : 'text-slate-600'}>{t(item)}</span>
             </div>
           ))}
         </div>

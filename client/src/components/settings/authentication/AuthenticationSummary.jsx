@@ -1,6 +1,7 @@
 import { LockKeyhole, Mail, ShieldCheck } from 'lucide-react'
 import AuthenticationPanel from './AuthenticationPanel'
 import { securityTips, signInMethods } from './authenticationData'
+import { useLanguage } from '../../../context/LanguageContext'
 
 const iconMap = {
   email: Mail,
@@ -8,6 +9,8 @@ const iconMap = {
 }
 
 const AuthenticationSummary = ({ isDark }) => {
+  const { t } = useLanguage()
+
   return (
     <div className="space-y-4">
       <AuthenticationPanel
@@ -38,15 +41,15 @@ const AuthenticationSummary = ({ isDark }) => {
                   </div>
 
                   <div className="min-w-0">
-                    <p className="text-[13px] font-medium">{item.label}</p>
+                    <p className="text-[13px] font-medium">{t(item.label)}</p>
                     <p className={`mt-0.5 text-xs ${isDark ? 'text-zinc-400' : 'text-slate-600'}`}>
-                      {item.value}
+                      {t(item.value)}
                     </p>
                   </div>
                 </div>
 
                 <p className={`mt-3 text-xs ${isDark ? 'text-zinc-500' : 'text-slate-500'}`}>
-                  {item.note}
+                  {t(item.note)}
                 </p>
               </div>
             )
@@ -63,7 +66,7 @@ const AuthenticationSummary = ({ isDark }) => {
           {securityTips.map((tip) => (
             <div key={tip} className="flex items-start gap-2 text-xs">
               <ShieldCheck className={`mt-0.5 h-3.5 w-3.5 ${isDark ? 'text-zinc-500' : 'text-slate-500'}`} />
-              <span className={isDark ? 'text-zinc-400' : 'text-slate-600'}>{tip}</span>
+              <span className={isDark ? 'text-zinc-400' : 'text-slate-600'}>{t(tip)}</span>
             </div>
           ))}
         </div>
