@@ -38,7 +38,7 @@ const ResumesToolbar = ({
             <select
               value={sortBy}
               onChange={(event) => onSortChange(event.target.value)}
-              className={`appearance-none rounded-md border px-3.5 py-2.5 pr-9 text-[13px] outline-none transition-colors select-none ${
+              className={`appearance-none rounded-md border px-3.5 py-2.5 pr-9 text-[13px] outline-none transition-colors select-none cursor-pointer ${
                 isDark
                   ? 'border-zinc-800 bg-zinc-950/80 text-white'
                   : 'border-slate-200 bg-white/85 text-slate-950'
@@ -67,7 +67,7 @@ const ResumesToolbar = ({
         <button
           type="button"
           onClick={() => onViewModeChange('grid')}
-          className={`inline-flex items-center gap-2 rounded-md px-3 py-2 text-xs font-medium transition-colors ${
+          className={`inline-flex items-center gap-2 rounded-md px-3 py-2 text-xs font-medium transition-colors cursor-pointer ${
             viewMode === 'grid'
               ? isDark
                 ? 'bg-white text-zinc-900'
@@ -84,7 +84,7 @@ const ResumesToolbar = ({
         <button
           type="button"
           onClick={() => onViewModeChange('list')}
-          className={`inline-flex items-center gap-2 rounded-md px-3 py-2 text-xs font-medium transition-colors ${
+          className={`inline-flex items-center gap-2 rounded-md px-3 py-2 text-xs font-medium transition-colors cursor-pointer ${
             viewMode === 'list'
               ? isDark
                 ? 'bg-white text-zinc-900'

@@ -1,7 +1,7 @@
 const PreferencesSection = ({ title, description, children, isDark }) => {
   return (
     <section
-      className={`rounded-2xl border p-4 sm:p-5 ${
+      className={`rounded-md border p-4 sm:p-5 ${
         isDark ? 'border-zinc-800 bg-zinc-950/70' : 'border-slate-200 bg-white'
       }`}
     >
