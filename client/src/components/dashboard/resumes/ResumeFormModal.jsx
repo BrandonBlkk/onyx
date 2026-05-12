@@ -177,7 +177,6 @@ const ResumeFormModal = ({
                 <span className={getLabelClass(isDark)}>{t('Resume title')}</span>
                 <input
                   autoFocus
-                  required
                   type="text"
                   name="title"
                   value={formValues.title}
@@ -241,7 +240,7 @@ const ResumeFormModal = ({
               </label>
             ) : null}
 
-            {formError ? <p className="text-sm text-rose-500">{t(formError)}</p> : null}
+            {formError ? <p className="text-xs text-rose-500">{t(formError)}</p> : null}
 
             <div className="flex flex-col gap-2 pt-1 sm:flex-row sm:justify-end select-none">
               <button
