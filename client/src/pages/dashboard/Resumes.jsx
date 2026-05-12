@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import Sidebar from '../../components/dashboard/sidebar/Sidebar'
 import ActionCard from '../../components/dashboard/resumes/ActionCard'
 import ResumeCard from '../../components/dashboard/resumes/ResumeCard'
+import ResumeFormModal from '../../components/dashboard/resumes/ResumeFormModal'
 import ResumesToolbar from '../../components/dashboard/resumes/ResumesToolbar'
 import SectionHeader from '../../components/dashboard/resumes/SectionHeader'
 import PageContentTransition from '../../components/PageContentTransition'
@@ -15,10 +16,111 @@ const layoutSwitchTransition = {
   ease: 'easeOut',
 }
 
+const createEmptyForm = () => ({
+  title: '',
+  summary: '',
+  file: null,
+})
+
+const formatResumeUpdated = (timestamp) =>
+  `Last updated on ${new Intl.DateTimeFormat('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+  }).format(timestamp)}`
+
+const createResumeId = () => {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return crypto.randomUUID()
+  }
+
+  return `resume-${Date.now()}-${Math.round(Math.random() * 1_000_000)}`
+}
+
 const Resumes = () => {
   const { isDark } = useTheme()
   const [sortBy, setSortBy] = useState(sortOptions[0])
   const [viewMode, setViewMode] = useState('grid')
+  const [resumeItems, setResumeItems] = useState(resumes)
+  const [modalMode, setModalMode] = useState(null)
+  const [formValues, setFormValues] = useState(createEmptyForm)
+  const [formError, setFormError] = useState('')
+
+  const openResumeModal = (mode) => {
+    setModalMode(mode)
+    setFormValues(createEmptyForm())
+    setFormError('')
+  }
+
+  const closeResumeModal = () => {
+    setModalMode(null)
+    setFormValues(createEmptyForm())
+    setFormError('')
+  }
+
+  const handleFormChange = (event) => {
+    const { name, value } = event.target
+
+    setFormValues((current) => ({
+      ...current,
+      [name]: value,
+    }))
+
+    if (formError) {
+      setFormError('')
+    }
+  }
+
+  const handleFileChange = (event) => {
+    const nextFile = event.target.files?.[0] ?? null
+
+    setFormValues((current) => ({
+      ...current,
+      file: nextFile,
+      title:
+        current.title || !nextFile
+          ? current.title
+          : nextFile.name.replace(/\.[^/.]+$/, ''),
+    }))
+
+    if (formError) {
+      setFormError('')
+    }
+  }
+
+  const handleModalSubmit = (event) => {
+    event.preventDefault()
+
+    const nextTitle = formValues.title.trim()
+
+    if (!nextTitle) {
+      setFormError('Complete the required fields before continuing.')
+      return
+    }
+
+    if (modalMode === 'import' && !formValues.file) {
+      setFormError('Select a resume file before importing.')
+      return
+    }
+
+    const now = new Date()
+
+    setResumeItems((current) => [
+      {
+        id: createResumeId(),
+        title: nextTitle,
+        updated: formatResumeUpdated(now),
+        tone: modalMode === 'import' ? 'Polish' : 'Draft',
+        summary: formValues.summary.trim(),
+        sourceFileName: formValues.file?.name ?? null,
+      },
+      ...current,
+    ])
+
+    closeResumeModal()
+  }
 
   return (
     <div
@@ -76,13 +178,14 @@ const Resumes = () => {
                 >
                   {actionCards.map((card) => (
                     <ActionCard
-                      key={card.title}
+                      key={card.id}
                       title={card.title}
                       description={card.description}
                       icon={card.icon}
                       badge={card.badge}
                       isDark={isDark}
                       viewMode={viewMode}
+                      onClick={() => openResumeModal(card.id)}
                     />
                   ))}
                 </motion.div>
@@ -109,9 +212,9 @@ const Resumes = () => {
                       : 'flex flex-col'
                   }`}
                 >
-                  {resumes.map((resume) => (
+                  {resumeItems.map((resume) => (
                     <ResumeCard
-                      key={resume.title}
+                      key={resume.id}
                       item={resume}
                       isDark={isDark}
                       viewMode={viewMode}
@@ -123,6 +226,21 @@ const Resumes = () => {
           </div>
         </PageContentTransition>
       </div>
+
+      <AnimatePresence>
+        {modalMode ? (
+          <ResumeFormModal
+            mode={modalMode}
+            isDark={isDark}
+            formValues={formValues}
+            formError={formError}
+            onChange={handleFormChange}
+            onFileChange={handleFileChange}
+            onClose={closeResumeModal}
+            onSubmit={handleModalSubmit}
+          />
+        ) : null}
+      </AnimatePresence>
     </div>
   )
 }
