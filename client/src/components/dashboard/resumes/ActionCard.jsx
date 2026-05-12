@@ -1,13 +1,15 @@
 import { getInteractivePanelClass, getMutedTextClass } from './resumeStyles'
 import { useLanguage } from '../../../context/LanguageContext'
 
-const ActionCard = ({ title, description, icon: Icon, badge, isDark, viewMode }) => {
+const ActionCard = ({ title, description, icon: Icon, badge, isDark, viewMode, onClick }) => {
   const { t } = useLanguage()
 
   if (viewMode === 'list') {
     return (
-      <article
-        className={`group relative grid overflow-hidden border backdrop-blur-xl sm:grid-cols-[160px_minmax(0,1fr)] cursor-pointer ${getInteractivePanelClass(isDark)}`}
+      <button
+        type="button"
+        onClick={onClick}
+        className={`group relative grid overflow-hidden border text-left backdrop-blur-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500/70 sm:grid-cols-[160px_minmax(0,1fr)] ${getInteractivePanelClass(isDark)}`}
       >
         <div
           className={`absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 ${
@@ -44,13 +46,15 @@ const ActionCard = ({ title, description, icon: Icon, badge, isDark, viewMode })
             {t(description)}
           </p>
         </div>
-      </article>
+      </button>
     )
   }
 
   return (
-    <article
-      className={`group relative overflow-hidden rounded-md border backdrop-blur-xl cursor-pointer ${getInteractivePanelClass(isDark)}`}
+    <button
+      type="button"
+      onClick={onClick}
+      className={`group relative overflow-hidden rounded-md border text-left backdrop-blur-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500/70 ${getInteractivePanelClass(isDark)}`}
     >
       <div
         className={`absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 ${
@@ -79,7 +83,7 @@ const ActionCard = ({ title, description, icon: Icon, badge, isDark, viewMode })
           <Icon className="h-5 w-5 text-teal-600" strokeWidth={1.7} />
         </div>
       </div>
-    </article>
+    </button>
   )
 }
 

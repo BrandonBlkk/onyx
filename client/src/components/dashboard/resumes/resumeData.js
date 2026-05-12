@@ -4,12 +4,14 @@ export const sortOptions = ['Last Updated', 'Name', 'Recently Created']
 
 export const actionCards = [
   {
+    id: 'create',
     title: 'Create a new resume',
     description: 'Start with a clean, ATS-friendly canvas and shape it for your next role.',
     icon: Plus,
     badge: 'New draft',
   },
   {
+    id: 'import',
     title: 'Import an existing resume',
     description: 'Bring in a past version, then refine it with the same polished Onyx workflow.',
     icon: ArrowDownToLine,
@@ -19,6 +21,7 @@ export const actionCards = [
 
 export const resumes = [
   {
+    id: 'brandon-resume',
     title: 'Brandon Resume',
     updated: 'Last updated on April 15, 2026 at 1:24 PM',
     candidate: 'Brandon Tun',
@@ -26,6 +29,7 @@ export const resumes = [
     tone: 'Ready',
   },
   {
+    id: 'frontend-resume',
     title: 'Frontend Resume',
     updated: 'Last updated on April 14, 2026 at 10:42 PM',
     candidate: 'Brandon Tun',
@@ -33,6 +37,7 @@ export const resumes = [
     tone: 'Draft',
   },
   {
+    id: 'product-resume',
     title: 'Product Resume',
     updated: 'Last updated on April 14, 2026 at 8:16 PM',
     candidate: 'Brandon Tun',
