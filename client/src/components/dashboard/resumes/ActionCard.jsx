@@ -9,7 +9,7 @@ const ActionCard = ({ title, description, icon: Icon, badge, isDark, viewMode, o
       <button
         type="button"
         onClick={onClick}
-        className={`group relative grid overflow-hidden border text-left backdrop-blur-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500/70 sm:grid-cols-[160px_minmax(0,1fr)] ${getInteractivePanelClass(isDark)}`}
+        className={`group relative grid overflow-hidden border text-left backdrop-blur-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500/70 sm:grid-cols-[160px_minmax(0,1fr)] cursor-pointer ${getInteractivePanelClass(isDark)}`}
       >
         <div
           className={`absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 ${
@@ -54,7 +54,7 @@ const ActionCard = ({ title, description, icon: Icon, badge, isDark, viewMode, o
     <button
       type="button"
       onClick={onClick}
-      className={`group relative overflow-hidden rounded-md border text-left backdrop-blur-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500/70 ${getInteractivePanelClass(isDark)}`}
+      className={`group relative overflow-hidden rounded-md border text-left backdrop-blur-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500/70 cursor-pointer ${getInteractivePanelClass(isDark)}`}
     >
       <div
         className={`absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 ${

@@ -104,7 +104,7 @@ const ResumeFormModal = ({
       <button
         type="button"
         aria-label={t('Close modal')}
-        className="absolute inset-0 bg-zinc-950/70 backdrop-blur-sm"
+        className="absolute inset-0 bg-zinc-950/70"
         onClick={onClose}
       />
 
