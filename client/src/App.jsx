@@ -7,6 +7,9 @@ import Profile from './pages/settings/Profile'
 import Preferences from './pages/settings/Preferences'
 import Authentication from './pages/settings/Authentication'
 import DangerZone from './pages/settings/DangerZone'
+import UserSignin from './pages/auth/UserSignin'
+import UserSignup from './pages/auth/UserSignup'
+import ForgetPassword from './pages/auth/ForgetPassword'
 
 const PageTransition = ({ children }) => (
   <motion.div
@@ -28,6 +31,9 @@ const App = () => {
         <Route path="/settings/preferences" element={<Preferences />} />
         <Route path="/settings/authentication" element={<Authentication />} />
         <Route path="/settings/danger-zone" element={<DangerZone />} />
+        <Route path="/auth/signin" element={<UserSignin />} />
+        <Route path="/auth/signup" element={<UserSignup />} />
+        <Route path="/auth/forget-password" element={<ForgetPassword />} />
         <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
       </Routes>
     </div>
