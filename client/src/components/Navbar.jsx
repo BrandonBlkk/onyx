@@ -85,14 +85,14 @@ const Navbar = () => {
             )}
           </button>
 
-          <a
-            href="#"
+          <Link
+            to="/auth/signin"
             className={`text-sm transition-colors ${navClass}`}
             id="nav-signin"
           >
             {t('Sign in')}
-          </a>
-          <Link to={'dashboard/resumes'}
+          </Link>
+          <Link to="/auth/signup"
             className={`inline-flex items-center gap-2 px-4 py-2 text-sm font-medium transition-all duration-200 active:scale-[0.97] ${
               isDark
                 ? 'bg-white text-zinc-900 hover:bg-zinc-200'
@@ -157,10 +157,10 @@ const Navbar = () => {
                 {t('Theme')}
               </button>
               <div className={`pt-4 border-t space-y-3 ${isDark ? 'border-zinc-800/60' : 'border-slate-200'}`}>
-                <a href="#" className={`block text-sm transition-colors ${navClass}`}>
+                <Link to="/auth/signin" className={`block text-sm transition-colors ${navClass}`}>
                   {t('Sign in')}
-                </a>
-                <Link to={'dashboard/resumes'}
+                </Link>
+                <Link to="/auth/signup"
                   className={`inline-flex w-full items-center justify-center gap-2 px-4 py-2 text-sm font-medium ${
                     isDark
                       ? 'bg-white text-zinc-900'
