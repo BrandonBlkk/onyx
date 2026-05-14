@@ -5,7 +5,6 @@ import {
   LockKeyhole,
   Mail,
   Moon,
-  ShieldCheck,
   Sun,
   UserRound,
 } from 'lucide-react'
@@ -271,14 +270,14 @@ const AuthFormPage = ({ mode = 'signin' }) => {
                     {t('Remember me')}
                   </label>
 
-                  <button
-                    type="button"
+                  <Link
+                    to={'/auth/forget-password'}
                     className={`transition-colors cursor-pointer ${
                       isDark ? 'text-zinc-300 hover:text-zinc-100' : 'text-slate-700 hover:text-slate-950'
                     }`}
                   >
                     {t('Forgot password?')}
-                  </button>
+                  </Link>
                 </div>
               )}
 
