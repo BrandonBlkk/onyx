@@ -67,7 +67,7 @@ const AuthFormPage = ({ mode = 'signin' }) => {
   return (
     <div
       className={`relative min-h-screen overflow-hidden transition-colors duration-500 ${
-        isDark ? 'bg-[#08090b] text-zinc-100' : 'bg-[#f2f5fb] text-slate-950'
+        isDark ? 'bg-[#08090b] text-zinc-100' : 'bg-[#f5f7fb] text-slate-950'
       }`}
     >
       <div className="relative z-10 flex h-screen flex-col px-4 py-4 sm:px-6">
@@ -206,7 +206,7 @@ const AuthFormPage = ({ mode = 'signin' }) => {
                     <input
                       type="text"
                       name="name"
-                      placeholder="Brandon Tun"
+                      placeholder="Enter your full name"
                       className={`${inputClass(isDark)} pl-11`}
                     />
                   </div>

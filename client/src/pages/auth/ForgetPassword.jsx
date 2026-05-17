@@ -18,7 +18,7 @@ const ForgetPassword = () => {
   return (
     <div
       className={`relative min-h-screen overflow-hidden transition-colors duration-500 ${
-        isDark ? 'bg-[#08090b] text-zinc-100' : 'bg-white text-slate-950'
+        isDark ? 'bg-[#08090b] text-zinc-100' : 'bg-[#f5f7fb] text-slate-950'
       }`}
     >
       <div className="relative z-10 flex min-h-screen flex-col px-4 py-4 sm:px-6">
@@ -86,9 +86,7 @@ const ForgetPassword = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.28, ease: 'easeOut' }}
-            className={`w-full max-w-md rounded-[28px] px-6 py-8 sm:px-8 sm:py-10 ${
-              isDark ? 'bg-zinc-950/75' : 'bg-white/90'
-            }`}
+            className="w-full max-w-md rounded-[28px] px-6 py-8 sm:px-8 sm:py-1"
           >
             <div className="space-y-7">
               <div className="space-y-3 text-center">
