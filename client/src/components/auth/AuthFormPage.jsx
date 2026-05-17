@@ -206,7 +206,7 @@ const AuthFormPage = ({ mode = 'signin' }) => {
                     <input
                       type="text"
                       name="name"
-                      placeholder="Brandon Tun"
+                      placeholder="Enter your full name"
                       className={`${inputClass(isDark)} pl-11`}
                     />
                   </div>
