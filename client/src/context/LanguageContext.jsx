@@ -1,10 +1,38 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
-import englishTranslations from '../locales/en.json'
-import burmeseTranslations from '../locales/my.json'
+import englishCommon from '../locales/en/common.json'
+import englishLanding from '../locales/en/landing.json'
+import englishAuth from '../locales/en/auth.json'
+import englishDashboard from '../locales/en/dashboard.json'
+import englishSettings from '../locales/en/settings.json'
+import englishNotFound from '../locales/en/not-found.json'
+import burmeseCommon from '../locales/my/common.json'
+import burmeseLanding from '../locales/my/landing.json'
+import burmeseAuth from '../locales/my/auth.json'
+import burmeseDashboard from '../locales/my/dashboard.json'
+import burmeseSettings from '../locales/my/settings.json'
+import burmeseNotFound from '../locales/my/not-found.json'
 
 const STORAGE_KEY = 'app-preferences'
 const LanguageContext = createContext(null)
+
+const englishTranslations = {
+  ...englishCommon,
+  ...englishLanding,
+  ...englishAuth,
+  ...englishDashboard,
+  ...englishSettings,
+  ...englishNotFound,
+}
+
+const burmeseTranslations = {
+  ...burmeseCommon,
+  ...burmeseLanding,
+  ...burmeseAuth,
+  ...burmeseDashboard,
+  ...burmeseSettings,
+  ...burmeseNotFound,
+}
 
 const translationTables = {
   english: englishTranslations,
