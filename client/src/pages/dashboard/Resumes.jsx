@@ -147,7 +147,7 @@ const Resumes = () => {
       <div className="relative z-10 min-h-screen">
         <Sidebar isDark={isDark} />
 
-        <PageContentTransition className="lg:ml-65 p-3">
+        <PageContentTransition className="overflow-x-hidden lg:ml-65 p-3">
           <div className="mx-auto max-w-420=">
             <ResumesToolbar
               isDark={isDark}
