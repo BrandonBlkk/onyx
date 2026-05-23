@@ -205,10 +205,10 @@ const Resumes = () => {
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -8 }}
-                  transition={layoutSwitchTransition}
+                   transition={layoutSwitchTransition}
                   className={`gap-3 ${
                     viewMode === 'grid'
-                      ? 'grid grid-cols-5'
+                      ? 'grid grid-cols-1 md:grid-cols-3 xl:grid-cols-5'
                       : 'flex flex-col'
                   }`}
                 >
