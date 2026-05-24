@@ -1,7 +1,7 @@
 import SidebarLink from './SidebarLink'
 import { useLanguage } from '../../../context/LanguageContext'
 
-const SidebarSection = ({ title, items, isDark }) => {
+const SidebarSection = ({ title, items, isDark, onNavigate }) => {
   const { t } = useLanguage()
 
   return (
@@ -16,7 +16,12 @@ const SidebarSection = ({ title, items, isDark }) => {
 
       <div className="mt-3 space-y-1.5 select-none">
         {items.map((item) => (
-          <SidebarLink key={item.label} item={item} isDark={isDark} />
+          <SidebarLink
+            key={item.label}
+            item={item}
+            isDark={isDark}
+            onNavigate={onNavigate}
+          />
         ))}
       </div>
     </section>
