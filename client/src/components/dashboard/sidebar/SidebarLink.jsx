@@ -1,7 +1,7 @@
 import { Link, NavLink } from 'react-router-dom'
 import { useLanguage } from '../../../context/LanguageContext'
 
-const SidebarLink = ({ item, isDark }) => {
+const SidebarLink = ({ item, isDark, onNavigate }) => {
   const Icon = item.icon
   const { t } = useLanguage()
   const baseClass = `flex items-center gap-3 rounded-md px-3.5 py-2.5 text-[13px] font-medium tracking-tight transition-all duration-200`
@@ -10,6 +10,7 @@ const SidebarLink = ({ item, isDark }) => {
     return (
       <NavLink
         to={item.href}
+        onClick={onNavigate}
         className={({ isActive }) =>
           `${baseClass} ${isActive ? isDark ? 'bg-zinc-900' : `${item.danger ? 'bg-red-600 text-white hover:bg-red-700' : 'bg-black hover:bg-zinc-900 text-zinc-300'} hover:text-white` : ''}`
         }
