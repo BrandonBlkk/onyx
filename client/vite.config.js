@@ -8,4 +8,9 @@ export default defineConfig({
     react(),
     tailwindcss()
   ],
+  server: {
+    proxy: {
+      '/onyx': 'http://localhost:3000',
+    },
+  },
 })
