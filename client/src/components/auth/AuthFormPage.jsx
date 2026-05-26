@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import {
   ArrowLeft,
@@ -58,11 +59,77 @@ const socialButtonClass = (isDark, emphasis) => {
     : 'border-slate-300 bg-white text-slate-900 hover:border-slate-400 hover:bg-slate-50'
 }
 
+const initialFormState = {
+  fullname: '',
+  email: '',
+  password: '',
+}
+
 const AuthFormPage = ({ mode = 'signin' }) => {
   const { isDark, toggleTheme } = useTheme()
   const { language, toggleLanguage, t } = useLanguage()
   const content = authContent[mode] ?? authContent.signin
   const isSignup = mode === 'signup'
+  const [formData, setFormData] = useState(initialFormState)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitMessage, setSubmitMessage] = useState({
+    type: '',
+    text: '',
+  })
+  const signupFieldProps = (fieldName) =>
+    isSignup
+      ? {
+          value: formData[fieldName],
+          onChange: handleChange,
+        }
+      : {}
+
+  const handleChange = ({ target: { name, value } }) => {
+    setFormData((current) => ({
+      ...current,
+      [name]: value,
+    }))
+  }
+
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+
+    if (!isSignup || isSubmitting) {
+      return
+    }
+
+    setIsSubmitting(true)
+    setSubmitMessage({ type: '', text: '' })
+
+    try {
+      const response = await fetch('/onyx/api/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+
+      const data = await response.json().catch(() => ({}))
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Unable to create account right now.')
+      }
+
+      setFormData(initialFormState)
+      setSubmitMessage({
+        type: 'success',
+        text: 'Account created successfully. You can sign in now.',
+      })
+    } catch (error) {
+      setSubmitMessage({
+        type: 'error',
+        text: error.message || 'Unable to create account right now.',
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
 
   return (
     <div
@@ -187,7 +254,10 @@ const AuthFormPage = ({ mode = 'signin' }) => {
               <div className={`h-px flex-1 ${isDark ? 'bg-zinc-800' : 'bg-slate-200'}`} />
             </div>
 
-            <form onSubmit={(event) => event.preventDefault()} className="space-y-3">
+            <form
+              onSubmit={isSignup ? handleSubmit : (event) => event.preventDefault()}
+              className="space-y-3"
+            >
               {isSignup ? (
                 <label className="block">
                   <span
@@ -205,9 +275,10 @@ const AuthFormPage = ({ mode = 'signin' }) => {
                     />
                     <input
                       type="text"
-                      name="name"
+                      name="fullname"
                       placeholder="Enter your full name"
                       className={`${inputClass(isDark)} pl-11`}
+                      {...signupFieldProps('fullname')}
                     />
                   </div>
                 </label>
@@ -232,6 +303,7 @@ const AuthFormPage = ({ mode = 'signin' }) => {
                     name="email"
                     placeholder="you@example.com"
                     className={`${inputClass(isDark)} pl-11`}
+                    {...signupFieldProps('email')}
                   />
                 </div>
               </label>
@@ -255,6 +327,7 @@ const AuthFormPage = ({ mode = 'signin' }) => {
                     name="password"
                     placeholder={isSignup ? 'Create a strong password' : 'Enter your password'}
                     className={`${inputClass(isDark)} pl-11`}
+                    {...signupFieldProps('password')}
                   />
                 </div>
               </label>
@@ -283,14 +356,31 @@ const AuthFormPage = ({ mode = 'signin' }) => {
 
               <button
                 type="submit"
+                disabled={isSignup && isSubmitting}
                 className={`inline-flex w-full items-center justify-center px-4 py-2.5 text-sm font-medium transition-colors select-none cursor-pointer ${
                   isDark
                     ? 'bg-white text-zinc-950 hover:bg-zinc-200'
                     : 'bg-slate-900 text-white hover:bg-slate-800'
                 }`}
               >
-                {t(content.submitLabel)}
+                {isSignup && isSubmitting ? t('Creating account...') : t(content.submitLabel)}
               </button>
+
+              {isSignup && submitMessage.text ? (
+                <p
+                  className={`text-xs ${
+                    submitMessage.type === 'success'
+                      ? isDark
+                        ? 'text-emerald-400'
+                        : 'text-emerald-700'
+                      : isDark
+                        ? 'text-rose-400'
+                        : 'text-rose-700'
+                  }`}
+                >
+                  {t(submitMessage.text)}
+                </p>
+              ) : null}
             </form>
 
             <p
