@@ -9,7 +9,7 @@ import {
   Sun,
   UserRound,
 } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import logo from '../../assets/images/logo.png'
 import logo2 from '../../assets/images/logo2.png'
 import { useLanguage } from '../../context/LanguageContext'
@@ -68,6 +68,7 @@ const initialFormState = {
 const AuthFormPage = ({ mode = 'signin' }) => {
   const { isDark, toggleTheme } = useTheme()
   const { language, toggleLanguage, t } = useLanguage()
+  const navigate = useNavigate()
   const content = authContent[mode] ?? authContent.signin
   const isSignup = mode === 'signup'
   const [formData, setFormData] = useState(initialFormState)
@@ -76,13 +77,10 @@ const AuthFormPage = ({ mode = 'signin' }) => {
     type: '',
     text: '',
   })
-  const signupFieldProps = (fieldName) =>
-    isSignup
-      ? {
-          value: formData[fieldName],
-          onChange: handleChange,
-        }
-      : {}
+  const fieldProps = (fieldName) => ({
+    value: formData[fieldName],
+    onChange: handleChange,
+  })
 
   const handleChange = ({ target: { name, value } }) => {
     setFormData((current) => ({
@@ -94,7 +92,7 @@ const AuthFormPage = ({ mode = 'signin' }) => {
   const handleSubmit = async (event) => {
     event.preventDefault()
 
-    if (!isSignup || isSubmitting) {
+    if (isSubmitting) {
       return
     }
 
@@ -102,29 +100,47 @@ const AuthFormPage = ({ mode = 'signin' }) => {
     setSubmitMessage({ type: '', text: '' })
 
     try {
-      const response = await fetch('/onyx/api/users', {
+      const url = isSignup ? '/onyx/api/users' : '/onyx/api/users/login'
+      const payload = isSignup
+        ? formData
+        : { email: formData.email, password: formData.password }
+
+      const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       })
 
       const data = await response.json().catch(() => ({}))
 
       if (!response.ok) {
-        throw new Error(data.message || 'Unable to create account right now.')
+        throw new Error(
+          data.message ||
+            (isSignup
+              ? 'Unable to create account right now.'
+              : 'Unable to sign in right now.'),
+        )
       }
 
-      setFormData(initialFormState)
-      setSubmitMessage({
-        type: 'success',
-        text: 'Account created successfully. You can sign in now.',
-      })
+      if (isSignup) {
+        setFormData(initialFormState)
+        setSubmitMessage({
+          type: 'success',
+          text: 'Account created successfully. You can sign in now.',
+        })
+      } else {
+        navigate('/dashboard/resumes')
+      }
     } catch (error) {
       setSubmitMessage({
         type: 'error',
-        text: error.message || 'Unable to create account right now.',
+        text:
+          error.message ||
+          (isSignup
+            ? 'Unable to create account right now.'
+            : 'Unable to sign in right now.'),
       })
     } finally {
       setIsSubmitting(false)
@@ -255,7 +271,7 @@ const AuthFormPage = ({ mode = 'signin' }) => {
             </div>
 
             <form
-              onSubmit={isSignup ? handleSubmit : (event) => event.preventDefault()}
+              onSubmit={handleSubmit}
               className="space-y-3"
             >
               {isSignup ? (
@@ -278,7 +294,7 @@ const AuthFormPage = ({ mode = 'signin' }) => {
                       name="fullname"
                       placeholder="Enter your full name"
                       className={`${inputClass(isDark)} pl-11`}
-                      {...signupFieldProps('fullname')}
+                      {...fieldProps('fullname')}
                     />
                   </div>
                 </label>
@@ -303,7 +319,7 @@ const AuthFormPage = ({ mode = 'signin' }) => {
                     name="email"
                     placeholder="you@example.com"
                     className={`${inputClass(isDark)} pl-11`}
-                    {...signupFieldProps('email')}
+                    {...fieldProps('email')}
                   />
                 </div>
               </label>
@@ -327,7 +343,7 @@ const AuthFormPage = ({ mode = 'signin' }) => {
                     name="password"
                     placeholder={isSignup ? 'Create a strong password' : 'Enter your password'}
                     className={`${inputClass(isDark)} pl-11`}
-                    {...signupFieldProps('password')}
+                    {...fieldProps('password')}
                   />
                 </div>
               </label>
@@ -356,17 +372,19 @@ const AuthFormPage = ({ mode = 'signin' }) => {
 
               <button
                 type="submit"
-                disabled={isSignup && isSubmitting}
+                disabled={isSubmitting}
                 className={`inline-flex w-full items-center justify-center px-4 py-2.5 text-sm font-medium transition-colors select-none cursor-pointer ${
                   isDark
                     ? 'bg-white text-zinc-950 hover:bg-zinc-200'
                     : 'bg-slate-900 text-white hover:bg-slate-800'
                 }`}
               >
-                {isSignup && isSubmitting ? t('Creating account...') : t(content.submitLabel)}
+                {isSubmitting
+                  ? t(isSignup ? 'Creating account...' : 'Signing in...')
+                  : t(content.submitLabel)}
               </button>
 
-              {isSignup && submitMessage.text ? (
+              {submitMessage.text ? (
                 <p
                   className={`text-xs ${
                     submitMessage.type === 'success'
