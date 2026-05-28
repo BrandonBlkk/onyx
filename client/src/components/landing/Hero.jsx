@@ -97,7 +97,7 @@ const Hero = ({ isDark = true }) => {
           transition={{ duration: 0.6, delay: 0.5 }}
           className="flex flex-col sm:flex-row items-center justify-center gap-4 select-none"
         >
-          <Link to={'dashboard/resumes'}
+          <Link to={'/auth/signin'}
             className={`group relative inline-flex items-center gap-2.5 px-7 py-3.5 text-sm font-semibold transition-all duration-300 active:scale-[0.97] ${
               isDark
                 ? `bg-white text-zinc-900 hover:bg-zinc-200 ${primaryButtonGlowClass}`

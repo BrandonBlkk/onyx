@@ -9,6 +9,26 @@ const getAllUsers = async (req, res) => {
     }
 }
 
+const getMe = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id).select('-password')
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' })
+        }
+        res.status(200).json({
+            user: {
+                id: user._id,
+                fullname: user.fullname,
+                email: user.email,
+                createdAt: user.createdAt,
+                updatedAt: user.updatedAt,
+            }
+        })
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+}
+
 const getSingleUser = async (req, res) => {
     res.send('get single user')
 }
@@ -23,6 +43,7 @@ const deleteUser = async (req, res) => {
 
 export default {
     getAllUsers,
+    getMe,
     getSingleUser,
     updateUser,
     deleteUser

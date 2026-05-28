@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useAuth } from '../../context/AuthContext'
 import { motion } from 'framer-motion'
 import {
   ArrowLeft,
@@ -68,6 +69,7 @@ const initialFormState = {
 const AuthFormPage = ({ mode = 'signin' }) => {
   const { isDark, toggleTheme } = useTheme()
   const { language, toggleLanguage, t } = useLanguage()
+  const { login } = useAuth()
   const navigate = useNavigate()
   const content = authContent[mode] ?? authContent.signin
   const isSignup = mode === 'signup'
@@ -131,6 +133,7 @@ const AuthFormPage = ({ mode = 'signin' }) => {
           text: 'Account created successfully. You can sign in now.',
         })
       } else {
+        login(data.token, data.user)
         navigate('/dashboard/resumes')
       }
     } catch (error) {

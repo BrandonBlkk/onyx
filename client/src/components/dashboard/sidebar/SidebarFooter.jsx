@@ -4,6 +4,7 @@ import { ChevronUp, Languages, LogOut, Moon, Sun } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { useTheme } from '../../../context/ThemeContext'
 import { useLanguage } from '../../../context/LanguageContext'
+import { useAuth } from '../../../context/AuthContext'
 
 const PREFERENCES_STORAGE_KEY = 'app-preferences'
 
@@ -34,6 +35,7 @@ const SidebarFooter = ({ isDark }) => {
   const navigate = useNavigate()
   const { theme, setTheme } = useTheme()
   const { language, setLanguage, t } = useLanguage()
+  const { user, logout } = useAuth()
   const [menuOpen, setMenuOpen] = useState(false)
   const containerRef = useRef(null)
 
@@ -71,8 +73,20 @@ const SidebarFooter = ({ isDark }) => {
 
   const handleLogout = () => {
     setMenuOpen(false)
-    navigate('/')
+    navigate('/', { replace: true })
+    setTimeout(() => logout(), 100)
   }
+
+  const displayName = user ? user.fullname : t('Guest')
+  const displayEmail = user ? user.email : t('Not signed in')
+  const initials = user
+    ? user.fullname
+        .split(' ')
+        .map((n) => n[0])
+        .join('')
+        .toUpperCase()
+        .slice(0, 2)
+    : 'G'
 
   const handleMenuToggle = () => {
     setMenuOpen((prev) => !prev)
@@ -186,14 +200,14 @@ const SidebarFooter = ({ isDark }) => {
               isDark ? 'hover:bg-zinc-900/70' : 'hover:bg-slate-100/80'
             }`}
           >
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-linear-to-br from-cyan-400 to-blue-500 text-[13px] font-semibold text-slate-950 select-none">
-              BT
+            <div className={`flex h-8 w-8 items-center justify-center rounded-full text-[13px] font-semibold select-none ${user ? 'bg-linear-to-br from-cyan-400 to-blue-500 text-slate-950' : isDark ? 'bg-zinc-800 text-zinc-400' : 'bg-slate-200 text-slate-500'}`}>
+              {initials}
             </div>
 
             <div className="min-w-0 flex-1 text-left">
-              <p className="truncate text-[13px] font-semibold">Brandon</p>
+              <p className="truncate text-[13px] font-semibold">{displayName}</p>
               <p className={`truncate text-[11px] ${isDark ? 'text-zinc-400' : 'text-slate-500'}`}>
-                kyawzayartun0527@gmail.com
+                {displayEmail}
               </p>
             </div>
 

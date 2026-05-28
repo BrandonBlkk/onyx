@@ -10,6 +10,7 @@ import DangerZone from './pages/settings/DangerZone'
 import UserSignin from './pages/auth/UserSignin'
 import UserSignup from './pages/auth/UserSignup'
 import ForgetPassword from './pages/auth/ForgetPassword'
+import ProtectedRoute from './components/auth/ProtectedRoute'
 
 const PageTransition = ({ children }) => (
   <motion.div
@@ -26,11 +27,11 @@ const App = () => {
     <div>
       <Routes>
         <Route path="/" element={<PageTransition><Landing /></PageTransition>} />
-        <Route path="/dashboard/resumes" element={<Resumes />} />
-        <Route path="/settings/profile" element={<Profile />} />
-        <Route path="/settings/preferences" element={<Preferences />} />
-        <Route path="/settings/authentication" element={<Authentication />} />
-        <Route path="/settings/danger-zone" element={<DangerZone />} />
+        <Route path="/dashboard/resumes" element={<ProtectedRoute><Resumes /></ProtectedRoute>} />
+        <Route path="/settings/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+        <Route path="/settings/preferences" element={<ProtectedRoute><Preferences /></ProtectedRoute>} />
+        <Route path="/settings/authentication" element={<ProtectedRoute><Authentication /></ProtectedRoute>} />
+        <Route path="/settings/danger-zone" element={<ProtectedRoute><DangerZone /></ProtectedRoute>} />
         <Route path="/auth/signin" element={<UserSignin />} />
         <Route path="/auth/signup" element={<UserSignup />} />
         <Route path="/auth/forget-password" element={<ForgetPassword />} />
