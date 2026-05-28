@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import logo from '../../assets/images/logo.png'
 import logo2 from '../../assets/images/logo2.png'
 import { useLanguage } from '../../context/LanguageContext'
@@ -40,8 +41,8 @@ const Footer = ({ isDark = true }) => {
             }`}>
               {t('Join thousands of employees who have landed their dream roles with Onyx.')}
             </p>
-            <a
-              href="#"
+            <Link
+              to="/auth/signin"
               className={`inline-flex items-center gap-2 px-7 py-3.5 text-sm font-semibold transition-all duration-300 active:scale-[0.97] select-none ${
                 isDark
                   ? `bg-white text-zinc-900 hover:bg-zinc-200 ${primaryButtonGlowClass}`
@@ -53,7 +54,7 @@ const Footer = ({ isDark = true }) => {
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
               </svg>
-            </a>
+            </Link>
           </div>
         </div>
 

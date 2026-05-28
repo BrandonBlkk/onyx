@@ -5,11 +5,13 @@ import logo from '../assets/images/logo.png'
 import logo2 from '../assets/images/logo2.png'
 import { useTheme } from '../context/ThemeContext'
 import { useLanguage } from '../context/LanguageContext'
+import { useAuth } from '../context/AuthContext'
 import { Link } from 'react-router-dom'
 
 const Navbar = () => {
   const { isDark, toggleTheme } = useTheme()
   const { language, toggleLanguage, t } = useLanguage()
+  const { user } = useAuth()
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
 
@@ -85,26 +87,55 @@ const Navbar = () => {
             )}
           </button>
 
-          <Link
-            to="/auth/signin"
-            className={`text-sm transition-colors ${navClass}`}
-            id="nav-signin"
-          >
-            {t('Sign in')}
-          </Link>
-          <Link to="/auth/signup"
-            className={`inline-flex items-center gap-2 px-4 py-2 text-sm font-medium transition-all duration-200 active:scale-[0.97] ${
-              isDark
-                ? 'bg-white text-zinc-900 hover:bg-zinc-200'
-                : 'bg-slate-900 text-white hover:bg-slate-800'
-            }`}
-            id="nav-cta"
-          >
-            {t('Get Started')}
-            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-            </svg>
-          </Link>
+          {user ? (
+            <Link
+              to="/dashboard/resumes"
+              className={`inline-flex items-center gap-2.5 px-4 py-2 text-sm font-medium transition-all duration-200 active:scale-[0.97] ${
+                isDark
+                  ? 'bg-white text-zinc-900 hover:bg-zinc-200'
+                  : 'bg-slate-900 text-white hover:bg-slate-800'
+              }`}
+              id="nav-dashboard"
+            >
+              <div className={`flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold select-none ${
+                isDark
+                  ? 'bg-zinc-800 text-white'
+                  : 'bg-white/20 text-white'
+              }`}>
+                {user.fullname
+                  .split(' ')
+                  .map((n) => n[0])
+                  .join('')
+                  .toUpperCase()
+                  .slice(0, 2)
+                }
+              </div>
+              {t('Dashboard')}
+            </Link>
+          ) : (
+            <>
+              <Link
+                to="/auth/signin"
+                className={`text-sm transition-colors ${navClass}`}
+                id="nav-signin"
+              >
+                {t('Sign in')}
+              </Link>
+              <Link to="/auth/signup"
+                className={`inline-flex items-center gap-2 px-4 py-2 text-sm font-medium transition-all duration-200 active:scale-[0.97] ${
+                  isDark
+                    ? 'bg-white text-zinc-900 hover:bg-zinc-200'
+                    : 'bg-slate-900 text-white hover:bg-slate-800'
+                }`}
+                id="nav-cta"
+              >
+                {t('Get Started')}
+                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                </svg>
+              </Link>
+            </>
+          )}
         </div>
 
         <button
@@ -157,21 +188,41 @@ const Navbar = () => {
                 {t('Theme')}
               </button>
               <div className={`pt-4 border-t space-y-3 ${isDark ? 'border-zinc-800/60' : 'border-slate-200'}`}>
-                <Link to="/auth/signin" className={`block text-sm transition-colors ${navClass}`}>
-                  {t('Sign in')}
-                </Link>
-                <Link to="/auth/signup"
-                  className={`inline-flex w-full items-center justify-center gap-2 px-4 py-2 text-sm font-medium ${
-                    isDark
-                      ? 'bg-white text-zinc-900'
-                      : 'bg-slate-900 text-white'
-                  }`}
-                >
-                  {t('Get Started')}
-                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-                  </svg>
-                </Link>
+                {user ? (
+                  <Link
+                    to="/dashboard/resumes"
+                    onClick={() => setMobileOpen(false)}
+                    className={`inline-flex w-full items-center justify-center gap-2 px-4 py-2 text-sm font-medium ${
+                      isDark
+                        ? 'bg-white text-zinc-900'
+                        : 'bg-slate-900 text-white'
+                    }`}
+                  >
+                    {t('Dashboard')}
+                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                    </svg>
+                  </Link>
+                ) : (
+                  <>
+                    <Link to="/auth/signin" onClick={() => setMobileOpen(false)} className={`block text-sm transition-colors ${navClass}`}>
+                      {t('Sign in')}
+                    </Link>
+                    <Link to="/auth/signup"
+                      onClick={() => setMobileOpen(false)}
+                      className={`inline-flex w-full items-center justify-center gap-2 px-4 py-2 text-sm font-medium ${
+                        isDark
+                          ? 'bg-white text-zinc-900'
+                          : 'bg-slate-900 text-white'
+                      }`}
+                    >
+                      {t('Get Started')}
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                      </svg>
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
           </motion.div>
