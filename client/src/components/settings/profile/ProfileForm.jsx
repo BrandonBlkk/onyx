@@ -14,7 +14,12 @@ const ProfileForm = ({ isDark }) => {
     <form className="max-w-2xl space-y-3">
       {profileFields.map((field) => (
         <div key={`${field.name}-${profileValues[field.name]}`}>
-          <ProfileField {...field} defaultValue={profileValues[field.name] ?? ''} isDark={isDark} />
+          <ProfileField
+            {...field}
+            defaultValue={profileValues[field.name] ?? ''}
+            readOnly={field.name === 'email'}
+            isDark={isDark}
+          />
         </div>
       ))}
     </form>

@@ -6,6 +6,7 @@ const ProfileField = ({
   type = 'text',
   defaultValue,
   helperText,
+  readOnly = false,
   isDark,
 }) => {
   const { t } = useLanguage()
@@ -22,7 +23,7 @@ const ProfileField = ({
   return (
     <label className="block">
       <span className={labelClass}>{t(label)}</span>
-      <input name={name} type={type} defaultValue={defaultValue} placeholder={`Enter your ${t(label).toLowerCase()}`} className={inputClass} />
+      <input name={name} type={type} defaultValue={defaultValue} readOnly={readOnly} placeholder={`Enter your ${t(label).toLowerCase()}`} className={inputClass} />
       {helperText && (
         <p className={`mt-2 inline-flex items-center rounded-full px-2 py-1 text-[11px] font-medium select-none ${
           isDark ? 'bg-emerald-500/10 text-emerald-400' : 'bg-emerald-50 text-emerald-600'
