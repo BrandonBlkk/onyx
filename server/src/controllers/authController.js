@@ -79,7 +79,7 @@ const loginUser = async (req, res) => {
 
         const user = await User.findOne({ email: normalizedEmail });
         if (!user) {
-            return res.status(401).json({ message: 'Invalid credentials' });
+            return res.status(401).json({ message: 'No user found with this email' });
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
@@ -89,7 +89,7 @@ const loginUser = async (req, res) => {
 
         const token = generateToken(user)
         res.status(200).json({
-            message: "Login successful",
+            message: "Welcome to Onyx",
             token,
             user: formatUser(user)
         });
