@@ -3,6 +3,8 @@ import { useAuth } from '../../context/AuthContext'
 import { motion } from 'framer-motion'
 import {
   ArrowLeft,
+  Eye,
+  EyeClosed,
   Languages,
   LockKeyhole,
   Mail,
@@ -74,6 +76,7 @@ const AuthFormPage = ({ mode = 'signin' }) => {
   const navigate = useNavigate()
   const content = authContent[mode] ?? authContent.signin
   const isSignup = mode === 'signup'
+  const [showPassword, setShowPassword] = useState(false)
   const [formData, setFormData] = useState(initialFormState)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const fieldProps = (fieldName) => ({
@@ -86,6 +89,10 @@ const AuthFormPage = ({ mode = 'signin' }) => {
       ...current,
       [name]: value,
     }))
+  }
+
+  const handleTogglePassword = () => {
+    setShowPassword((current) => !current)
   }
 
   const handleSubmit = async (event) => {
@@ -336,12 +343,26 @@ const AuthFormPage = ({ mode = 'signin' }) => {
                     }`}
                   />
                   <input
-                    type="password"
+                    type={showPassword ? 'text' : 'password'}
                     name="password"
                     placeholder={isSignup ? 'Create a strong password' : 'Enter your password'}
-                    className={`${inputClass(isDark)} pl-11`}
+                    className={`${inputClass(isDark)} pl-11 pr-11`}
                     {...fieldProps('password')}
                   />
+                  <button
+                    type="button"
+                    onClick={handleTogglePassword}
+                    className={`absolute top-1/2 mt-1 right-3 z-10 flex h-8 w-8 -translate-y-1/2 items-center justify-center cursor-pointer ${
+                      isDark ? 'text-zinc-500' : 'text-slate-400'
+                    }`}
+                    aria-label={t(showPassword ? 'Hide password' : 'Show password')}
+                  >
+                    {showPassword ? (
+                      <Eye className="h-4 w-4" />
+                    ) : (
+                      <EyeClosed className="h-4 w-4" />
+                    )}
+                  </button>
                 </div>
               </label>
 
