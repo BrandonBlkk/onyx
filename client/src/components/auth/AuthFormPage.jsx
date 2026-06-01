@@ -11,6 +11,7 @@ import {
   UserRound,
 } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
+import { toast } from 'sonner'
 import logo from '../../assets/images/logo.png'
 import logo2 from '../../assets/images/logo2.png'
 import { useLanguage } from '../../context/LanguageContext'
@@ -75,10 +76,6 @@ const AuthFormPage = ({ mode = 'signin' }) => {
   const isSignup = mode === 'signup'
   const [formData, setFormData] = useState(initialFormState)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitMessage, setSubmitMessage] = useState({
-    type: '',
-    text: '',
-  })
   const fieldProps = (fieldName) => ({
     value: formData[fieldName],
     onChange: handleChange,
@@ -99,7 +96,6 @@ const AuthFormPage = ({ mode = 'signin' }) => {
     }
 
     setIsSubmitting(true)
-    setSubmitMessage({ type: '', text: '' })
 
     try {
       const url = isSignup ? '/onyx/api/users' : '/onyx/api/users/login'
@@ -128,23 +124,21 @@ const AuthFormPage = ({ mode = 'signin' }) => {
 
       if (isSignup) {
         setFormData(initialFormState)
-        setSubmitMessage({
-          type: 'success',
-          text: 'Account created successfully. You can sign in now.',
-        })
+        toast.success(t('Account created successfully. You can sign in now.'))
       } else {
         login(data.token, data.user)
+        toast.success(t('Login successful'))
         navigate('/dashboard/resumes')
       }
     } catch (error) {
-      setSubmitMessage({
-        type: 'error',
-        text:
+      toast.error(
+        t(
           error.message ||
-          (isSignup
-            ? 'Unable to create account right now.'
-            : 'Unable to sign in right now.'),
-      })
+            (isSignup
+              ? 'Unable to create account right now.'
+              : 'Unable to sign in right now.'),
+        ),
+      )
     } finally {
       setIsSubmitting(false)
     }
@@ -394,22 +388,6 @@ const AuthFormPage = ({ mode = 'signin' }) => {
                   t(content.submitLabel)
                 )}
               </button>
-
-              {submitMessage.text ? (
-                <p
-                  className={`text-xs ${
-                    submitMessage.type === 'success'
-                      ? isDark
-                        ? 'text-emerald-400'
-                        : 'text-emerald-700'
-                      : isDark
-                        ? 'text-rose-400'
-                        : 'text-rose-700'
-                  }`}
-                >
-                  {t(submitMessage.text)}
-                </p>
-              ) : null}
             </form>
 
             <p
