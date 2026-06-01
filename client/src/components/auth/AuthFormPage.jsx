@@ -380,11 +380,19 @@ const AuthFormPage = ({ mode = 'signin' }) => {
                   isDark
                     ? 'bg-white text-zinc-950 hover:bg-zinc-200'
                     : 'bg-slate-900 text-white hover:bg-slate-800'
-                }`}
+                } ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
               >
-                {isSubmitting
-                  ? t(isSignup ? 'Creating account...' : 'Signing in...')
-                  : t(content.submitLabel)}
+                {isSubmitting ? (
+                  <>
+                    <div 
+                      id="submitSpinner" 
+                      className="w-5 h-5 border-t-2 border-current rounded-full animate-spin mr-2" 
+                    />
+                    {t(isSignup ? 'Creating account' : 'Signing in')}...
+                  </>
+                ) : (
+                  t(content.submitLabel)
+                )}
               </button>
 
               {submitMessage.text ? (
