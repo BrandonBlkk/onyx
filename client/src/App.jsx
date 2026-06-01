@@ -11,6 +11,7 @@ import UserSignin from './pages/auth/UserSignin'
 import UserSignup from './pages/auth/UserSignup'
 import ForgetPassword from './pages/auth/ForgetPassword'
 import ProtectedRoute from './components/auth/ProtectedRoute'
+import { Toaster } from './components/ui/sonner'
 
 const PageTransition = ({ children }) => (
   <motion.div
@@ -37,6 +38,7 @@ const App = () => {
         <Route path="/auth/forget-password" element={<ForgetPassword />} />
         <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
       </Routes>
+      <Toaster />
     </div>
   )
 }
