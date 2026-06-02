@@ -11,7 +11,7 @@ import UserSignin from './pages/auth/UserSignin'
 import UserSignup from './pages/auth/UserSignup'
 import ForgetPassword from './pages/auth/ForgetPassword'
 import ProtectedRoute from './components/auth/ProtectedRoute'
-import { Toaster } from './components/ui/sonner'
+import { Toaster } from './components/ui/Sonner'
 
 const PageTransition = ({ children }) => (
   <motion.div

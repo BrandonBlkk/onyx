@@ -1,6 +1,6 @@
 import { AlertTriangle } from 'lucide-react'
 import Sidebar from '../../components/dashboard/sidebar/Sidebar'
-import PageContentTransition from '../../components/PageContentTransition'
+import PageContentTransition from '../../components/ui/PageContentTransition'
 import DangerZoneChecklist from '../../components/settings/danger-zone/DangerZoneChecklist'
 import DeleteAccountCard from '../../components/settings/danger-zone/DeleteAccountCard'
 import { useTheme } from '../../context/ThemeContext'

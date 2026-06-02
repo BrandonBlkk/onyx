@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { MoveUp } from 'lucide-react'
-import { useLanguage } from '../context/LanguageContext'
+import { useLanguage } from '../../context/LanguageContext'
 
 const MoveUpButton = ({ isDark = true }) => {
   const [isVisible, setIsVisible] = useState(false)

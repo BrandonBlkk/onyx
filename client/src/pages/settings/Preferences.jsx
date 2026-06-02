@@ -1,6 +1,6 @@
 import { SlidersHorizontal } from 'lucide-react'
 import Sidebar from '../../components/dashboard/sidebar/Sidebar'
-import PageContentTransition from '../../components/PageContentTransition'
+import PageContentTransition from '../../components/ui/PageContentTransition'
 import PreferencesForm from '../../components/settings/preferences/PreferencesForm'
 import { useTheme } from '../../context/ThemeContext'
 import { useLanguage } from '../../context/LanguageContext'

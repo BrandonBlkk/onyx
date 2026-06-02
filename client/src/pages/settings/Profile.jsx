@@ -1,6 +1,6 @@
 import { UserRound } from 'lucide-react'
 import Sidebar from '../../components/dashboard/sidebar/Sidebar'
-import PageContentTransition from '../../components/PageContentTransition'
+import PageContentTransition from '../../components/ui/PageContentTransition'
 import ProfileForm from '../../components/settings/profile/ProfileForm'
 import { useTheme } from '../../context/ThemeContext'
 import { useLanguage } from '../../context/LanguageContext'
