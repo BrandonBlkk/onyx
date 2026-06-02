@@ -1,6 +1,6 @@
 import { ShieldCheck } from 'lucide-react'
 import Sidebar from '../../components/dashboard/sidebar/Sidebar'
-import PageContentTransition from '../../components/PageContentTransition'
+import PageContentTransition from '../../components/ui/PageContentTransition'
 import AuthenticationConnections from '../../components/settings/authentication/AuthenticationConnections'
 import AuthenticationSummary from '../../components/settings/authentication/AuthenticationSummary'
 import { useTheme } from '../../context/ThemeContext'

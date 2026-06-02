@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Languages, Moon, Sun } from 'lucide-react'
-import logo from '../assets/images/logo.png'
-import logo2 from '../assets/images/logo2.png'
-import { useTheme } from '../context/ThemeContext'
-import { useLanguage } from '../context/LanguageContext'
-import { useAuth } from '../context/AuthContext'
+import logo from '../../assets/images/logo.png'
+import logo2 from '../../assets/images/logo2.png'
+import { useTheme } from '../../context/ThemeContext'
+import { useLanguage } from '../../context/LanguageContext'
+import { useAuth } from '../../context/AuthContext'
 import { Link } from 'react-router-dom'
 
 const Navbar = () => {

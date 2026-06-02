@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
-import Navbar from '../components/Navbar'
+import Navbar from '../components/ui/Navbar'
 import Hero from '../components/landing/Hero'
 import HowItWorks from '../components/landing/HowItWorks'
 import FeatureGrid from '../components/landing/FeatureGrid'
 import LivePreview from '../components/landing/LivePreview'
 import Footer from '../components/landing/Footer'
-import MoveUpButton from '../components/MoveUpButton'
 import { useTheme } from '../context/ThemeContext'
+import MoveUpButton from '../components/ui/MoveUpButton'
 
 const Landing = () => {
   const [isAtBottom, setIsAtBottom] = useState(false)
