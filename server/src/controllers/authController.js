@@ -98,4 +98,32 @@ const loginUser = async (req, res) => {
     }
 };
 
-export default { createUser, loginUser }
+const forgetPassword = async (req, res) => {
+    try {
+        const { email } = req.body;
+
+        if (!email) {
+            return res.status(400).json({
+                message: 'Email is required',
+            })
+        }
+
+        const normalizedEmail = email.trim().toLowerCase();
+
+        const user = await User.findOne({email: normalizedEmail});
+        if (!user) {
+            return res.status(401).json({ message: 'No user found with this email' });
+        }
+
+        const token = generateToken(user)
+        res.status(200).json({
+            message: "Password reset link sent to your email",
+            token,
+            user: formatUser(user)
+        }); 
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+}
+
+export default { createUser, loginUser, forgetPassword }
