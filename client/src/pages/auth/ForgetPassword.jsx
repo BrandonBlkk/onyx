@@ -1,6 +1,8 @@
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowLeft, Languages, Mail, Moon, Sun } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { toast } from 'sonner'
 import { useLanguage } from '../../context/LanguageContext'
 import { useTheme } from '../../context/ThemeContext'
 
@@ -11,9 +13,78 @@ const inputClass = (isDark) =>
       : 'border-slate-200 bg-white text-slate-950 placeholder:text-slate-400 focus:border-slate-400'
   }`
 
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
 const ForgetPassword = () => {
   const { isDark, toggleTheme } = useTheme()
   const { language, toggleLanguage, t } = useLanguage()
+  const [email, setEmail] = useState('')
+  const [feedback, setFeedback] = useState(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const showFeedback = (type, message) => {
+    setFeedback({ type, message })
+
+    if (type === 'success') {
+      toast.success(t(message))
+    } else {
+      toast.error(t(message))
+    }
+  }
+
+  const handleEmailChange = ({ target }) => {
+    setEmail(target.value)
+
+    if (feedback) {
+      setFeedback(null)
+    }
+  }
+
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+
+    if (isSubmitting) {
+      return
+    }
+
+    const normalizedEmail = email.trim()
+
+    if (!normalizedEmail) {
+      showFeedback('error', 'Email is required')
+      return
+    }
+
+    if (!emailPattern.test(normalizedEmail)) {
+      showFeedback('error', 'Please enter a valid email address')
+      return
+    }
+
+    setIsSubmitting(true)
+    setFeedback(null)
+
+    try {
+      const response = await fetch('/onyx/api/users/forget-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: normalizedEmail }),
+      })
+
+      const data = await response.json().catch(() => ({}))
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Unable to request reset link right now.')
+      }
+
+      setEmail('')
+      showFeedback('success', data.message || 'Password reset link sent to your email')
+    } catch (error) {
+      showFeedback('error', error.message || 'Unable to request reset link right now.')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
 
   return (
     <div
@@ -104,7 +175,7 @@ const ForgetPassword = () => {
                 </p>
               </div>
 
-              <form onSubmit={(event) => event.preventDefault()} className="space-y-5">
+              <form onSubmit={handleSubmit} className="space-y-5" noValidate>
                 <label className="block text-left">
                   <span
                     className={`text-[12px] font-semibold ${
@@ -123,6 +194,8 @@ const ForgetPassword = () => {
                       type="email"
                       name="email"
                       placeholder="you@example.com"
+                      value={email}
+                      onChange={handleEmailChange}
                       className={`${inputClass(isDark)} pl-11`}
                     />
                   </div>
@@ -130,9 +203,20 @@ const ForgetPassword = () => {
 
                 <button
                   type="submit"
-                  className={`inline-flex w-full items-center justify-center rounded-sm px-4 py-3 text-sm font-medium transition-colors select-none cursor-pointer ${isDark ? 'bg-white text-zinc-900 hover:bg-zinc-100' : 'bg-slate-900 text-white hover:bg-slate-800'}`}
+                  disabled={isSubmitting}
+                  className={`inline-flex w-full items-center justify-center rounded-sm px-4 py-3 text-sm font-medium transition-colors select-none cursor-pointer ${isDark ? 'bg-white text-zinc-900 hover:bg-zinc-100' : 'bg-slate-900 text-white hover:bg-slate-800'} ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
                 >
-                  {t('Request reset link')}
+                  {isSubmitting ? (
+                    <>
+                      <div
+                        id="submitSpinner"
+                        className="mr-2 h-5 w-5 animate-spin rounded-full border-t-2 border-current"
+                      />
+                      {t('Requesting reset link')}...
+                    </>
+                  ) : (
+                    t('Request reset link')
+                  )}
                 </button>
               </form>
 
