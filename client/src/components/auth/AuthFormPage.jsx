@@ -102,6 +102,21 @@ const AuthFormPage = ({ mode = 'signin' }) => {
       return
     }
 
+    const isMissingRequiredFields = isSignup
+      ? !formData.fullname.trim() || !formData.email.trim() || !formData.password.trim()
+      : !formData.email.trim() || !formData.password.trim()
+
+    if (isMissingRequiredFields) {
+      toast.error(
+        t(
+          isSignup
+            ? 'Full name, email, and password are required'
+            : 'Email and password are required',
+        ),
+      )
+      return
+    }
+
     setIsSubmitting(true)
 
     try {
