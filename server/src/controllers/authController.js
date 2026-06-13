@@ -1,6 +1,7 @@
 import User from '../models/userModel.js'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import Preference from '../models/preferenceModel.js'
 
 const generateToken = (user) => {
     return jwt.sign(
@@ -53,8 +54,22 @@ const createUser = async (req, res) => {
             password: hashedPassword,
         })
 
-        const token = generateToken(user)
-        res.status(201).json({ token, user: formatUser(user) })
+        if (!user) {
+            return res.status(500).json({ message: 'Failed to create user' })
+        } else {
+            const pereferences = await Preference.create({
+                user: user._id
+            })
+
+            if (!pereferences) {
+                return res.status(500).json({ message: 'Failed to create preferences' })
+            }
+
+            await pereferences.save()
+            
+            const token = generateToken(user)
+            res.status(201).json({ token, user: formatUser(user) })
+        }
     } catch (error) {
         if (error.name === 'ValidationError') {
             const firstError = Object.values(error.errors)[0]
