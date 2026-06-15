@@ -3,15 +3,56 @@ import { Trash2 } from 'lucide-react'
 import { deleteAccountConfig } from './dangerZoneData'
 import DangerZonePanel from './DangerZonePanel'
 import { useLanguage } from '../../../context/LanguageContext'
+import { useAuth } from '../../../context/AuthContext'
+import { toast } from 'sonner'
 
 const  DeleteAccountCard = ({ isDark }) => {
   const { t } = useLanguage()
+  const { user, token, logout } = useAuth()
   const [confirmation, setConfirmation] = useState('')
   const [acknowledged, setAcknowledged] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const isReady =
     confirmation.trim().toUpperCase() === deleteAccountConfig.confirmationPhrase &&
     acknowledged
+
+  const handleDeleteAccount = async (event) => {
+    event.preventDefault()
+
+    if (isSubmitting) {
+      return
+    }
+
+    setIsSubmitting(true)
+
+    try {
+      if (!user?.id || !token) {
+        throw new Error('You must be signed in to delete your account.')
+      }
+
+      const response = await fetch(`/onyx/api/users/${user.id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        }
+      })
+
+      const data = await response.json().catch(() => ({}))
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Unable to delete account right now.')
+      }
+
+      logout()
+      toast.success(t('Account deleted successfully.'))
+    } catch (error) {
+      toast.error(t(error.message || 'Unable to update profile right now.'))
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
 
   return (
     <DangerZonePanel
@@ -72,6 +113,7 @@ const  DeleteAccountCard = ({ isDark }) => {
 
         <button
           type="button"
+          onClick={handleDeleteAccount}
           disabled={!isReady}
           className={`inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-[13px] font-medium transition-colors cursor-pointer ${
             isReady
@@ -81,8 +123,20 @@ const  DeleteAccountCard = ({ isDark }) => {
                 : 'cursor-not-allowed border-slate-200 bg-slate-100 text-slate-400'
           }`}
         >
-          <Trash2 className="h-3.5 w-3.5" />
-          {t('Delete account')}
+          {isSubmitting ? (
+            <>
+              <div 
+                id="submitSpinner" 
+                className="w-5 h-5 border-t-2 border-current rounded-full animate-spin mr-2" 
+              />
+              {t('Deleting account')}...
+            </>
+          ) : (
+            <>
+              <Trash2 className="h-3.5 w-3.5" />
+              {t('Delete account')}
+            </>
+          )}          
         </button>
       </div>
 
