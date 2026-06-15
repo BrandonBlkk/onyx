@@ -145,8 +145,9 @@ const AuthFormPage = ({ mode = 'signin' }) => {
       }
 
       if (isSignup) {
-        setFormData(initialFormState)
-        toast.success(t('Account created successfully. You can sign in now.'))
+        login(data.token, data.user)
+        toast.success(t(`Welcome to Onyx, ${data.user.fullname}! Let's get started by creating your first resume.`))
+        navigate('/dashboard/resumes')
       } else {
         login(data.token, data.user)
         toast.success(t('Login successful'))
