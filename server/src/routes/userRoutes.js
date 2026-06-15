@@ -12,6 +12,6 @@ router.post('/', authController.createUser)
 router.post('/login', authController.loginUser)
 router.post('/forget-password', authController.forgetPassword)
 router.put('/:id', authMiddleware, userController.updateUser)
-router.delete('/:id', userController.deleteUser)
+router.delete('/:id', authMiddleware, userController.deleteUser)
 
 export default router

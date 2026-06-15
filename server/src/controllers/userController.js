@@ -95,7 +95,25 @@ const updateUser = async (req, res) => {
 }
 
 const deleteUser = async (req, res) => {
-    res.send('delete user')
+    try {
+        if (String(req.user.id) !== String(req.params.id)) {
+            return res.status(403).json({ message: 'You can only delete your own account' })
+        }
+
+        const deletedUser = await User.findByIdAndDelete(req.params.id)
+
+        if (!deletedUser) {
+            return res.status(404).json({ message: 'User not found' })
+        }
+
+        res.status(200).json({ message: 'Account deleted successfully' })
+    } catch (error) {
+        if (error.name === 'CastError') {
+            return res.status(400).json({ message: 'Invalid user id' })
+        }
+
+        res.status(500).json({ message: error.message })
+    }
 }
 
 export default {
