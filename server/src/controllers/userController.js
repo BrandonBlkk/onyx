@@ -1,4 +1,5 @@
 import User from '../models/userModel.js'
+import Preference from '../models/preferenceModel.js'
 
 const formatUser = (user) => ({
     id: user._id,
@@ -6,6 +7,14 @@ const formatUser = (user) => ({
     email: user.email,
     createdAt: user.createdAt,
     updatedAt: user.updatedAt,
+})
+
+const formatPreferences = (preferences) => ({
+    theme: preferences.theme,
+    language: preferences.language,
+    pageSize: preferences.page_size === 'us_letter' ? 'letter' : preferences.page_size,
+    autoSave: preferences.auto_save,
+    writingTips: preferences.show_tips,
 })
 
 const getAllUsers = async (req, res) => {
@@ -94,6 +103,99 @@ const updateUser = async (req, res) => {
     }
 }
 
+const getPreferences = async (req, res) => {
+    try {
+        const userPreferences = await Preference.findOneAndUpdate(
+            { user: req.user.id },
+            { $setOnInsert: { user: req.user.id } },
+            {
+                new: true,
+                upsert: true,
+                runValidators: true,
+                setDefaultsOnInsert: true,
+            }
+        )
+
+        res.status(200).json({ preferences: formatPreferences(userPreferences) })
+    } catch (error) {
+        if (error.name === 'CastError') {
+            return res.status(400).json({ message: 'Invalid user id' })
+        }
+
+        res.status(500).json({ message: error.message })
+    }
+}
+
+const updatePreferences = async (req, res) => {
+    try {
+        const preferences = req.body
+
+        if (!preferences || typeof preferences !== 'object' || Array.isArray(preferences)) {
+            return res.status(400).json({ message: 'Preferences are required' })
+        }
+
+        const updateFields = {}
+
+        if (preferences.theme !== undefined) {
+            updateFields.theme = preferences.theme
+        }
+
+        if (preferences.language !== undefined) {
+            updateFields.language = preferences.language
+        }
+
+        const pageSize = preferences.pageSize ?? preferences.page_size
+        if (pageSize !== undefined) {
+            updateFields.page_size = pageSize === 'letter' ? 'us_letter' : pageSize
+        }
+
+        const autoSave = preferences.autoSave ?? preferences.auto_save
+        if (autoSave !== undefined) {
+            updateFields.auto_save = autoSave
+        }
+
+        const writingTips = preferences.writingTips ?? preferences.showTips ?? preferences.show_tips
+        if (writingTips !== undefined) {
+            updateFields.show_tips = writingTips
+        }
+
+        if (!Object.keys(updateFields).length) {
+            return res.status(400).json({ message: 'No preference changes provided' })
+        }
+
+        const updatedPreferences = await Preference.findOneAndUpdate(
+            { user: req.user.id },
+            {
+                $set: updateFields,
+                $setOnInsert: { user: req.user.id },
+            },
+            {
+                new: true,
+                upsert: true,
+                runValidators: true,
+                setDefaultsOnInsert: true,
+            }
+        )
+
+        res.status(200).json({
+            message: 'Preferences updated successfully',
+            preferences: formatPreferences(updatedPreferences),
+        })
+
+    } catch (error) {
+        if (error.name === 'ValidationError') {
+            const firstError = Object.values(error.errors)[0]
+            return res.status(400).json({ message: firstError.message })
+        }
+
+        if (error.name === 'CastError') {
+            return res.status(400).json({ message: 'Invalid preference value' })
+        }
+
+        res.status(500).json({ message: error.message })
+    }
+}
+
 const deleteUser = async (req, res) => {
     try {
         if (String(req.user.id) !== String(req.params.id)) {
@@ -121,5 +223,7 @@ export default {
     getMe,
     getSingleUser,
     updateUser,
+    getPreferences,
+    updatePreferences,
     deleteUser
 }

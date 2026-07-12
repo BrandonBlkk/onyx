@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { toast } from 'sonner'
 import {
   preferenceSelectFields,
   preferenceToggleFields,
@@ -6,9 +7,8 @@ import {
 import PreferencesSection from './PreferencesSection'
 import PreferencesSelectField from './PreferencesSelectField'
 import PreferencesToggleField from './PreferencesToggleField'
+import { useAuth } from '../../../context/AuthContext'
 import { useLanguage } from '../../../context/LanguageContext'
-
-const STORAGE_KEY = 'app-preferences'
 
 const buildDefaultPreferences = (theme) => ({
   theme,
@@ -23,25 +23,13 @@ const buildDefaultPreferences = (theme) => ({
 })
 
 const PreferencesForm = ({ isDark, theme, setTheme }) => {
+  const { token } = useAuth()
   const { language, setLanguage, t } = useLanguage()
-  const [preferences, setPreferences] = useState(() => {
-    const defaults = buildDefaultPreferences(theme)
-
-    if (typeof window === 'undefined') {
-      return defaults
-    }
-
-    try {
-      const stored = JSON.parse(window.localStorage.getItem(STORAGE_KEY) ?? '{}')
-      return {
-        ...defaults,
-        ...stored,
-        theme: stored.theme === 'light' || stored.theme === 'dark' ? stored.theme : theme,
-      }
-    } catch {
-      return defaults
-    }
-  })
+  const isInitialServerSyncRef = useRef(true)
+  const setThemeRef = useRef(setTheme)
+  const setLanguageRef = useRef(setLanguage)
+  const tRef = useRef(t)
+  const [preferences, setPreferences] = useState(() => buildDefaultPreferences(theme))
   const resolvedPreferences = useMemo(
     () => ({
       ...preferences,
@@ -52,8 +40,103 @@ const PreferencesForm = ({ isDark, theme, setTheme }) => {
   )
 
   useEffect(() => {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(resolvedPreferences))
-  }, [resolvedPreferences])
+    setThemeRef.current = setTheme
+    setLanguageRef.current = setLanguage
+    tRef.current = t
+  }, [setTheme, setLanguage, t])
+
+  useEffect(() => {
+    if (!token) {
+      return
+    }
+
+    const controller = new AbortController()
+
+    const loadPreferences = async () => {
+      try {
+        const response = await fetch('/onyx/api/users/preferences', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          signal: controller.signal,
+        })
+
+        const data = await response.json().catch(() => ({}))
+
+        if (!response.ok) {
+          throw new Error(data.message || 'Unable to load preferences right now.')
+        }
+
+        if (!data.preferences || typeof data.preferences !== 'object') {
+          throw new Error('Unable to load preferences right now.')
+        }
+
+        isInitialServerSyncRef.current = true
+        setPreferences((prev) => ({ ...prev, ...data.preferences }))
+
+        if (data.preferences.theme === 'light' || data.preferences.theme === 'dark') {
+          setThemeRef.current(data.preferences.theme)
+        }
+
+        if (data.preferences.language === 'english' || data.preferences.language === 'burmese') {
+          setLanguageRef.current(data.preferences.language)
+        }
+      } catch (error) {
+        if (error.name === 'AbortError') {
+          return
+        }
+
+        toast.error(tRef.current(error.message || 'Unable to load preferences right now.'))
+      }
+    }
+
+    loadPreferences()
+
+    return () => controller.abort()
+  }, [token])
+
+  useEffect(() => {
+    if (isInitialServerSyncRef.current) {
+      isInitialServerSyncRef.current = false
+      return
+    }
+
+    if (!token) {
+      return
+    }
+
+    const controller = new AbortController()
+    const timeoutId = window.setTimeout(async () => {
+      try {
+        const response = await fetch('/onyx/api/users/preferences', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(resolvedPreferences),
+          signal: controller.signal,
+        })
+
+        const data = await response.json().catch(() => ({}))
+
+        if (!response.ok) {
+          throw new Error(data.message)
+        }
+      } catch (error) {
+        if (error.name === 'AbortError') {
+          return
+        }
+
+        toast.error(t(error.message))
+      }
+    }, 350)
+
+    return () => {
+      window.clearTimeout(timeoutId)
+      controller.abort()
+    }
+  }, [resolvedPreferences, token, t])
 
   const handleSelectChange = (name, value) => {
     setPreferences((prev) => ({ ...prev, [name]: value }))
