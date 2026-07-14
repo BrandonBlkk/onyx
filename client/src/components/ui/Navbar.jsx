@@ -54,7 +54,7 @@ const Navbar = () => {
     >
       <nav className={`mx-auto flex h-16 w-full items-center justify-between px-4 sm:px-6 lg:px-8 transition-all duration-500 ease-in-out ${scrolled ? 'max-w-6xl' : 'max-w-full'}`}>
         <a href="/" className="flex items-center gap-2 group" id="nav-logo">
-          <div className="flex w-9 items-center justify-center overflow-hidden rounded-sm">
+          <div className="flex w-15 items-center justify-center overflow-hidden rounded-sm">
             <img
               src={isDark ? logo : logo2}
               alt={t('Onyx Logo')}

@@ -60,7 +60,7 @@ const Footer = ({ isDark = true }) => {
 
         <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
           <a href="/" className="flex items-center gap-2 group" id="nav-logo">
-            <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-sm shrink-0">
+            <div className="flex h-15 w-15 items-center justify-center overflow-hidden rounded-sm shrink-0">
               <img
                 src={isDark ? logo : logo2}
                 alt={t('Onyx Logo')}
