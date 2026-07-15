@@ -56,7 +56,7 @@ const Sidebar = ({ isDark }) => {
     >
       <div className="flex items-center justify-between gap-3">
         <Link to="/" onClick={closeMobileMenu} className="flex items-center gap-3" id="nav-logo">
-          <div className="flex w-9 items-center justify-center overflow-hidden rounded-md">
+          <div className="flex w-12 items-center justify-center overflow-hidden rounded-md">
             <img
               src={isDark ? logo : logo2}
               alt={t('Onyx Logo')}
@@ -65,7 +65,6 @@ const Sidebar = ({ isDark }) => {
           </div>
 
           <div>
-            <p className="text-base font-semibold tracking-tight">Onyx</p>
             <p className={`text-[11px] ${isDark ? 'text-zinc-500' : 'text-slate-400'}`}>
               {t('Resume workspace')}
             </p>

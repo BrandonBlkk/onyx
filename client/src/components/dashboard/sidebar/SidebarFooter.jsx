@@ -200,7 +200,7 @@ const SidebarFooter = ({ isDark }) => {
               isDark ? 'hover:bg-zinc-900/70' : 'hover:bg-slate-100/80'
             }`}
           >
-            <div className={`flex h-8 w-8 items-center justify-center rounded-full text-[13px] font-semibold select-none ${user ? 'bg-linear-to-br from-cyan-400 to-blue-500 text-slate-950' : isDark ? 'bg-zinc-800 text-zinc-400' : 'bg-slate-200 text-slate-500'}`}>
+            <div className={`flex h-8 w-8 items-center justify-center rounded-full text-[13px] font-semibold select-none ${isDark ? 'bg-zinc-700 text-zinc-400' : 'bg-slate-200 text-slate-500'}`}>
               {initials}
             </div>
 

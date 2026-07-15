@@ -236,7 +236,7 @@ const AuthFormPage = ({ mode = 'signin' }) => {
                 <img
                   src={isDark ? logo : logo2}
                   alt={t('Onyx Logo')}
-                  className="h-8 w-8 object-cover"
+                  className="h-15 w-15 object-cover"
                 />
               </Link>
             </div>
