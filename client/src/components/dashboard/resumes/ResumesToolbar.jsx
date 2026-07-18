@@ -1,4 +1,4 @@
-import { ChevronDown, LayoutGrid, List, Search } from 'lucide-react'
+import { ChevronDown, LayoutGrid, List, Search, X } from 'lucide-react'
 import { getPanelClass, getSubtleTextClass } from './resumeStyles'
 import { useLanguage } from '../../../context/LanguageContext'
 
@@ -33,6 +33,14 @@ const ResumesToolbar = ({
               placeholder={t('Search resumes')}
               className="w-full bg-transparent text-[13px] outline-none placeholder:text-inherit"
             />
+            {
+              searchQuery && (
+                <X
+                  className={`h-4 w-4 cursor-pointer hover:text-zinc-400 ${getSubtleTextClass(isDark)}`}
+                  onClick={() => onSearchChange('')}
+                />
+              )
+            }
           </label>
 
           <div className="flex flex-wrap items-center gap-2.5">
