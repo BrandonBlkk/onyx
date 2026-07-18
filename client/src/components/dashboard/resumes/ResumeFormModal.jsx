@@ -67,6 +67,7 @@ const ResumeFormModal = ({
   onFileChange,
   onClose,
   onSubmit,
+  isSubmitting = false,
 }) => {
   const { t } = useLanguage()
   const copy = modalCopy[mode]
@@ -250,8 +251,19 @@ const ResumeFormModal = ({
               >
                 {t('Cancel')}
               </button>
-              <button type="submit" className={getPrimaryButtonClass(isDark)}>
-                {t(copy.submitLabel)}
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className={`${getPrimaryButtonClass(isDark)} disabled:cursor-not-allowed disabled:opacity-60`}
+              >
+                {isSubmitting ? (
+                  <>
+                    <div className="mr-2 h-5 w-5 animate-spin rounded-full border-t-2 border-current" />
+                    {t('Creating resume')}...
+                  </>
+                ) : (
+                  t(copy.submitLabel)
+                )}
               </button>
             </div>
           </form>

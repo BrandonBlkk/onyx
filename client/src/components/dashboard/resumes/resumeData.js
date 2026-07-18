@@ -19,33 +19,6 @@ export const actionCards = [
   },
 ]
 
-export const resumes = [
-  {
-    id: 'brandon-resume',
-    title: 'Brandon Resume',
-    updated: 'Last updated on April 15, 2026 at 1:24 PM',
-    candidate: 'Brandon Tun',
-    role: 'Web Developer',
-    tone: 'Ready',
-  },
-  {
-    id: 'frontend-resume',
-    title: 'Frontend Resume',
-    updated: 'Last updated on April 14, 2026 at 10:42 PM',
-    candidate: 'Brandon Tun',
-    role: 'Frontend Engineer',
-    tone: 'Draft',
-  },
-  {
-    id: 'product-resume',
-    title: 'Product Resume',
-    updated: 'Last updated on April 14, 2026 at 8:16 PM',
-    candidate: 'Brandon Tun',
-    role: 'Product Designer',
-    tone: 'Polish',
-  },
-]
-
 export const previewSections = [
   {
     title: 'Education',
