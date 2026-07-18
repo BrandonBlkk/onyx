@@ -9,6 +9,8 @@ const ResumesToolbar = ({
   sortOptions,
   viewMode,
   onViewModeChange,
+  searchQuery,
+  onSearchChange,
 }) => {
   const { t } = useLanguage()
 
@@ -26,6 +28,8 @@ const ResumesToolbar = ({
             <Search className={`h-4 w-4 ${getSubtleTextClass(isDark)}`} />
             <input
               type="text"
+              value={searchQuery}
+              onChange={(event) => onSearchChange(event.target.value)}
               placeholder={t('Search resumes')}
               className="w-full bg-transparent text-[13px] outline-none placeholder:text-inherit"
             />

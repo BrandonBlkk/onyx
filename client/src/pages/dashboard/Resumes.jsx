@@ -24,6 +24,12 @@ const createEmptyForm = () => ({
   file: null,
 })
 
+const resumeSortValues = {
+  'Last Updated': 'updated',
+  Name: 'name',
+  'Recently Created': 'created',
+}
+
 const formatResumeUpdated = (timestamp) =>
   `Last updated on ${new Intl.DateTimeFormat('en-US', {
     month: 'long',
@@ -141,6 +147,7 @@ const Resumes = () => {
   const { token, user } = useAuth()
   const [sortBy, setSortBy] = useState(sortOptions[0])
   const [viewMode, setViewMode] = useState('grid')
+  const [searchQuery, setSearchQuery] = useState('')
   const [resumeItems, setResumeItems] = useState([])
   const [isLoadingResumes, setIsLoadingResumes] = useState(Boolean(token))
   const [resumeLoadError, setResumeLoadError] = useState('')
@@ -148,6 +155,7 @@ const Resumes = () => {
   const [formValues, setFormValues] = useState(createEmptyForm)
   const [formError, setFormError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const normalizedSearchQuery = searchQuery.trim()
 
   useEffect(() => {
     if (!token) {
@@ -163,7 +171,15 @@ const Resumes = () => {
       setResumeLoadError('')
 
       try {
-        const response = await fetch('/onyx/api/resumes', {
+        const sortQuery = new URLSearchParams({
+          sort: resumeSortValues[sortBy] || resumeSortValues['Last Updated'],
+        }).toString()
+        const resumesPath = normalizedSearchQuery
+          ? `/onyx/api/resumes/search/${encodeURIComponent(normalizedSearchQuery)}`
+          : '/onyx/api/resumes'
+        const resumesUrl = `${resumesPath}?${sortQuery}`
+
+        const response = await fetch(resumesUrl, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -199,7 +215,7 @@ const Resumes = () => {
     loadResumes()
 
     return () => controller.abort()
-  }, [token, user])
+  }, [token, user, normalizedSearchQuery, sortBy])
 
   const openResumeModal = (mode) => {
     setModalMode(mode)
@@ -334,7 +350,12 @@ const Resumes = () => {
   }
 
   const resumeListMessage =
-    resumeLoadError || (!resumeItems.length ? 'No resumes yet. Create your first resume to see it here.' : '')
+    resumeLoadError ||
+    (!resumeItems.length
+      ? normalizedSearchQuery
+        ? 'No resumes match your search.'
+        : 'No resumes yet. Create your first resume to see it here.'
+      : '')
 
   return (
     <div
@@ -370,6 +391,8 @@ const Resumes = () => {
               sortOptions={sortOptions}
               viewMode={viewMode}
               onViewModeChange={setViewMode}
+              searchQuery={searchQuery}
+              onSearchChange={setSearchQuery}
             />
 
             <section className="mt-5">

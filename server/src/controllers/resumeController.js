@@ -1,8 +1,20 @@
 import Resumes from "../models/resumeModel.js";
 
+const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const resumeSortOptions = {
+    updated: { updatedAt: -1 },
+    'Last Updated': { updatedAt: -1 },
+    name: { title: 1 },
+    Name: { title: 1 },
+    created: { createdAt: -1 },
+    'Recently Created': { createdAt: -1 },
+};
+
+const getResumeSort = (sortBy) => resumeSortOptions[sortBy] || resumeSortOptions.updated;
+
 export const getAllResumes = async (req, res) => {
     try {
-        const resumes = await Resumes.find({ user: req.user.id }).sort({ updatedAt: -1 });
+        const resumes = await Resumes.find({ user: req.user.id }).sort(getResumeSort(req.query.sort));
 
         if (!resumes) {
             return res.status(404).json({ message: 'No resumes found' });
@@ -17,6 +29,32 @@ export const getAllResumes = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+export const searchResumes = async (req, res) => {
+    try {
+        const query = req.params.query?.trim();
+
+        if (!query) {
+            return res.status(200).json([]);
+        }
+
+        const resumes = await Resumes.find({
+            user: req.user.id,
+            $or: [
+                { title: { $regex: escapeRegex(query), $options: 'i' } },
+                { summary: { $regex: escapeRegex(query), $options: 'i' } },
+            ],
+        }).sort(getResumeSort(req.query.sort));
+
+        if (!resumes) {
+            return res.status(404).json({ message: 'No resumes found' });
+        }
+
+        res.status(200).json(resumes);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
 
 export const getSingleResume = async (req, res) => {
     try {
