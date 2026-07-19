@@ -155,6 +155,10 @@ const Resumes = () => {
   const [formValues, setFormValues] = useState(createEmptyForm)
   const [formError, setFormError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [renamingResume, setRenamingResume] = useState(null)
+  const [renameTitle, setRenameTitle] = useState('')
+  const [renameError, setRenameError] = useState('')
+  const [isRenaming, setIsRenaming] = useState(false)
   const normalizedSearchQuery = searchQuery.trim()
 
   useEffect(() => {
@@ -228,6 +232,13 @@ const Resumes = () => {
     setFormValues(createEmptyForm())
     setFormError('')
     setIsSubmitting(false)
+  }
+
+  const closeRenameModal = () => {
+    setRenamingResume(null)
+    setRenameTitle('')
+    setRenameError('')
+    setIsRenaming(false)
   }
 
   const handleFormChange = (event) => {
@@ -349,6 +360,81 @@ const Resumes = () => {
     closeResumeModal()
   }
 
+  const handleRenameResume = (resume) => {
+    if (!token) {
+      toast.error('Please sign in before renaming a resume.')
+      return
+    }
+
+    setRenamingResume(resume)
+    setRenameTitle(resume.title)
+    setRenameError('')
+  }
+
+  const handleRenameSubmit = async (event) => {
+    event.preventDefault()
+
+    if (!renamingResume) {
+      return
+    }
+
+    const nextTitle = renameTitle.trim()
+
+    if (!nextTitle) {
+      setRenameError('Resume title is required.')
+      return
+    }
+
+    if (nextTitle === renamingResume.title) {
+      closeRenameModal()
+      return
+    }
+
+    try {
+      setIsRenaming(true)
+
+      const response = await fetch(`/onyx/api/resumes/${encodeURIComponent(renamingResume.id)}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ title: nextTitle }),
+      })
+
+      const data = await response.json().catch(() => ({}))
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Unable to rename resume right now.')
+      }
+
+      const updatedAt = new Date(data.updatedAt || Date.now())
+
+      setResumeItems((current) =>
+        current.map((item) =>
+          item.id === renamingResume.id
+            ? {
+                ...item,
+                title: data.title || nextTitle,
+                updated: formatResumeUpdated(updatedAt),
+                summary: data.summary ?? item.summary,
+                sourceFileName: data.file ?? item.sourceFileName,
+              }
+            : item
+        )
+      )
+
+      toast.success('Resume renamed successfully.')
+      closeRenameModal()
+    } catch (error) {
+      const message = error.message || 'Unable to rename resume right now.'
+      setRenameError(message)
+      toast.error(message)
+    } finally {
+      setIsRenaming(false)
+    }
+  }
+
   const resumeListMessage =
     resumeLoadError ||
     (!resumeItems.length
@@ -468,6 +554,7 @@ const Resumes = () => {
                         item={resume}
                         isDark={isDark}
                         viewMode={viewMode}
+                        onRename={handleRenameResume}
                       />
                     ))
                   )}
@@ -491,6 +578,111 @@ const Resumes = () => {
             onSubmit={handleModalSubmit}
             isSubmitting={isSubmitting}
           />
+        ) : null}
+      </AnimatePresence>
+
+      {/* Rename modal */}
+      <AnimatePresence>
+        {renamingResume ? (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <button
+              type="button"
+              aria-label="Close rename form"
+              className="absolute inset-0 bg-zinc-950/70"
+              onClick={closeRenameModal}
+            />
+
+            <motion.form
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="rename-resume-title"
+              onSubmit={handleRenameSubmit}
+              initial={{ opacity: 0, y: 24, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 18, scale: 0.98 }}
+              transition={{ duration: 0.22, ease: 'easeOut' }}
+              className={`relative w-full max-w-md rounded-md border p-5 ${
+                isDark
+                  ? 'border-zinc-800 bg-zinc-950 text-zinc-100 shadow-black/30'
+                  : 'border-slate-200 bg-white text-slate-950 shadow-slate-200/70'
+              }`}
+            >
+              <h2 id="rename-resume-title" className="text-base font-semibold tracking-tight">
+                Rename resume
+              </h2>
+
+              <label className="mt-5 block">
+                <span
+                  className={`text-[11px] font-semibold uppercase tracking-[0.18em] ${
+                    isDark ? 'text-zinc-400' : 'text-slate-500'
+                  }`}
+                >
+                  Resume title
+                </span>
+                <input
+                  autoFocus
+                  type="text"
+                  value={renameTitle}
+                  onChange={(event) => {
+                    setRenameTitle(event.target.value)
+                    if (renameError) {
+                      setRenameError('')
+                    }
+                  }}
+                  className={`mt-2 w-full rounded-md border px-3.5 py-2.5 text-[13px] outline-none transition-colors ${
+                    isDark
+                      ? 'border-zinc-800 bg-[#0d0d0e] text-zinc-100 placeholder:text-zinc-500 focus:border-zinc-600'
+                      : 'border-slate-300 bg-[#fcfcfc] text-slate-950 placeholder:text-slate-400 focus:border-slate-400'
+                  }`}
+                />
+              </label>
+
+              {renameError ? <p className="mt-3 text-xs text-rose-500">{renameError}</p> : null}
+
+              <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:justify-end">
+                <button
+                  type="button"
+                  onClick={closeRenameModal}
+                  className={`inline-flex items-center justify-center border px-3 py-2 text-[13px] font-medium transition-colors cursor-pointer ${
+                    isDark
+                      ? 'border-zinc-800 bg-transparent text-zinc-300 hover:border-zinc-700'
+                      : 'border-slate-200 bg-transparent text-slate-700 hover:border-slate-300'
+                  }`}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isRenaming}
+                  className={`inline-flex items-center justify-center border px-3 py-2 text-[13px] font-medium transition-colors cursor-pointer disabled:cursor-not-allowed disabled:opacity-60 ${
+                    isDark
+                      ? 'bg-white text-zinc-950 hover:bg-zinc-200'
+                      : 'border-slate-950 bg-slate-950 text-white hover:bg-slate-800 hover:border-slate-800'
+                  }`}
+                >
+                  {isRenaming ? 
+                  (
+                    <>
+                      <div 
+                        id="submitSpinner" 
+                        className="w-5 h-5 border-t-2 border-current rounded-full animate-spin mr-2" 
+                      />
+                      <span>Renaming...</span>
+                    </>
+                  ) : 
+                  (
+                    'Rename resume'
+                  )
+                  }
+                </button>
+              </div>
+            </motion.form>
+          </motion.div>
         ) : null}
       </AnimatePresence>
     </div>
