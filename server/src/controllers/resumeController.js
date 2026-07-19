@@ -101,11 +101,10 @@ export const createResume = async (req, res) => {
 
 export const updateResume = async (req, res) => {
     try {
-        if (String(req.user.id) !== String(req.params.id)) {
-            return res.status(403).json({ message: 'You can only update your own resume' });
-        }
-
-        const resume = await Resumes.findByIdAndUpdate(req.params.id, req.body, {
+        const resume = await Resumes.findOneAndUpdate({
+            _id: req.params.id,
+            user: req.user.id,
+        }, req.body, {
             new: true,
             runValidators: true,
         });
