@@ -19,6 +19,15 @@ const resumeSchema = new mongoose.Schema(
             type: String,
             default: '',
         },
+        tone: {
+            type: String,
+            enum: ['Draft', 'Published'],
+            default: 'Draft',
+        },
+        locked: {
+            type: Boolean,
+            default: false,
+        },
     },
     {
         timestamps: true,
