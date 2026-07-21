@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import ResumePreview from './ResumePreview'
 import { ResumeCardActions } from './ResumeCardActions'
 import {
@@ -9,9 +8,10 @@ import {
 } from './resumeStyles'
 import { useLanguage } from '../../../context/LanguageContext'
 
-const ResumeCard = ({ item, isDark, viewMode, onRename }) => {
+const ResumeCard = ({ item, isDark, viewMode, onRename, onLock, isLocking }) => {
   const { t } = useLanguage()
   const handleRename = () => onRename?.(item)
+  const handleLock = () => onLock?.(item)
 
   if (viewMode === 'list') {
     return (
@@ -23,7 +23,13 @@ const ResumeCard = ({ item, isDark, viewMode, onRename }) => {
             isDark ? 'bg-accent-500/3' : 'bg-accent-500/5'
           }`}
         />
-        <ResumeCardActions isDark={isDark} onRename={handleRename} />
+        <ResumeCardActions
+          isDark={isDark}
+          isLocked={item.locked}
+          isLocking={isLocking}
+          onRename={handleRename}
+          onLock={handleLock}
+        />
 
         <div className="relative flex flex-col justify-center p-4 sm:p-5">
           <div className="flex flex-wrap items-center gap-2">
@@ -66,7 +72,13 @@ const ResumeCard = ({ item, isDark, viewMode, onRename }) => {
           isDark ? 'bg-accent-500/3' : 'bg-accent-500/5'
         }`}
       />
-      <ResumeCardActions isDark={isDark} onRename={handleRename} />
+      <ResumeCardActions
+        isDark={isDark}
+        isLocked={item.locked}
+        isLocking={isLocking}
+        onRename={handleRename}
+        onLock={handleLock}
+      />
       <div
         className={`relative flex h-67.5 items-start justify-center p-4 ${
           isDark ? 'bg-zinc-950/60' : 'bg-slate-50/80'
