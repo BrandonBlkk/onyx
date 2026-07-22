@@ -8,9 +8,10 @@ import {
 } from './resumeStyles'
 import { useLanguage } from '../../../context/LanguageContext'
 
-const ResumeCard = ({ item, isDark, viewMode, onRename, onLock, isLocking }) => {
+const ResumeCard = ({ item, isDark, viewMode, onRename, onDetails, onLock, isLocking }) => {
   const { t } = useLanguage()
   const handleRename = () => onRename?.(item)
+  const handleDetails = () => onDetails?.(item)
   const handleLock = () => onLock?.(item)
 
   if (viewMode === 'list') {
@@ -28,6 +29,7 @@ const ResumeCard = ({ item, isDark, viewMode, onRename, onLock, isLocking }) => 
           isLocked={item.locked}
           isLocking={isLocking}
           onRename={handleRename}
+          onDetails={handleDetails}
           onLock={handleLock}
         />
 
@@ -77,6 +79,7 @@ const ResumeCard = ({ item, isDark, viewMode, onRename, onLock, isLocking }) => 
         isLocked={item.locked}
         isLocking={isLocking}
         onRename={handleRename}
+        onDetails={handleDetails}
         onLock={handleLock}
       />
       <div

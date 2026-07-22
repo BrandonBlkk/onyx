@@ -3,6 +3,7 @@ import {
     createResume,
     deleteResume,
     getAllResumes,
+    getResumeDetails,
     searchResumes,
     updateResume,
 } from '../controllers/resumeController.js'
@@ -12,6 +13,7 @@ const router = express.Router();
 
 router.post('/', authMiddleware, createResume)
 router.get('/', authMiddleware, getAllResumes)
+router.get('/:id', authMiddleware, getResumeDetails)
 router.get('/search/:query', authMiddleware, searchResumes)
 router.put('/:id', authMiddleware, updateResume)
 router.delete('/:id', authMiddleware, deleteResume)

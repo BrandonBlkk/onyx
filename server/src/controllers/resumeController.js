@@ -74,6 +74,24 @@ export const getSingleResume = async (req, res) => {
     }
 };
 
+export const getResumeDetails = async (req, res) => {
+    try {
+        const resume = await Resumes.findById(req.params.id).populate('user');
+
+        if (!resume) {
+            return res.status(404).json({ message: 'Resume not found' });
+        }
+
+        res.status(200).json(resume);
+    } catch (error) {
+        if (error.name === 'CastError') {
+            return res.status(400).json({ message: 'Invalid resume id' });
+        }
+
+        res.status(500).json({ message: error.message });
+    }
+}
+
 export const createResume = async (req, res) => {
     try {
         const { title, summary, file } = req.body;
