@@ -113,7 +113,7 @@ const SidebarFooter = ({ isDark }) => {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 8, scale: 0.98 }}
                 transition={{ duration: 0.10, ease: 'easeOut' }}
-                className={`absolute inset-x-0 bottom-full z-20 mb-3 rounded-xl border p-3 shadow-2xl ${
+                className={`absolute inset-x-0 bottom-full z-20 mb-3 rounded-md border p-3 shadow-lg ${
                   isDark
                     ? 'border-zinc-800 bg-zinc-950/96 text-zinc-100'
                     : 'border-slate-200 bg-white/96 text-slate-950'

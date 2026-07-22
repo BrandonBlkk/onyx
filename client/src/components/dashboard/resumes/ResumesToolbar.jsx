@@ -30,8 +30,10 @@ const ResumesToolbar = ({
               type="text"
               value={searchQuery}
               onChange={(event) => onSearchChange(event.target.value)}
-              placeholder={t('Search resumes')}
-              className="w-full bg-transparent text-[13px] outline-none placeholder:text-inherit"
+              placeholder={t('Search resumes by title or summary')}
+              className={`w-full bg-transparent text-[13px] outline-none ${
+                isDark ? 'placeholder:text-zinc-500' : 'placeholder:text-slate-400'
+              }`}
             />
             {
               searchQuery && (
