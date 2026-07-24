@@ -9,6 +9,25 @@
   --color-accent-600: oklch(0.55 0.18 252);
 }
 
+@keyframes resume-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20%,
+  60% {
+    transform: translateX(-0.5rem);
+  }
+  40%,
+  80% {
+    transform: translateX(0.5rem);
+  }
+}
+
+@utility animate-resume-shake {
+  animation: resume-shake 400ms ease-in-out;
+}
+
 @layer base {
   * {
     scrollbar-width: thin;

@@ -7,16 +7,30 @@ import {
   getSubtleTextClass,
 } from './resumeStyles'
 import { useLanguage } from '../../../context/LanguageContext'
+import { useState } from 'react'
+import { toast } from 'sonner'
 
-const ResumeCard = ({ item, isDark, viewMode, onRename, onLock, isLocking }) => {
+const ResumeCard = ({ item, isDark, viewMode, onRename, onDetails, onLock, onDelete, isLocking }) => {
   const { t } = useLanguage()
+  const [isShaking, setIsShaking] = useState(false)
   const handleRename = () => onRename?.(item)
+  const handleDetails = () => onDetails?.(item)
   const handleLock = () => onLock?.(item)
+  const handleDelete = () => {
+    if (item.locked) {
+      setIsShaking(true)
+      toast.error('Unlock this resume before deleting it.')
+      return
+    }
+
+    onDelete?.(item)
+  }
 
   if (viewMode === 'list') {
     return (
       <article
-        className={`group relative grid overflow-hidden rounded-md border backdrop-blur-xl sm:grid-cols-2 cursor-pointer ${getInteractivePanelClass(isDark)}`}
+        className={`group relative grid overflow-hidden rounded-md border backdrop-blur-xl sm:grid-cols-2 cursor-pointer ${isShaking ? 'animate-resume-shake' : ''} ${getInteractivePanelClass(isDark)}`}
+        onAnimationEnd={() => setIsShaking(false)}
       >
         <div
           className={`absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 ${
@@ -28,7 +42,9 @@ const ResumeCard = ({ item, isDark, viewMode, onRename, onLock, isLocking }) => 
           isLocked={item.locked}
           isLocking={isLocking}
           onRename={handleRename}
+          onDetails={handleDetails}
           onLock={handleLock}
+          onDelete={handleDelete}
         />
 
         <div className="relative flex flex-col justify-center p-4 sm:p-5">
@@ -65,7 +81,8 @@ const ResumeCard = ({ item, isDark, viewMode, onRename, onLock, isLocking }) => 
 
   return (
     <article
-      className={`group relative overflow-hidden rounded-md border backdrop-blur-xl hover:-translate-y-0.5 cursor-pointer ${getInteractivePanelClass(isDark)}`}
+      className={`group relative overflow-hidden rounded-md border backdrop-blur-xl hover:-translate-y-0.5 cursor-pointer ${isShaking ? 'animate-resume-shake' : ''} ${getInteractivePanelClass(isDark)}`}
+      onAnimationEnd={() => setIsShaking(false)}
     >
       <div
         className={`absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 ${
@@ -77,7 +94,9 @@ const ResumeCard = ({ item, isDark, viewMode, onRename, onLock, isLocking }) => 
         isLocked={item.locked}
         isLocking={isLocking}
         onRename={handleRename}
+        onDetails={handleDetails}
         onLock={handleLock}
+        onDelete={handleDelete}
       />
       <div
         className={`relative flex h-67.5 items-start justify-center p-4 ${

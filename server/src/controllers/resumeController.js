@@ -74,6 +74,24 @@ export const getSingleResume = async (req, res) => {
     }
 };
 
+export const getResumeDetails = async (req, res) => {
+    try {
+        const resume = await Resumes.findById(req.params.id).populate('user');
+
+        if (!resume) {
+            return res.status(404).json({ message: 'Resume not found' });
+        }
+
+        res.status(200).json(resume);
+    } catch (error) {
+        if (error.name === 'CastError') {
+            return res.status(400).json({ message: 'Invalid resume id' });
+        }
+
+        res.status(500).json({ message: error.message });
+    }
+}
+
 export const createResume = async (req, res) => {
     try {
         const { title, summary, file } = req.body;
@@ -125,15 +143,17 @@ export const updateResume = async (req, res) => {
 
 export const deleteResume = async (req, res) => {   
     try {
-        if (String(req.user.id) !== String(req.params.id)) {
-            return res.status(403).json({ message: 'You can only delete your own resume' });
-        }
-        
-        const resume = await Resumes.findByIdAndDelete(req.params.id);
+        const resume = await Resumes.findById(req.params.id);
 
         if (!resume) {
             return res.status(404).json({ message: 'Resume not found' });
         }
+
+        if (String(resume.user) !== String(req.user.id)) {
+            return res.status(403).json({ message: 'You can only delete your own resume' });
+        }
+
+        await resume.deleteOne();
 
         res.status(200).json(resume);
     } catch (error) {

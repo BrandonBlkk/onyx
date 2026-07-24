@@ -25,7 +25,15 @@ const HoverSwapIcon = ({ Icon, HoverIcon }) => (
   </span>
 )
 
-const ResumeCardActions = ({ isDark, isLocked = false, isLocking = false, onRename, onLock }) => {
+const ResumeCardActions = ({
+  isDark,
+  isLocked = false,
+  isLocking = false,
+  onRename,
+  onDetails,
+  onLock,
+  onDelete
+}) => {
   const [isFavorite, setIsFavorite] = useState(false)
   const actionButtonClass = `inline-flex h-8 w-8 items-center justify-center rounded-md border backdrop-blur-xl transition-all duration-200 ease-out active:translate-y-0 ${
     isDark
@@ -46,7 +54,7 @@ const ResumeCardActions = ({ isDark, isLocked = false, isLocking = false, onRena
   const menuItems = [
     { icon: <HoverSwapIcon Icon={Pencil} HoverIcon={PencilLine} />, className: `${menuItemClass}`, label: 'Edit' },
     { icon: <HoverSwapIcon Icon={Type} HoverIcon={TextCursorInput} />, className: `${menuItemClass}`, label: 'Rename', onClick: onRename },
-    { icon: <HoverSwapIcon Icon={Info} HoverIcon={BadgeInfo} />, className: `${menuItemClass}`, label: 'Details' },
+    { icon: <HoverSwapIcon Icon={Info} HoverIcon={BadgeInfo} />, className: `${menuItemClass}`, label: 'Details', onClick: onDetails },
     { icon: <HoverSwapIcon Icon={Download} HoverIcon={CloudDownload} />, className: `${menuItemClass}`, label: 'Download' },
     { icon: <HoverSwapIcon Icon={Copy} HoverIcon={CopyPlus} />, className: `${menuItemClass}`, label: 'Make a copy' },
     {
@@ -56,7 +64,7 @@ const ResumeCardActions = ({ isDark, isLocked = false, isLocking = false, onRena
       onClick: onLock,
       disabled: isLocking,
     },
-    { icon: <HoverSwapIcon Icon={Trash} HoverIcon={Trash2} />, className: `${menuItemClass} hover:text-red-500! hover:bg-red-100!`, label: 'Move to trash' },
+    { icon: <HoverSwapIcon Icon={Trash} HoverIcon={Trash2} />, className: `${menuItemClass} hover:text-red-500! hover:bg-red-100!`, label: 'Move to trash', onClick: onDelete },
   ]
 
   return (

@@ -5,6 +5,7 @@ import Sidebar from '../../components/dashboard/sidebar/Sidebar'
 import ActionCard from '../../components/dashboard/resumes/ActionCard'
 import ResumeCard from '../../components/dashboard/resumes/ResumeCard'
 import ResumeCardSkeleton from '../../components/dashboard/resumes/ResumeCardSkeleton'
+import ResumeDetailsDrawer from '../../components/dashboard/resumes/ResumeDetailsDrawer'
 import ResumeFormModal from '../../components/dashboard/resumes/ResumeFormModal'
 import ResumesToolbar from '../../components/dashboard/resumes/ResumesToolbar'
 import SectionHeader from '../../components/dashboard/resumes/SectionHeader'
@@ -54,10 +55,10 @@ const formatResumeCardData = (resume, user) => {
   return {
     id: resume._id || resume.id || createResumeId(),
     title: resume.title || 'Untitled Resume',
+    created: resume.createdAt,
     updated: formatResumeUpdated(updatedAt),
     candidate: user?.fullname || 'Onyx User',
-    role: 'Resume Draft',
-    tone: 'Draft',
+    tone: resume.tone || '',
     summary: resume.summary || '',
     sourceFileName: resume.file || null,
     locked: Boolean(resume.locked),
@@ -84,6 +85,7 @@ const Resumes = () => {
   const [renameError, setRenameError] = useState('')
   const [isRenaming, setIsRenaming] = useState(false)
   const [lockingResumeId, setLockingResumeId] = useState(null)
+  const [detailsResume, setDetailsResume] = useState(null)
   const normalizedSearchQuery = searchQuery.trim()
 
   useEffect(() => {
@@ -296,6 +298,43 @@ const Resumes = () => {
     setRenamingResume(resume)
     setRenameTitle(resume.title)
     setRenameError('')
+  }
+
+  const handleDeleteResume = async (resume) => {
+    if (!token) {
+      toast.error('Please sign in before deleting a resume.')
+      return
+    }
+
+    try {
+      const response = await fetch(`/onyx/api/resumes/${encodeURIComponent(resume.id)}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      const data = await response.json().catch(() => ({}))
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Unable to delete resume right now.')
+      }
+
+       ((current) => current.filter((item) => item.id !== resume.id))
+      toast.success('Resume deleted successfully.')
+    } catch (error) {
+      const message = error.message || 'Unable to delete resume right now.'
+      toast.error(message)
+    }
+  }
+
+  const handleShowResumeDetails = (resume) => {
+    setDetailsResume(resume)
+  }
+
+  const closeResumeDetails = () => {
+    setDetailsResume(null)
   }
 
   const handleRenameSubmit = async (event) => {
@@ -535,8 +574,10 @@ const Resumes = () => {
                         isDark={isDark}
                         viewMode={viewMode}
                         onRename={handleRenameResume}
+                        onDetails={handleShowResumeDetails}
                         onLock={handleLockResume}
                         isLocking={lockingResumeId === resume.id}
+                        onDelete={handleDeleteResume}
                       />
                     ))
                   )}
@@ -559,6 +600,16 @@ const Resumes = () => {
             onClose={closeResumeModal}
             onSubmit={handleModalSubmit}
             isSubmitting={isSubmitting}
+          />
+        ) : null}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {detailsResume ? (
+          <ResumeDetailsDrawer
+            resume={detailsResume}
+            isDark={isDark}
+            onClose={closeResumeDetails}
           />
         ) : null}
       </AnimatePresence>
