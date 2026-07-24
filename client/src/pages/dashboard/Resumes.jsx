@@ -300,6 +300,35 @@ const Resumes = () => {
     setRenameError('')
   }
 
+  const handleDeleteResume = async (resume) => {
+    if (!token) {
+      toast.error('Please sign in before deleting a resume.')
+      return
+    }
+
+    try {
+      const response = await fetch(`/onyx/api/resumes/${encodeURIComponent(resume.id)}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      const data = await response.json().catch(() => ({}))
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Unable to delete resume right now.')
+      }
+
+       ((current) => current.filter((item) => item.id !== resume.id))
+      toast.success('Resume deleted successfully.')
+    } catch (error) {
+      const message = error.message || 'Unable to delete resume right now.'
+      toast.error(message)
+    }
+  }
+
   const handleShowResumeDetails = (resume) => {
     setDetailsResume(resume)
   }
@@ -548,6 +577,7 @@ const Resumes = () => {
                         onDetails={handleShowResumeDetails}
                         onLock={handleLockResume}
                         isLocking={lockingResumeId === resume.id}
+                        onDelete={handleDeleteResume}
                       />
                     ))
                   )}

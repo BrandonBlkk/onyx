@@ -32,6 +32,7 @@ const ResumeCardActions = ({
   onRename,
   onDetails,
   onLock,
+  onDelete
 }) => {
   const [isFavorite, setIsFavorite] = useState(false)
   const actionButtonClass = `inline-flex h-8 w-8 items-center justify-center rounded-md border backdrop-blur-xl transition-all duration-200 ease-out active:translate-y-0 ${
@@ -63,7 +64,7 @@ const ResumeCardActions = ({
       onClick: onLock,
       disabled: isLocking,
     },
-    { icon: <HoverSwapIcon Icon={Trash} HoverIcon={Trash2} />, className: `${menuItemClass} hover:text-red-500! hover:bg-red-100!`, label: 'Move to trash' },
+    { icon: <HoverSwapIcon Icon={Trash} HoverIcon={Trash2} />, className: `${menuItemClass} hover:text-red-500! hover:bg-red-100!`, label: 'Move to trash', onClick: onDelete },
   ]
 
   return (
