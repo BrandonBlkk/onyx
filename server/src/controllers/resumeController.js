@@ -1,3 +1,4 @@
+import Favorites from '../models/favoriteModel.js';
 import Resumes from "../models/resumeModel.js";
 
 const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -12,6 +13,23 @@ const resumeSortOptions = {
 
 const getResumeSort = (sortBy) => resumeSortOptions[sortBy] || resumeSortOptions.updated;
 
+const addFavoriteState = async (resumes, userId) => {
+    if (!resumes.length) {
+        return resumes;
+    }
+
+    const favoriteResumeIds = await Favorites.distinct('resume', {
+        user: userId,
+        resume: { $in: resumes.map((resume) => resume._id) },
+    });
+    const favoriteResumeIdSet = new Set(favoriteResumeIds.map(String));
+
+    return resumes.map((resume) => ({
+        ...resume.toObject(),
+        favorite: favoriteResumeIdSet.has(String(resume._id)),
+    }));
+};
+
 export const getAllResumes = async (req, res) => {
     try {
         const resumes = await Resumes.find({ user: req.user.id }).sort(getResumeSort(req.query.sort));
@@ -20,7 +38,7 @@ export const getAllResumes = async (req, res) => {
             return res.status(404).json({ message: 'No resumes found' });
         }
 
-        res.status(200).json(resumes);
+        res.status(200).json(await addFavoriteState(resumes, req.user.id));
     } catch (error) {
         if (error.name === 'CastError') {
             return res.status(400).json({ message: 'Invalid resume id' });
@@ -50,7 +68,7 @@ export const searchResumes = async (req, res) => {
             return res.status(404).json({ message: 'No resumes found' });
         }
 
-        res.status(200).json(resumes);
+        res.status(200).json(await addFavoriteState(resumes, req.user.id));
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -86,6 +104,52 @@ export const getResumeDetails = async (req, res) => {
     } catch (error) {
         if (error.name === 'CastError') {
             return res.status(400).json({ message: 'Invalid resume id' });
+        }
+
+        res.status(500).json({ message: error.message });
+    }
+}
+
+export const toggleFavorite = async (req, res) => {
+    try {
+        const shouldFavorite = req.body.favorite;
+        const favoriteFilter = {
+            user: req.user.id,
+            resume: req.params.id,
+        };
+
+        if (typeof shouldFavorite !== 'boolean') {
+            return res.status(400).json({ message: 'Favorite state is required' });
+        }
+
+        if (!shouldFavorite) {
+            await Favorites.deleteOne(favoriteFilter);
+            return res.status(200).json({ favorite: false });
+        }
+
+        const resume = await Resumes.exists({
+            _id: req.params.id,
+            user: req.user.id,
+        });
+
+        if (!resume) {
+            return res.status(404).json({ message: 'Resume not found' });
+        }
+
+        const result = await Favorites.updateOne(
+            favoriteFilter,
+            { $setOnInsert: favoriteFilter },
+            { upsert: true },
+        );
+
+        res.status(result.upsertedCount ? 201 : 200).json({ favorite: true });
+    } catch (error) {
+        if (error.name === 'CastError') {
+            return res.status(400).json({ message: 'Invalid resume id' });
+        }
+
+        if (error.code === 11000) {
+            return res.status(200).json({ favorite: true });
         }
 
         res.status(500).json({ message: error.message });

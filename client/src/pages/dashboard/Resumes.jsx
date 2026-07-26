@@ -62,6 +62,7 @@ const formatResumeCardData = (resume, user) => {
     summary: resume.summary || '',
     sourceFileName: resume.file || null,
     locked: Boolean(resume.locked),
+    favorite: Boolean(resume.favorite),
   }
 }
 
@@ -85,6 +86,7 @@ const Resumes = () => {
   const [renameError, setRenameError] = useState('')
   const [isRenaming, setIsRenaming] = useState(false)
   const [lockingResumeId, setLockingResumeId] = useState(null)
+  const [favoritingResumeId, setFavoritingResumeId] = useState(null)
   const [detailsResume, setDetailsResume] = useState(null)
   const normalizedSearchQuery = searchQuery.trim()
 
@@ -254,6 +256,7 @@ const Resumes = () => {
             summary: data.summary || nextSummary,
             sourceFileName: data.file || null,
             locked: Boolean(data.locked),
+            favorite: false,
           },
           ...current,
         ])
@@ -282,11 +285,48 @@ const Resumes = () => {
         summary: nextSummary,
         sourceFileName: formValues.file?.name ?? null,
         locked: false,
+        favorite: false,
       },
       ...current,
     ])
 
     closeResumeModal()
+  }
+
+  const handleFavoriteResume = async (resume) => {
+    if (!token) {
+      toast.error('Please sign in before favoriting a resume.')
+      return
+    }
+
+    try {
+      setFavoritingResumeId(resume.id)
+
+      const response = await fetch(`/onyx/api/resumes/${encodeURIComponent(resume.id)}/favorite`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ favorite: !resume.favorite }),
+      })
+
+      const data = await response.json().catch(() => ({}))
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Unable to favorite resume right now.')
+      }
+
+      const isFavorite = Boolean(data.favorite)
+
+      setResumeItems((current) => current.map((item) => (item.id === resume.id ? { ...item, favorite: isFavorite } : item)))
+      toast.success(isFavorite ? 'Resume favorited successfully.' : 'Resume removed from favorites.')
+    } catch (error) {
+      const message = error.message || 'Unable to favorite resume right now.'
+      toast.error(message)
+    } finally {
+      setFavoritingResumeId(null)
+    }
   }
 
   const handleRenameResume = (resume) => {
@@ -573,6 +613,8 @@ const Resumes = () => {
                         item={resume}
                         isDark={isDark}
                         viewMode={viewMode}
+                        onFavorite={handleFavoriteResume}
+                        isFavoriting={favoritingResumeId === resume.id}
                         onRename={handleRenameResume}
                         onDetails={handleShowResumeDetails}
                         onLock={handleLockResume}
