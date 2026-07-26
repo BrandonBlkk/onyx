@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import {
   BadgeInfo,
   CloudDownload,
@@ -6,6 +5,8 @@ import {
   CopyPlus,
   Download,
   Heart,
+  HeartMinus,
+  HeartPlus,
   Info,
   Lock,
   MoreHorizontal,
@@ -29,12 +30,15 @@ const ResumeCardActions = ({
   isDark,
   isLocked = false,
   isLocking = false,
+  isFavorite = false,
+  isFavoriting = false,
+  onFavorite,
   onRename,
   onDetails,
   onLock,
   onDelete
 }) => {
-  const [isFavorite, setIsFavorite] = useState(false)
+  const FavoriteHoverIcon = isFavorite ? HeartMinus : HeartPlus
   const actionButtonClass = `inline-flex h-8 w-8 items-center justify-center rounded-md border backdrop-blur-xl transition-all duration-200 ease-out active:translate-y-0 ${
     isDark
       ? 'border-zinc-800/80 bg-zinc-950/85 text-zinc-300 hover:border-zinc-700 hover:bg-zinc-900 hover:text-zinc-50'
@@ -71,22 +75,26 @@ const ResumeCardActions = ({
     <div className="invisible absolute right-3 top-3 z-20 flex translate-y-1 scale-95 items-start gap-1 opacity-0 transition-all duration-200 ease-out group-hover:visible group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:scale-100 group-focus-within:opacity-100">
       <button
         type="button"
-        aria-label="Favorite resume"
+        aria-label={isFavorite ? 'Remove resume from favorites' : 'Favorite resume'}
         aria-pressed={isFavorite}
-        title="Favorite resume"
-        className={`${actionButtonClass} group/favorite hover:text-red-400!`}
+        title={isFavorite ? 'Remove from favorites' : 'Favorite resume'}
+        disabled={isFavoriting}
+        className={`${actionButtonClass} group/favorite hover:text-red-400! disabled:cursor-not-allowed disabled:opacity-60`}
         onClick={(event) => {
           event.stopPropagation()
-          setIsFavorite((current) => !current)
+          onFavorite?.()
         }}
       >
-        <Heart
-          className={`h-4 w-4 transition-colors ${
-            isFavorite
-              ? 'fill-red-400 text-red-400'
-              : ''
-          }`}
-        />
+        <span className="relative h-4 w-4">
+          <Heart
+            className={`absolute inset-0 h-4 w-4 transition-all duration-150 group-hover/favorite:scale-75 group-hover/favorite:opacity-0 group-focus-visible/favorite:scale-75 group-focus-visible/favorite:opacity-0 ${
+              isFavorite
+                ? 'fill-red-400 text-red-400'
+                : ''
+            }`}
+          />
+          <FavoriteHoverIcon className="absolute inset-0 h-4 w-4 scale-75 opacity-0 transition-all duration-150 group-hover/favorite:scale-100 group-hover/favorite:opacity-100 group-focus-visible/favorite:scale-100 group-focus-visible/favorite:opacity-100" />
+        </span>
       </button>
 
       <div className="group/menu relative">

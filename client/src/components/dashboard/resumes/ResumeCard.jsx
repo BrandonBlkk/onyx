@@ -10,9 +10,10 @@ import { useLanguage } from '../../../context/LanguageContext'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
-const ResumeCard = ({ item, isDark, viewMode, onRename, onDetails, onLock, onDelete, isLocking }) => {
+const ResumeCard = ({ item, isDark, viewMode, onFavorite, onRename, onDetails, onLock, onDelete, isLocking, isFavoriting }) => {
   const { t } = useLanguage()
   const [isShaking, setIsShaking] = useState(false)
+  const handleFavorite = () => onFavorite?.(item)
   const handleRename = () => onRename?.(item)
   const handleDetails = () => onDetails?.(item)
   const handleLock = () => onLock?.(item)
@@ -41,6 +42,9 @@ const ResumeCard = ({ item, isDark, viewMode, onRename, onDetails, onLock, onDel
           isDark={isDark}
           isLocked={item.locked}
           isLocking={isLocking}
+          isFavorite={item.favorite}
+          isFavoriting={isFavoriting}
+          onFavorite={handleFavorite}
           onRename={handleRename}
           onDetails={handleDetails}
           onLock={handleLock}
@@ -93,6 +97,9 @@ const ResumeCard = ({ item, isDark, viewMode, onRename, onDetails, onLock, onDel
         isDark={isDark}
         isLocked={item.locked}
         isLocking={isLocking}
+        isFavorite={item.favorite}
+        isFavoriting={isFavoriting}
+        onFavorite={handleFavorite}
         onRename={handleRename}
         onDetails={handleDetails}
         onLock={handleLock}
