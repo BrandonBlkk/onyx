@@ -2,6 +2,7 @@ import express from 'express'
 import authController from '../controllers/authController.js'
 import userController from '../controllers/userController.js'
 import authMiddleware from '../middlewares/authMiddleware.js'
+import loginRateLimiter from '../middlewares/loginRateLimiter.js'
 
 const router = express.Router();
 
@@ -10,7 +11,7 @@ router.get('/', userController.getAllUsers)
 router.get('/preferences', authMiddleware, userController.getPreferences)
 router.get('/:id', userController.getSingleUser)
 router.post('/', authController.createUser)
-router.post('/login', authController.loginUser)
+router.post('/login', loginRateLimiter, authController.loginUser)
 router.post('/forget-password', authController.forgetPassword)
 router.put('/preferences', authMiddleware, userController.updatePreferences)
 router.put('/:id', authMiddleware, userController.updateUser)
