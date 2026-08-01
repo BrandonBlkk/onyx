@@ -5,6 +5,7 @@ const createAccountRateLimiter = rateLimit({
     limit: 5,
     standardHeaders: 'draft-8',
     legacyHeaders: false,
+    skipFailedRequests: true,
     message: {
         message: 'Too many account creation attempts. Please try again in an hour.',
     },
