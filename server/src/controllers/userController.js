@@ -1,5 +1,6 @@
 import User from '../models/userModel.js'
 import Preference from '../models/preferenceModel.js'
+import { validateUpdatePreferences, validateUpdateUser } from '../validators/userValidator.js'
 
 const formatUser = (user) => ({
     id: user._id,
@@ -52,25 +53,14 @@ const getSingleUser = async (req, res) => {
 
 const updateUser = async (req, res) => {
     try {
-        const { fullname } = req.body
-        const updateFields = {}
-
         if (String(req.user.id) !== String(req.params.id)) {
             return res.status(403).json({ message: 'You can only update your own profile' })
         }
 
-        if (fullname !== undefined) {
-            const trimmedFullname = fullname.trim()
+        const { value: updateFields, error } = validateUpdateUser(req.body)
 
-            if (!trimmedFullname) {
-                return res.status(400).json({ message: 'Fullname is required' })
-            }
-
-            updateFields.fullname = trimmedFullname
-        }
-
-        if (!Object.keys(updateFields).length) {
-            return res.status(400).json({ message: 'No profile changes provided' })
+        if (error) {
+            return res.status(400).json({ message: error })
         }
 
         const updatedUser = await User.findByIdAndUpdate(
@@ -128,39 +118,10 @@ const getPreferences = async (req, res) => {
 
 const updatePreferences = async (req, res) => {
     try {
-        const preferences = req.body
+        const { value: updateFields, error } = validateUpdatePreferences(req.body)
 
-        if (!preferences || typeof preferences !== 'object' || Array.isArray(preferences)) {
-            return res.status(400).json({ message: 'Preferences are required' })
-        }
-
-        const updateFields = {}
-
-        if (preferences.theme !== undefined) {
-            updateFields.theme = preferences.theme
-        }
-
-        if (preferences.language !== undefined) {
-            updateFields.language = preferences.language
-        }
-
-        const pageSize = preferences.pageSize ?? preferences.page_size
-        if (pageSize !== undefined) {
-            updateFields.page_size = pageSize === 'letter' ? 'us_letter' : pageSize
-        }
-
-        const autoSave = preferences.autoSave ?? preferences.auto_save
-        if (autoSave !== undefined) {
-            updateFields.auto_save = autoSave
-        }
-
-        const writingTips = preferences.writingTips ?? preferences.showTips ?? preferences.show_tips
-        if (writingTips !== undefined) {
-            updateFields.show_tips = writingTips
-        }
-
-        if (!Object.keys(updateFields).length) {
-            return res.status(400).json({ message: 'No preference changes provided' })
+        if (error) {
+            return res.status(400).json({ message: error })
         }
 
         const updatedPreferences = await Preference.findOneAndUpdate(

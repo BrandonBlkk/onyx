@@ -1,5 +1,6 @@
 import Favorites from '../models/favoriteModel.js';
 import Resumes from "../models/resumeModel.js";
+import { validateFavoriteState } from '../validators/resumeValidator.js';
 
 const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const resumeSortOptions = {
@@ -112,15 +113,17 @@ export const getResumeDetails = async (req, res) => {
 
 export const toggleFavorite = async (req, res) => {
     try {
-        const shouldFavorite = req.body.favorite;
+        const { value, error } = validateFavoriteState(req.body);
+
+        if (error) {
+            return res.status(400).json({ message: error });
+        }
+
+        const shouldFavorite = value.favorite;
         const favoriteFilter = {
             user: req.user.id,
             resume: req.params.id,
         };
-
-        if (typeof shouldFavorite !== 'boolean') {
-            return res.status(400).json({ message: 'Favorite state is required' });
-        }
 
         if (!shouldFavorite) {
             await Favorites.deleteOne(favoriteFilter);
