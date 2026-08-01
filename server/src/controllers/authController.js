@@ -2,6 +2,8 @@ import User from '../models/userModel.js'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import Preference from '../models/preferenceModel.js'
+import validateCreateUser from '../validators/createUserValidator.js'
+import { validateForgetPassword, validateLoginUser } from '../validators/authValidator.js'
 
 const generateToken = (user) => {
     return jwt.sign(
@@ -21,15 +23,20 @@ const formatUser = (user) => ({
 
 const createUser = async (req, res) => {
     try {
-        const { fullname, email, password } = req.body
+        const { value, error } = validateCreateUser(req.body)
 
-        if (!fullname || !email || !password) {
+        if (error) {
             return res.status(400).json({
-                message: 'Fullname, email, and password are required',
+                message: error,
             })
         }
 
-        const normalizedEmail = email.trim().toLowerCase()
+        const {
+            fullname: normalizedFullname,
+            email: normalizedEmail,
+            password,
+        } = value
+
         const hashPassword = async (password) => {
             const saltRounds = 10; 
             
@@ -49,7 +56,7 @@ const createUser = async (req, res) => {
         const hashedPassword = await hashPassword(password);
 
         const user = await User.create({
-            fullname: fullname.trim(),
+            fullname: normalizedFullname,
             email: normalizedEmail,
             password: hashedPassword,
         })
@@ -82,15 +89,15 @@ const createUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const { value, error } = validateLoginUser(req.body);
 
-        if (!email || !password) {
+        if (error) {
             return res.status(400).json({
-                message: 'Email, and password are required',
+                message: error,
             })
         }
 
-        const normalizedEmail = email.trim().toLowerCase();
+        const { email: normalizedEmail, password } = value;
 
         const user = await User.findOne({ email: normalizedEmail });
         if (!user) {
@@ -115,15 +122,15 @@ const loginUser = async (req, res) => {
 
 const forgetPassword = async (req, res) => {
     try {
-        const { email } = req.body;
+        const { value, error } = validateForgetPassword(req.body);
 
-        if (!email) {
+        if (error) {
             return res.status(400).json({
-                message: 'Email is required',
+                message: error,
             })
         }
 
-        const normalizedEmail = email.trim().toLowerCase();
+        const { email: normalizedEmail } = value;
 
         const user = await User.findOne({email: normalizedEmail});
         if (!user) {
