@@ -120,7 +120,7 @@ const AuthFormPage = ({ mode = 'signin' }) => {
     setIsSubmitting(true)
 
     try {
-      const url = isSignup ? '/onyx/api/users' : '/onyx/api/users/login'
+      const url = isSignup ? '/onyx/api/v1/users' : '/onyx/api/v1/users/login'
       const payload = isSignup
         ? formData
         : { email: formData.email, password: formData.password }
