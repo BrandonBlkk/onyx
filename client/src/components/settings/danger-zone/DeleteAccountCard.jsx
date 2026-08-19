@@ -31,7 +31,7 @@ const  DeleteAccountCard = ({ isDark }) => {
         throw new Error('You must be signed in to delete your account.')
       }
 
-      const response = await fetch(`/onyx/api/users/${user.id}`, {
+      const response = await fetch(`/onyx/api/v1/users/${user.id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

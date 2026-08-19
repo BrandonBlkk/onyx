@@ -54,7 +54,7 @@ const PreferencesForm = ({ isDark, theme, setTheme }) => {
 
     const loadPreferences = async () => {
       try {
-        const response = await fetch('/onyx/api/users/preferences', {
+        const response = await fetch('/onyx/api/v1/users/preferences', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -108,7 +108,7 @@ const PreferencesForm = ({ isDark, theme, setTheme }) => {
     const controller = new AbortController()
     const timeoutId = window.setTimeout(async () => {
       try {
-        const response = await fetch('/onyx/api/users/preferences', {
+        const response = await fetch('/onyx/api/v1/users/preferences', {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
