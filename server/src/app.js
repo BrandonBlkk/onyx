@@ -5,7 +5,7 @@ import resumeRoutes from './routes/resumeRoutes.js'
 const app = express()
 
 app.use(express.json())
-app.use('/onyx/api/users', userRoutes)
-app.use('/onyx/api/resumes', resumeRoutes)
+app.use('/onyx/api/v1/users', userRoutes)
+app.use('/onyx/api/v1/resumes', resumeRoutes)
 
 export default app;
