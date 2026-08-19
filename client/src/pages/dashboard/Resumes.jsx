@@ -108,8 +108,8 @@ const Resumes = () => {
           sort: resumeSortValues[sortBy] || resumeSortValues['Last Updated'],
         }).toString()
         const resumesPath = normalizedSearchQuery
-          ? `/onyx/api/resumes/search/${encodeURIComponent(normalizedSearchQuery)}`
-          : '/onyx/api/resumes'
+          ? `/onyx/api/v1/resumes/search/${encodeURIComponent(normalizedSearchQuery)}`
+          : '/onyx/api/v1/resumes'
         const resumesUrl = `${resumesPath}?${sortQuery}`
 
         const response = await fetch(resumesUrl, {
@@ -225,7 +225,7 @@ const Resumes = () => {
       setIsSubmitting(true)
 
       try {
-        const response = await fetch('/onyx/api/resumes', {
+        const response = await fetch('/onyx/api/v1/resumes', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -302,7 +302,7 @@ const Resumes = () => {
     try {
       setFavoritingResumeId(resume.id)
 
-      const response = await fetch(`/onyx/api/resumes/${encodeURIComponent(resume.id)}/favorite`, {
+      const response = await fetch(`/onyx/api/v1/resumes/${encodeURIComponent(resume.id)}/favorite`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -347,7 +347,7 @@ const Resumes = () => {
     }
 
     try {
-      const response = await fetch(`/onyx/api/resumes/${encodeURIComponent(resume.id)}`, {
+      const response = await fetch(`/onyx/api/v1/resumes/${encodeURIComponent(resume.id)}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -399,7 +399,7 @@ const Resumes = () => {
     try {
       setIsRenaming(true)
 
-      const response = await fetch(`/onyx/api/resumes/${encodeURIComponent(renamingResume.id)}`, {
+      const response = await fetch(`/onyx/api/v1/resumes/${encodeURIComponent(renamingResume.id)}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -456,7 +456,7 @@ const Resumes = () => {
     try {
       setLockingResumeId(resume.id)
 
-      const response = await fetch(`/onyx/api/resumes/${encodeURIComponent(resume.id)}`, {
+      const response = await fetch(`/onyx/api/v1/resumes/${encodeURIComponent(resume.id)}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

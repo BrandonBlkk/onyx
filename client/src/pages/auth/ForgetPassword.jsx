@@ -63,7 +63,7 @@ const ForgetPassword = () => {
     setFeedback(null)
 
     try {
-      const response = await fetch('/onyx/api/users/forget-password', {
+      const response = await fetch('/onyx/api/v1/users/forget-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
