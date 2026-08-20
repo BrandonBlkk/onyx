@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken'
 import crypto from 'node:crypto';
 import Preference from '../models/preferenceModel.js'
 import validateCreateUser from '../validators/createUserValidator.js'
-import { validateForgetPassword, validateLoginUser } from '../validators/authValidator.js'
+import { validateForgetPassword, validateLoginUser, validateResetPassword } from '../validators/authValidator.js'
 import passwordResetEmail from '../emails/passwordResetEmail.js'
 import { Resend } from "resend";
 import dotenv from 'dotenv';
@@ -151,7 +151,8 @@ const forgetPassword = async (req, res) => {
         await user.save({ validateBeforeSave: false });
 
         const resend = new Resend(process.env.RESEND_API_KEY);
-        const resetLink = `${process.env.CLIENT_URL}/reset-password/${rawToken}`;
+        const clientUrl = (process.env.CLIENT_URL || 'http://localhost:5173').replace(/\/$/, '');
+        const resetLink = `${clientUrl}/auth/reset-password/${rawToken}`;
         const email = await passwordResetEmail({ resetLink, fullname: user.fullname });
 
         const { error: resendError } = await resend.emails.send({
@@ -163,8 +164,8 @@ const forgetPassword = async (req, res) => {
 
         if (resendError) {
             // Rollback token if email failed to send
-            user.resetPasswordToken = undefined;
-            user.resetPasswordExpires = undefined;
+            user.passwordResetToken = undefined;
+            user.passwordResetTokenExpiresAt = undefined;
             await user.save({ validateBeforeSave: false });
 
             throw new Error(resendError.message)
@@ -179,4 +180,38 @@ const forgetPassword = async (req, res) => {
     }
 }
 
-export default { createUser, loginUser, forgetPassword }
+const resetPassword = async (req, res) => {
+    try {
+        const { token } = req.params;
+        const { value, error } = validateResetPassword(req.body);
+
+        if (error) {
+            return res.status(400).json({ message: error });
+        }
+
+        if (!/^[a-f0-9]{64}$/i.test(token || '')) {
+            return res.status(400).json({ message: 'This password reset link is invalid or has expired' });
+        }
+
+        const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+        const user = await User.findOne({
+            passwordResetToken: hashedToken,
+            passwordResetTokenExpiresAt: { $gt: new Date() },
+        });
+
+        if (!user) {
+            return res.status(400).json({ message: 'This password reset link is invalid or has expired' });
+        }
+
+        user.password = await bcrypt.hash(value.password, 10);
+        user.passwordResetToken = undefined;
+        user.passwordResetTokenExpiresAt = undefined;
+        await user.save();
+
+        return res.status(200).json({ message: 'Your password has been reset. You can now sign in.' });
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+}
+
+export default { createUser, loginUser, forgetPassword, resetPassword }
