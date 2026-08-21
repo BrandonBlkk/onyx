@@ -11,6 +11,7 @@ import UserSignin from './pages/auth/UserSignin'
 import UserSignup from './pages/auth/UserSignup'
 import ForgetPassword from './pages/auth/ForgetPassword'
 import ProtectedRoute from './components/auth/ProtectedRoute'
+import PublicRoute from './components/auth/PublicRoute'
 import { Toaster } from './components/ui/Sonner'
 import ResetPassword from './pages/auth/ResetPassword'
 
@@ -34,10 +35,10 @@ const App = () => {
         <Route path="/settings/preferences" element={<ProtectedRoute><Preferences /></ProtectedRoute>} />
         <Route path="/settings/authentication" element={<ProtectedRoute><Authentication /></ProtectedRoute>} />
         <Route path="/settings/danger-zone" element={<ProtectedRoute><DangerZone /></ProtectedRoute>} />
-        <Route path="/auth/signin" element={<UserSignin />} />
-        <Route path="/auth/signup" element={<UserSignup />} />
-        <Route path="/auth/forget-password" element={<ForgetPassword />} />
-        <Route path="/auth/reset-password/:token" element={<ResetPassword />} />
+        <Route path="/auth/signin" element={<PublicRoute><UserSignin /></PublicRoute>} />
+        <Route path="/auth/signup" element={<PublicRoute><UserSignup /></PublicRoute>} />
+        <Route path="/auth/forget-password" element={<PublicRoute><ForgetPassword /></PublicRoute>} />
+        <Route path="/auth/reset-password/:token" element={<PublicRoute><ResetPassword /></PublicRoute>} />
         <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
       </Routes>
       <Toaster />
