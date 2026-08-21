@@ -1,5 +1,5 @@
 const validateLoginUser = (input = {}) => {
-    const { email, password } = input ?? {}
+    const { email, password, rememberMe } = input ?? {}
 
     if (!email || !password) {
         return { error: 'Email, and password are required' }
@@ -9,6 +9,7 @@ const validateLoginUser = (input = {}) => {
         value: {
             email: email.trim().toLowerCase(),
             password,
+            rememberMe: rememberMe === true,
         },
     }
 }

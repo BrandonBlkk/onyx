@@ -12,36 +12,39 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null)
-    const [token, setToken] = useState(localStorage.getItem('onyx_token'))
+    const [token, setToken] = useState(sessionStorage.getItem('onyx_token'))
     const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
         const verifyToken = async () => {
-            const storedToken = localStorage.getItem('onyx_token')
-
-            if (!storedToken) {
-                setIsLoading(false)
-                return
-            }
+            const storedToken = sessionStorage.getItem('onyx_token')
 
             try {
-                const response = await fetch('/onyx/api/users/me', {
-                    headers: {
+                const response = await fetch('/onyx/api/v1/users/me', {
+                    credentials: 'include',
+                    headers: storedToken ? {
                         Authorization: `Bearer ${storedToken}`,
-                    },
+                    } : {},
                 })
 
                 if (response.ok) {
                     const data = await response.json()
+                    const activeToken = storedToken || data.token
+
+                    if (!activeToken) {
+                        throw new Error('No authentication token available')
+                    }
+
                     setUser(data.user)
-                    setToken(storedToken)
+                    sessionStorage.setItem('onyx_token', activeToken)
+                    setToken(activeToken)
                 } else {
-                    localStorage.removeItem('onyx_token')
+                    sessionStorage.removeItem('onyx_token')
                     setUser(null)
                     setToken(null)
                 }
             } catch {
-                localStorage.removeItem('onyx_token')
+                sessionStorage.removeItem('onyx_token')
                 setUser(null)
                 setToken(null)
             } finally {
@@ -53,13 +56,18 @@ export const AuthProvider = ({ children }) => {
     }, [])
 
     const login = (newToken, userData) => {
-        localStorage.setItem('onyx_token', newToken)
+        sessionStorage.setItem('onyx_token', newToken)
         setToken(newToken)
         setUser(userData)
     }
 
     const logout = () => {
-        localStorage.removeItem('onyx_token')
+        fetch('/onyx/api/v1/users/logout', {
+            method: 'POST',
+            credentials: 'include',
+        }).catch(() => {})
+
+        sessionStorage.removeItem('onyx_token')
         setToken(null)
         setUser(null)
     }

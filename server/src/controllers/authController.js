@@ -10,12 +10,20 @@ import { Resend } from "resend";
 import dotenv from 'dotenv';
 dotenv.config();
 
-const generateToken = (user) => {
+const generateToken = (user, expiresIn = '7d') => {
     return jwt.sign(
         { id: user._id, email: user.email },
         process.env.JWT_SECRET,
-        { expiresIn: '7d' }
+        { expiresIn }
     )
+}
+
+const rememberMeCookieOptions = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    path: '/',
+    maxAge: 30 * 24 * 60 * 60 * 1000,
 }
 
 const formatUser = (user) => ({
@@ -102,7 +110,7 @@ const loginUser = async (req, res) => {
             })
         }
 
-        const { email: normalizedEmail, password } = value;
+        const { email: normalizedEmail, password, rememberMe } = value;
 
         const user = await User.findOne({ email: normalizedEmail });
         if (!user) {
@@ -114,7 +122,19 @@ const loginUser = async (req, res) => {
             return res.status(401).json({ message: 'Invalid credentials' });
         }
 
-        const token = generateToken(user)
+        const token = generateToken(user, rememberMe ? '30d' : '7d')
+
+        if (rememberMe) {
+            res.cookie('onyx_remember_token', token, rememberMeCookieOptions)
+        } else {
+            res.clearCookie('onyx_remember_token', {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'lax',
+                path: '/',
+            })
+        }
+
         res.status(200).json({
             message: "Welcome to Onyx",
             token,
@@ -124,6 +144,17 @@ const loginUser = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+const logoutUser = (req, res) => {
+    res.clearCookie('onyx_remember_token', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        path: '/',
+    })
+
+    res.status(200).json({ message: 'Logged out successfully' })
+}
 
 const forgetPassword = async (req, res) => {
     try {
@@ -214,4 +245,4 @@ const resetPassword = async (req, res) => {
     }
 }
 
-export default { createUser, loginUser, forgetPassword, resetPassword }
+export default { createUser, loginUser, logoutUser, forgetPassword, resetPassword }
