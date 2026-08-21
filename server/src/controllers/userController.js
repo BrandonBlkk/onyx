@@ -34,6 +34,7 @@ const getMe = async (req, res) => {
             return res.status(404).json({ message: 'User not found' })
         }
         res.status(200).json({
+            token: req.authToken,
             user: {
                 id: user._id,
                 fullname: user.fullname,

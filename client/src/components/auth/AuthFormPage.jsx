@@ -67,6 +67,7 @@ const initialFormState = {
   fullname: '',
   email: '',
   password: '',
+  rememberMe: false,
 }
 
 const AuthFormPage = ({ mode = 'signin' }) => {
@@ -84,10 +85,10 @@ const AuthFormPage = ({ mode = 'signin' }) => {
     onChange: handleChange,
   })
 
-  const handleChange = ({ target: { name, value } }) => {
+  const handleChange = ({ target: { name, value, type, checked } }) => {
     setFormData((current) => ({
       ...current,
-      [name]: value,
+      [name]: type === 'checkbox' ? checked : value,
     }))
   }
 
@@ -123,13 +124,18 @@ const AuthFormPage = ({ mode = 'signin' }) => {
       const url = isSignup ? '/onyx/api/v1/users' : '/onyx/api/v1/users/login'
       const payload = isSignup
         ? formData
-        : { email: formData.email, password: formData.password }
+        : {
+            email: formData.email,
+            password: formData.password,
+            rememberMe: formData.rememberMe,
+          }
 
       const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify(payload),
       })
 
@@ -389,7 +395,13 @@ const AuthFormPage = ({ mode = 'signin' }) => {
                       isDark ? 'text-zinc-400' : 'text-slate-600'
                     }`}
                   >
-                    <input type="checkbox" className="h-4 w-4 rounded border-slate-300 cursor-pointer" />
+                    <input
+                      type="checkbox"
+                      name="rememberMe"
+                      checked={formData.rememberMe}
+                      onChange={handleChange}
+                      className="h-4 w-4 rounded border-slate-300 cursor-pointer"
+                    />
                     {t('Remember me')}
                   </label>
 
