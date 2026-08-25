@@ -8,6 +8,7 @@ import { validateForgetPassword, validateLoginUser, validateResetPassword } from
 import passwordResetEmail from '../emails/passwordResetEmail.js'
 import { Resend } from "resend";
 import dotenv from 'dotenv';
+import welcomeEmail from '../emails/welcomeEmail.js';
 dotenv.config();
 
 const generateToken = (user, expiresIn = '7d') => {
@@ -89,6 +90,16 @@ const createUser = async (req, res) => {
             
             const token = generateToken(user)
             res.status(201).json({ token, user: formatUser(user) })
+
+            const resend = new Resend(process.env.RESEND_API_KEY);
+            const welcomeEmailContent = await welcomeEmail({ fullname: user.fullname });
+
+            await resend.emails.send({
+                from: process.env.RESEND_FROM_EMAIL || 'Onyx <onboarding@resend.dev>',
+                to: user.email,
+                subject: 'Welcome to Onyx',
+                ...welcomeEmailContent
+            });
         }
     } catch (error) {
         if (error.name === 'ValidationError') {
