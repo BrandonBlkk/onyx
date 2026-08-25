@@ -1,6 +1,10 @@
 import User from '../models/userModel.js'
 import Preference from '../models/preferenceModel.js'
 import { validateUpdatePreferences, validateUpdateUser } from '../validators/userValidator.js'
+import { Resend } from 'resend'
+import accountDeletionEmail from '../emails/accountDeletionEmail.js'
+import dotenv from 'dotenv'
+dotenv.config()
 
 const formatUser = (user) => ({
     id: user._id,
@@ -171,6 +175,18 @@ const deleteUser = async (req, res) => {
         }
 
         res.status(200).json({ message: 'Account deleted successfully' })
+
+        const user = deletedUser;
+
+        const resend = new Resend(process.env.RESEND_API_KEY);
+        const accountDeletionEmailContent = await accountDeletionEmail({ fullname: user.fullname });
+
+        await resend.emails.send({
+            from: process.env.RESEND_FROM_EMAIL || 'Onyx <onboarding@resend.dev>',
+            to: user.email,
+            subject: 'Account deletion confirmation',
+            ...accountDeletionEmailContent
+        });
     } catch (error) {
         if (error.name === 'CastError') {
             return res.status(400).json({ message: 'Invalid user id' })
