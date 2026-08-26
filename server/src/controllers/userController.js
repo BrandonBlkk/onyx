@@ -4,6 +4,8 @@ import { validateUpdatePreferences, validateUpdateUser } from '../validators/use
 import { Resend } from 'resend'
 import accountDeletionEmail from '../emails/accountDeletionEmail.js'
 import dotenv from 'dotenv'
+import Resumes from '../models/resumeModel.js'
+import Favorites from '../models/favoriteModel.js'
 dotenv.config()
 
 const formatUser = (user) => ({
@@ -174,20 +176,32 @@ const deleteUser = async (req, res) => {
             return res.status(404).json({ message: 'User not found' })
         }
 
+        await Promise.all([
+            Preference.deleteMany({ user: req.params.id }),
+            Resumes.deleteMany({ user: req.params.id }),
+            Favorites.deleteMany({ user: req.params.id }),
+        ])
+
+        try {
+            const resend = new Resend(process.env.RESEND_API_KEY);
+            const accountDeletionEmailContent = await accountDeletionEmail({ fullname: deletedUser.fullname });
+
+            const { error: resendError } = await resend.emails.send({
+                from: process.env.RESEND_FROM_EMAIL || 'Onyx <onboarding@resend.dev>',
+                to: deletedUser.email,
+                subject: 'Account deletion confirmation',
+                ...accountDeletionEmailContent
+            });
+
+            if (resendError) {
+                throw new Error(resendError.message);
+            }
+        } catch (emailError) {
+            console.error('Error sending account deletion email:', emailError);
+        }
+
         res.status(200).json({ message: 'Account deleted successfully' })
-
-        const user = deletedUser;
-
-        const resend = new Resend(process.env.RESEND_API_KEY);
-        const accountDeletionEmailContent = await accountDeletionEmail({ fullname: user.fullname });
-
-        await resend.emails.send({
-            from: process.env.RESEND_FROM_EMAIL || 'Onyx <onboarding@resend.dev>',
-            to: user.email,
-            subject: 'Account deletion confirmation',
-            ...accountDeletionEmailContent
-        });
-    } catch (error) {
+       } catch (error) {
         if (error.name === 'CastError') {
             return res.status(400).json({ message: 'Invalid user id' })
         }
