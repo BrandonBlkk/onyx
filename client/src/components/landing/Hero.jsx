@@ -163,12 +163,6 @@ const Hero = ({ isDark = true }) => {
           </span>
         </motion.div>
       </div>
-
-      <div
-        className={`pointer-events-none absolute bottom-0 left-0 right-0 h-32 bg-linear-to-t to-transparent transition-colors duration-500 ${
-          isDark ? 'from-zinc-950' : 'from-[#f5f7fb]'
-        }`}
-      />
     </section>
   )
 }

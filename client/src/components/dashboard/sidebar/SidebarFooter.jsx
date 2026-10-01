@@ -196,7 +196,7 @@ const SidebarFooter = ({ isDark }) => {
             onClick={handleMenuToggle}
             aria-expanded={menuOpen}
             aria-label={t('Open account menu')}
-            className={`flex w-full items-center gap-3 rounded-lg transition-colors p-2 ${
+            className={`flex w-full items-center gap-3 rounded-lg transition-colors p-2 cursor-pointer ${
               isDark ? 'hover:bg-zinc-900/70' : 'hover:bg-slate-100/80'
             }`}
           >
