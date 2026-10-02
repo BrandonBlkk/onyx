@@ -18,7 +18,6 @@ import logo from '../../assets/images/logo.png'
 import logo2 from '../../assets/images/logo2.png'
 import { useLanguage } from '../../context/LanguageContext'
 import { useTheme } from '../../context/ThemeContext'
-import GitHubMark from '../settings/authentication/GitHubMark'
 import GoogleMark from '../settings/authentication/GoogleMark'
 
 const authContent = {
@@ -260,7 +259,7 @@ const AuthFormPage = ({ mode = 'signin' }) => {
               </p>
             </div>
 
-            <div className="mt-5 grid grid-cols-2 gap-2">
+            <div className="mt-5">
               <button
                 type="button"
                 className={`inline-flex w-full items-center justify-center gap-2 border px-3 py-2.5 text-sm font-medium transition-colors select-none cursor-pointer ${socialButtonClass(
@@ -270,17 +269,6 @@ const AuthFormPage = ({ mode = 'signin' }) => {
               >
                 <GoogleMark className="h-4 w-4" />
                 {t('Google')}
-              </button>
-
-              <button
-                type="button"
-                className={`inline-flex w-full items-center justify-center gap-2 border px-3 py-2.5 text-sm font-medium transition-colors select-none cursor-pointer ${socialButtonClass(
-                  isDark,
-                  'github',
-                )}`}
-              >
-                <GitHubMark className="h-4 w-4" />
-                {t('GitHub')}
               </button>
             </div>
 
