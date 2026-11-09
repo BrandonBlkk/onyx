@@ -1,7 +1,10 @@
+import { useCallback, useState } from 'react'
+import { AnimatePresence } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import logo from '../../assets/images/logo.png'
 import logo2 from '../../assets/images/logo2.png'
 import { useLanguage } from '../../context/LanguageContext'
+import FeedbackModal from './FeedbackModal'
 
 const footerLinks = [
   { label: 'Features', href: '#features' },
@@ -9,10 +12,13 @@ const footerLinks = [
   { label: 'Templates', href: '#templates' },
   { label: 'Privacy', href: '#' },
   { label: 'Terms', href: '#' },
+  { label: 'Feedback', href: '#' },
 ]
 
 const Footer = ({ isDark = true }) => {
   const { t } = useLanguage()
+  const [isFeedbackOpen, setIsFeedbackOpen] = useState(false)
+  const closeFeedbackModal = useCallback(() => setIsFeedbackOpen(false), [])
   const primaryButtonGlowClass = isDark
     ? 'hover:shadow-[0_0_20px_oklch(0.68_0.174_252_/_0.3),0_0_60px_oklch(0.68_0.174_252_/_0.1)]'
     : 'hover:shadow-[0_18px_40px_rgba(59,130,246,0.18)]'
@@ -71,13 +77,24 @@ const Footer = ({ isDark = true }) => {
 
           <nav className="flex flex-wrap items-center justify-center gap-6">
             {footerLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                className={`text-xs transition-colors ${isDark ? 'text-zinc-500 hover:text-zinc-300' : 'text-slate-500 hover:text-slate-900'}`}
-              >
-                {t(link.label)}
-              </a>
+              link.label === 'Feedback' ? (
+                <button
+                  key={link.label}
+                  type="button"
+                  onClick={() => setIsFeedbackOpen(true)}
+                  className={`cursor-pointer text-xs transition-colors ${isDark ? 'text-zinc-500 hover:text-zinc-300' : 'text-slate-500 hover:text-slate-900'}`}
+                >
+                  {t(link.label)}
+                </button>
+              ) : (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  className={`text-xs transition-colors ${isDark ? 'text-zinc-500 hover:text-zinc-300' : 'text-slate-500 hover:text-slate-900'}`}
+                >
+                  {t(link.label)}
+                </a>
+              )
             ))}
           </nav>
 
@@ -116,6 +133,12 @@ const Footer = ({ isDark = true }) => {
           </p>
         </div>
       </div>
+
+      <AnimatePresence>
+        {isFeedbackOpen && (
+          <FeedbackModal isDark={isDark} onClose={closeFeedbackModal} />
+        )}
+      </AnimatePresence>
     </footer>
   )
 }

@@ -16,6 +16,11 @@ const feedbackSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        attachment_url: {
+            type: String,
+            required: false,
+            default: null,
+        },
     },
     {
         timestamps: true,
