@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }) => {
             const storedToken = sessionStorage.getItem('onyx_token')
 
             try {
-                const response = await fetch('/onyx/api/v1/users/me', {
+                const response = await fetch('/onyx/api/v1/users/session', {
                     credentials: 'include',
                     headers: storedToken ? {
                         Authorization: `Bearer ${storedToken}`,
@@ -29,6 +29,14 @@ export const AuthProvider = ({ children }) => {
 
                 if (response.ok) {
                     const data = await response.json()
+
+                    if (!data.user) {
+                        sessionStorage.removeItem('onyx_token')
+                        setUser(null)
+                        setToken(null)
+                        return
+                    }
+
                     const activeToken = storedToken || data.token
 
                     if (!activeToken) {

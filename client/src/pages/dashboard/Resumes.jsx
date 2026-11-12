@@ -361,7 +361,7 @@ const Resumes = () => {
         throw new Error(data.message || 'Unable to delete resume right now.')
       }
 
-       ((current) => current.filter((item) => item.id !== resume.id))
+      setResumeItems((current) => current.filter((item) => item.id !== resume.id))
       toast.success('Resume deleted successfully.')
     } catch (error) {
       const message = error.message || 'Unable to delete resume right now.'

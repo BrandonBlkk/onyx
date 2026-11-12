@@ -1,7 +1,7 @@
 import express from 'express'
 import authController from '../controllers/authController.js'
 import userController from '../controllers/userController.js'
-import authMiddleware from '../middlewares/authMiddleware.js'
+import authMiddleware, { optionalAuthMiddleware } from '../middlewares/authMiddleware.js'
 import loginRateLimiter from '../middlewares/loginRateLimiter.js'
 import createAccountRateLimiter from '../middlewares/createAccountRateLimiter.js'
 import forgetPasswordLimiter from '../middlewares/forgetPasswordLimiter.js'
@@ -9,6 +9,7 @@ import forgetPasswordLimiter from '../middlewares/forgetPasswordLimiter.js'
 const router = express.Router();
 
 router.get('/me', authMiddleware, userController.getMe)
+router.get('/session', optionalAuthMiddleware, userController.getSession)
 router.get('/', userController.getAllUsers)
 router.get('/preferences', authMiddleware, userController.getPreferences)
 router.get('/:id', userController.getSingleUser)
