@@ -54,6 +54,14 @@ const getMe = async (req, res) => {
     }
 }
 
+const getSession = async (req, res) => {
+    if (!req.user) {
+        return res.status(200).json({ user: null })
+    }
+
+    return getMe(req, res)
+}
+
 const getSingleUser = async (req, res) => {
     res.send('get single user')
 }
@@ -213,6 +221,7 @@ const deleteUser = async (req, res) => {
 export default {
     getAllUsers,
     getMe,
+    getSession,
     getSingleUser,
     updateUser,
     getPreferences,

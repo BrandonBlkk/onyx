@@ -30,4 +30,28 @@ const authMiddleware = (req, res, next) => {
     }
 }
 
+// Session checks need to distinguish an anonymous visitor from a rejected
+// protected request. This middleware attaches a valid user when available,
+// but lets the request continue when the visitor has no valid session.
+export const optionalAuthMiddleware = (req, res, next) => {
+    const authHeader = req.headers.authorization
+    const bearerToken = authHeader?.startsWith('Bearer ')
+        ? authHeader.split(' ')[1]
+        : null
+    const token = bearerToken || getCookieValue(req.headers.cookie, 'onyx_remember_token')
+
+    if (!token) {
+        return next()
+    }
+
+    try {
+        req.user = jwt.verify(token, process.env.JWT_SECRET)
+        req.authToken = token
+    } catch {
+        // An expired session is treated as signed out for the session check.
+    }
+
+    next()
+}
+
 export default authMiddleware
